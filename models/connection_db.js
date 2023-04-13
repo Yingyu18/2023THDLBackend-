@@ -1,7 +1,6 @@
-
+const fs = require("fs");
 const config = require('../config/development_config');
 const mariadb = require("mariadb");
-
 
 const pool = mariadb.createPool({
     host: config.mysql.host,
@@ -11,16 +10,6 @@ const pool = mariadb.createPool({
     database: config.mysql.database,
     connectionLimit: 5
 });
-
-pool.getConnection((err, connection) => {
-  if (err) {
-    console.error('connection to database failed.');  
-  }
-  if (connection) {
-    connection.release();
-  }
-
-  return;
-})
+console.log('pool = ' + pool + '\n');
 
 module.exports = pool;
