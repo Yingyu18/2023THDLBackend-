@@ -36,3 +36,9 @@ thdlBackTest :
     (table 1) test_info :
            name: nvarchar
 ```
+
+## Others
+
+```
+you can do tests at /testzone
+```
