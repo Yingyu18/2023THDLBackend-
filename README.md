@@ -30,6 +30,14 @@
 
     PATH: ./routes/dbTest.js -> ./models/connection_db.js
 ```
+## SqlDataBase
+
+```
+thdlBackTest :
+
+    (table 1) test_info :
+           name: nvarchar
+```
 
 ## others
 
