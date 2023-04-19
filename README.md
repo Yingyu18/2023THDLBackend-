@@ -17,6 +17,8 @@
 ```
 1. Node.js with express
 2. MariaDB
+
+* follow routes -> controller -> models arch. if possible.
 ```
 
 ## Implemented
