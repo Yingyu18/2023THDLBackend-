@@ -1,12 +1,17 @@
-var h = require('../models/hashLib');
 var fs = require('fs');
 
-h = new h();
-  
-let map = h.getHashMap('20230419123456789');
-console.log(map);
+const results = [];
+let data = fs.readFileSync('test.csv', 'utf-8');
 
-h.appendHash('fuckyou.csv', '151', '20230419123456789');
-h.deleteHash('333', '20230419123456789');
 
-console.log(fs.readFileSync('../rawfiles/20230419123456789/hash.txt', 'utf-8'));
+data.split('\n').forEach(line => {
+    let row = line.toString().split(',');
+    row.forEach(function(ele, index, row) {
+        row[index] = row[index].slice(1, -1);
+    })
+    results.push(row);
+})
+    
+
+
+console.log(results[3][2]);
