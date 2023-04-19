@@ -1,9 +1,12 @@
 # 2023 ThdlBackend
 
+## UpdateDoc
+ <a href = 'https://hackmd.io/7Acqm1WKRnGAjXV6yme8oA'>浩宇更新文件</a>
+
 ## TEAM
 
 ```
-王浩宇: 資料轉換+處理 更新日誌：https://hackmd.io/7Acqm1WKRnGAjXV6yme8oA
+王浩宇: 資料轉換+處理 
 劉盈妤: 帳戶相關一切
 黃嘉宏: 爬蟲功能協助
 ```
