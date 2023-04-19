@@ -17,8 +17,6 @@
 ```
 1. Node.js with express
 2. MariaDB
-
-**plz use localhost:33027 for localtest (maybe I'll try to fix this prob.)
 ```
 
 ## Implemented
@@ -37,13 +35,4 @@ thdlBackTest :
 
     (table 1) test_info :
            name: nvarchar
-```
-
-## others
-
-```
-Maybe we can fix to router -> controller -> model arch.
-
-
-FK functional programming zzz.
 ```
