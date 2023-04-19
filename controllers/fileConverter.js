@@ -1,15 +1,11 @@
-var express = require('express');
-var router = express.Router();
+const csvConvert = require('../models/csvConvert');
+const jsonConvert = require('../models/jsonConvert');
+const xmlConvert = require('../models/xmlConvert');
+var fs = require('fs');
 
 
-
-function dispatch (type, ids) {
-    if (type == 'ct') {
-        const action = require('../models/csvConvert');
-        return action(ids);
-    } else {
-        return 'dumbdumb';
-    }
+module.exports = class handler {
+    csv(ids) {csvConvert(ids);}
+    json(ids) {jsonConvert(ids);}
+    xml(ids) {xmlConvert(ids);}
 }
-
-module.exports = dispatch;

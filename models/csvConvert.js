@@ -1,11 +1,10 @@
-var express = require('express');
-var router = express.Router();
+var fs = require('fs');
 
-const action = require('../models/csvConvert');
 
-router.post('/', function(req, res, next) {
-    var ids = req.body.file_ids;
-    res.render('index', { title: 'Express' });
-});
+function converter(ids) {
+    var userID = ids[0].substring(0, 17);
 
-module.exports = router;
+}
+
+
+module.exports = converter;
