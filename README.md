@@ -3,7 +3,7 @@
 ## TEAM
 
 ```
-王浩宇: 資料轉換+處理
+王浩宇: 資料轉換+處理 更新日誌：https://hackmd.io/7Acqm1WKRnGAjXV6yme8oA
 劉盈妤: 帳戶相關一切
 黃嘉宏: 爬蟲功能協助
 ```
