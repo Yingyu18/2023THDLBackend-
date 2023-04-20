@@ -9,7 +9,7 @@ router.get('/', async function (req, res, next) {
     try {
         let conn = await pool.getConnection();
         console.log(conn);
-        const sql2 = 'SELECT name FROM test_info Where id = 1';
+        const sql2 = 'SELECT name FROM test_info';
         const rows = await conn.query(sql2); 
         console.log(rows); 
         res.end(JSON.stringify(rows));      
