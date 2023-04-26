@@ -166,7 +166,6 @@ class csvConverter {
                             break; 
                         case '日期描述':
                             corres.push(10);
-                            corres.push(11);
                             success++;
                             break; 
                         case '內容摘要':
