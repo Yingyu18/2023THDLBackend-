@@ -25,7 +25,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
 app.use('/dbtest', dbRouter);
-app.use('/csvtest', convertRouter);
+app.use('/edit/convertTo', convertRouter);
 
 
 // catch 404 and forward to error handler
