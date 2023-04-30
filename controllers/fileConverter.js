@@ -1,15 +1,14 @@
-let csvConvert = require('../models/csvConvert');
-let jsonConvert = require('../models/jsonConvert');
-let xmlConvert = require('../models/xmlConvert');
+const csvConvert = require('../../server/models/csvConvert');
+const jsonConvert = require('../../server/models/jsonConvert');
+const xmlConvert = require('../../server/models/xmlConvert');
 const fs = require('fs');
-let hashControl = require('../models/hashLib')
+const hashControl = require('../../server/models/hashLib')
 
 hashControl = new hashControl();
-csvConvert = new csvConvert();
 
 module.exports = class handler {
     csv(ids) {
-        return csvConvert.to2dArray(ids);
+        csvConvert.to2dArray(ids);
     }
     json(ids) {
         jsonConvert(ids);

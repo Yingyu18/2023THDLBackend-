@@ -6,14 +6,3 @@ body {
 a {
   color: #00B7FF;
 }
-
-table,
-td {
-    border: 1px solid #333;
-}
-
-thead,
-tfoot {
-    background-color: #333;
-    color: #fff;
-}
