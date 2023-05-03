@@ -2,14 +2,15 @@ let csvConvert = require('../models/csvConvert');
 let jsonConvert = require('../models/jsonConvert');
 let xmlConvert = require('../models/xmlConvert');
 const fs = require('fs');
-let hashControl = require('../models/hashLib')
+let tableFunc = require('../models/tableFunc');
 
-hashControl = new hashControl();
+tableFunc = new tableFunc();
 csvConvert = new csvConvert();
 
 module.exports = class handler {
-    csv(ids) {
-        return csvConvert.to2dArray(ids);
+    async csv(uid, ids) {
+        let contents = await tableFunc.openFile(uid, ids);
+        return csvConvert.to2dArray(contents);
     }
     json(ids) {
         jsonConvert(ids);

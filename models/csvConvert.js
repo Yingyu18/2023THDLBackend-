@@ -1,27 +1,24 @@
 var fs = require('fs');
-let hashControl = require('../models/hashLib')
-let cleaner = require('../models/cleaners')
+let cleaner = require('../models/cleaners');
+let tableFunc = require('../models/tableFunc');
 
 
-hashControl = new hashControl();
+tableFunc = new tableFunc();
 cleaner = new cleaner();
 
 class csvConverter {
 
-    to2dArray (ids) { 
+    to2dArray (contents) { 
 
         let results = [['唯一編碼', '來源系統', '來源系統縮寫', '文件原系統頁面URL', '題名', '檔案類型',
         '書卷名', '(類目階層)', '原始時間記錄', '西元年', '起始時間', '結束時間', '相關人員', '相關地點', 
         '相關組織', '關鍵詞', '摘要/全文']];
-        let extra = 17;
+        let extra = 16;
         let lines = 0;
-
-        ids.forEach(function(ele, index, ids) {            
-            let userID = ids[index].substring(0, 17);
-            let hashTable = hashControl.getHashMap(userID);
-            let format = ids[index].substring(17, 20);  
-            let table = cleaner.rawTable('./rawfiles/' + userID + '/root/' + format + '/' + hashTable.get(ids[index]));                       
-            if (table[0][0].substring(0, 4) == '國史館檔') {
+        console.log ('array len = ' + contents.length);
+        contents.forEach(function(ele, index, ids) {        
+            let table = cleaner.rawTable(cleaner.recover(contents[index]));                              
+            if (table[0][0].substring(0, 4) == '國史館檔') {  
                 table = cleaner.clean(1, table);
                 let corres = [-1];
                 let curRow = 3;
@@ -57,6 +54,9 @@ class csvConverter {
                             corres.push(0);
                             success++;
                             break;
+                        case '':
+                            corres.push(-1);
+                            break;
                         default:
                             corres.push(extra);
                             results[0].push(hd);
@@ -73,8 +73,9 @@ class csvConverter {
                         continue;
                     }
                     lines++;
-                    results.push(Array(extra+1));
+                    results.push(Array(extra+1).fill(''));
                     for (let i = 1; i < table[curRow].length; i++) {
+                        if (corres[i] == -1) {continue;}
                         results[lines][corres[i]] = table[curRow][i];
                     }
                     results[lines][0] = 'AHCMS-' + results[lines][0];
@@ -117,6 +118,9 @@ class csvConverter {
                             corres.push(11);
                             success++;
                             break;
+                        case '':
+                            corres.push(-1);
+                            break;
                         default:
                             corres.push(extra);
                             results[0].push(hd);
@@ -133,8 +137,9 @@ class csvConverter {
                         continue;
                     }
                     lines++;
-                    results.push(Array(extra+1));
+                    results.push(Array(extra+1).fill(''));
                     for (let i = 1; i < table[curRow].length; i++) {
+                        if (corres[i] == -1) {continue;}
                         results[lines][corres[i]] = table[curRow][i];
                     }
                     results[lines][0] = 'AHTWH-' + results[lines][0];
@@ -172,6 +177,9 @@ class csvConverter {
                             corres.push(4);
                             success++;
                             break;
+                        case '':
+                            corres.push(-1);
+                            break;
                         default:
                             corres.push(extra);
                             results[0].push(hd);
@@ -188,9 +196,10 @@ class csvConverter {
                         continue;
                     }
                     lines++;
-                    results.push(Array(extra+1));
+                    results.push(Array(extra+1).fill(''));
                     for (let i = 1; i < table[curRow].length; i++) {
-                        if (corres[i] == 10) {
+                        if (corres[i] == -1) {continue;}
+                        else if (corres[i] == 10) {
                             results[lines][corres[i]] = table[curRow][i].substring(0, 10);
                             results[lines][11] = table[curRow][i].substring(13);
                         }
@@ -238,14 +247,45 @@ class csvConverter {
                         case '內容摘要':
                             corres.push(4);
                             success++;
-                        break;    
+                            break;
+                        case '會議主席':
+                            corres.push(12);
+                            success++;
+                            break;
+                        case '提案議員':
+                            corres.push(12);
+                            success++;
+                            break;
+                        case '相關議員':
+                            corres.push(12);
+                            success++;
+                            break;
+                        case '請願人':
+                            corres.push(12);
+                            success++;
+                            break;
+                        case '機關':
+                            corres.push(14);
+                            success++;
+                            break;
+                        case '相關機關':
+                            corres.push(14);
+                            success++;
+                            break;
+                        case '請願機關':
+                            corres.push(14);
+                            success++;
+                            break;
+                        case '':
+                            corres.push(-1);
+                            break;
                         default:
                             corres.push(extra);
                             results[0].push(hd);
                             extra++;
                     }
                 }
-                if (success != 7) {
+                if (success != 14) {
                     return '錯誤: 缺乏核心欄位';
                 }
                 curRow++;
@@ -255,9 +295,13 @@ class csvConverter {
                         continue;
                     }
                     lines++;
-                    results.push(Array(extra+1));
+                    results.push(Array(extra+1).fill(''));
                     for (let i = 1; i < table[curRow].length; i++) {
-                        results[lines][corres[i]] = table[curRow][i];
+                        if (corres[i] == -1) {continue;}
+                        else if ((corres[i] == 12 || corres[i] == 14) && results[lines][corres[i]].length >= 1 && table[curRow][i].length != 0) {                           
+                            results[lines][corres[i]] += '、' + table[curRow][i]; 
+                        }
+                        else if (table[curRow][i].length != 0) {results[lines][corres[i]] = table[curRow][i];}
                     }
                     results[lines][0] = 'tlcda-' + results[lines][0];
                     results[lines][1] = '地方議會議事錄';
@@ -269,8 +313,12 @@ class csvConverter {
 
             
         })
-        return results; 
-        
+        for (let i = 1; i < results.length; i++) {
+            if (results[i].length < results[0].length) {
+                results[i] = results[i].concat(Array(results[0].length-results[i].length).fill(''));
+            }
+        }
+        return results;         
     }
 }
 

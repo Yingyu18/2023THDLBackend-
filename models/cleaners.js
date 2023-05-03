@@ -52,25 +52,33 @@ class cleaner {
                     table[curRow][j] = table[curRow][j].substring(1);
                 }                                
                 if (j == start || j == end) {table[curRow][j] = this.timeFormat(type, table[curRow][j]);}
-                table[curRow][j] = this.sanitize(table[curRow][j]);
             }
             curRow++;
         }
         return table;      
     }
 
-    rawTable (path) {
-        console.log('called');
-        const results = [];
-        let data = fs.readFileSync(path, 'utf-8');
-        data.split('\n').forEach(line => {
-            let row = line.toString().split(',');
+    rawTable (data) {        
+        data = data.split('\n');
+        var result = Array(data.length);        
+        for (let i = 0; i < data.length; i++) {
+            let row = data[i].split(',');
             row.forEach(function(ele, index, row) {
                 row[index] = row[index].slice(1, -1);
             })
-            results.push(row);
-        })
-        return results;    
+            result[i] = row;
+        }        
+        return result;    
+    }
+
+    recover(str) {        
+        str = str.replaceAll('&amp', '&');
+        str = str.replaceAll('&lt', '<');
+        str = str.replaceAll('&gt', '>',);
+        str = str.replaceAll('&quot', '"');
+        str = str.replaceAll('&#x27', "'");
+        str = str.replaceAll('&#x2f', '/');
+        return str;
     }
 }
 
