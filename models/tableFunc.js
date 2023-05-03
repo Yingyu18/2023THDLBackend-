@@ -52,6 +52,21 @@ class tableFunc {
             console.log(error);
         }
     };
+
+    async deleteFile (uid, fileID) {
+        const pool = require('./connection_db');        
+         console.log('delete file for user: ' + uid);
+            try {
+                let conn = await pool.getConnection();
+                var sql = "DELETE FROM " + uid + " WHERE fileID = ?";
+                await conn.query(sql, fileID); 
+                console.log('delete success');
+                conn.release(); 
+            }
+            catch (error) {
+                console.log(error);
+            }
+        };
     
 }
 
