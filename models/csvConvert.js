@@ -15,10 +15,10 @@ class csvConverter {
         '相關組織', '關鍵詞', '摘要/全文']];
         let extra = 16;
         let lines = 0;
-        console.log ('array len = ' + contents.length);
+        
         contents.forEach(function(ele, index, ids) {        
-            let table = cleaner.rawTable(cleaner.recover(contents[index]));                              
-            if (table[0][0].substring(0, 4) == '國史館檔') {  
+            let table = cleaner.rawTable(cleaner.recover(contents[index]));                      
+            if (table[0][0].substring(1, 5) == '國史館檔') {  
                 table = cleaner.clean(1, table);
                 let corres = [-1];
                 let curRow = 3;
@@ -86,8 +86,9 @@ class csvConverter {
                 }       
             }
 
-            else if (table[0][0].substring(0, 4) == '國史館臺') {
+            else if (table[0][0].substring(1, 5) == '國史館臺') {
                 table = cleaner.clean(2, table);
+                console.log(table);
                 let corres = [-1];
                 let curRow = 3;
                 let success = 0;                         
@@ -149,8 +150,8 @@ class csvConverter {
                     curRow++;
                 }
             }
-            else if (table[0][0].substring(0, 2) == '臺灣') {
-                table = cleaner.clean(3, table);
+            else if (table[0][0].substring(1, 3) == '臺灣') {
+                table = cleaner.clean(3, table);                
                 let corres = [-1];
                 let curRow = 3;
                 let success = 0;                         
@@ -212,7 +213,7 @@ class csvConverter {
                     curRow++;
                 }
             }
-            else if (table[0][0].substring(0, 2) == '地方') {
+            else if (table[0][0].substring(1, 3) == '地方') {
                 table = cleaner.clean(0, table);
                 let corres = [-1];
                 let curRow = 4;

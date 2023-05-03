@@ -11,9 +11,9 @@ cleaner = new cleaner();
 
 
 router.get('/', async function (req, res, next) {    
-    
-    tableFunc.insertFile('whyWang', 'AHTWH_export_20230321224152.csv', 'test', content);
-    
+    var content = fs.readFileSync('./rawfiles/20230419123456789/root/101/tlcda_meta_2023-05-03.csv', 'utf-8');
+    console.log(content);
+      
 });
 
 module.exports = router;

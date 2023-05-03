@@ -60,14 +60,18 @@ class cleaner {
 
     rawTable (data) {        
         data = data.split('\n');
-        var result = Array(data.length);        
+        var result = Array(data.length);  
+        var sli = 0;
+        if (data[4][0].substring(0, 1) == '"') {sli = 1;}        
         for (let i = 0; i < data.length; i++) {
             let row = data[i].split(',');
-            row.forEach(function(ele, index, row) {
-                row[index] = row[index].slice(1, -1);
-            })
+            if (sli != 0 && i >= 3) {
+                row.forEach(function(ele, index, row) {
+                    row[index] = row[index].slice(sli, -sli);
+                });
+            }
             result[i] = row;
-        }        
+        }    
         return result;    
     }
 

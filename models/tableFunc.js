@@ -43,7 +43,7 @@ class tableFunc {
             var sql = "SELECT content FROM " + uid + " WHERE fileID = ?";
             for (let i = 0; i < fileIDs.length; i++) {
                 row = await conn.query(sql, fileIDs[i]);
-                array[i] = row[0].content;                 
+                array[i] = row[0].content; 
             }       
             conn.release(); 
             return array;
