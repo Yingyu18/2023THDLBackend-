@@ -4,9 +4,9 @@ var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 
-var indexRouter = require('./server/routes/index');
-var usersRouter = require('./server/routes/user_route');
-//var dbRouter = require('./routes/dbTest');
+var indexRouter = require('./routes/index');
+var usersRouter = require('./routes/users');
+var convertRouter = require('./edit/convertTo');
 
 // Express Initialization
 const cors = require('cors');
@@ -27,8 +27,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use('/', indexRouter);
 app.use('/auth', usersRouter);
 //app.use('/dbtest', dbRouter);
-
-
+app.use('/edit/convertTo', convertRouter);
 
 
 // catch 404 and forward to error handler
