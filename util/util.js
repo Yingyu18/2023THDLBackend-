@@ -1,4 +1,4 @@
-const User = require('../server/models/user_model');
+const User = require('../models/user_model');
 const {TOKEN_SECRET} = process.env; // 30 days by seconds
 const jwt = require('jsonwebtoken');
 const { promisify } = require('util'); // util from native nodejs library

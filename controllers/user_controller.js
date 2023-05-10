@@ -2,7 +2,7 @@ require('dotenv').config();
 const nodemailer = require('nodemailer');
 const jwt = require('jsonwebtoken');
 const validator = require('validator');
-const User = require('../../server/models/user_model');
+const User = require('../models/user_model');
 const bcrypt = require('bcrypt');
 const {TOKEN_SECRET} = process.env;
 

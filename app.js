@@ -6,7 +6,7 @@ var logger = require('morgan');
 
 var indexRouter = require('./routes/index');
 var convertRouter = require('./edit/convertTo');
-
+var userRouter = require('./routes/user_route');
 // Express Initialization
 const cors = require('cors');
 const app = express();
@@ -24,7 +24,7 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', indexRouter);
-//app.use('/auth', usersRouter);
+app.use('/auth', userRouter);
 //app.use('/dbtest', dbRouter);
 app.use('/edit/convertTo', convertRouter);
 

@@ -40,9 +40,9 @@ const signUp = async (data) => {
             //userId: user.id.toString()
         }, TOKEN_SECRET);
         user.access_token = accessToken;
-        const queryStr = `INSERT INTO user_profile (USER_NAME, PASSWORD, EMAIL, INSTITUTION, RESEARCH_TOPIC,COUNTRY, TIME_CREATED, IDENTITY, ACCESS_EXPIRED, AUTH_TOKEN)
-         VALUES  (?,?,?, ?, ?, ?, ?, ?, ?, ?)`;
-        let values = [username, password, email, institution, researchTopic, country, loginAt, title, TOKEN_EXPIRE, accessToken];
+        const queryStr = `INSERT INTO user_profile (USER_NAME, PASSWORD, EMAIL, INSTITUTION, RESEARCH_TOPIC,COUNTRY, TIME_CREATED, TITLE, ACCESS_EXPIRED, AUTH_TOKEN, STATUS)
+         VALUES  (?,?,?, ?, ?, ?, ?, ?, ?, ?, ?)`;
+        let values = [username, password, email, institution, researchTopic, country, loginAt, title, TOKEN_EXPIRE, accessToken, "disabled"];
 
         const result = await conn.query(queryStr, values);
         user.id = result.insertId;
