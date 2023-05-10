@@ -1,31 +1,4 @@
 var fs = require('fs');
-<<<<<<< HEAD
-const hashControl = require('../models/hashLib')
-
-hashControl = new hashControl();
-
-
-
-
-class csvConverter {
-    to2dArray (ids) {
-        
-        let results = [['唯一編碼', '來源系統', '來源系統縮寫',	'文件原系統頁面URL', '題名', '檔案類型',
-        '書卷名', '(類目階層)', '原始時間記錄', '西元年', '起始時間', '結束時間', '相關人員', '相關地點', 
-        '相關組織', '關鍵詞', '摘要/全文']];
-        ids.forEach(function(ele, index, ids) {
-            let userID = ids[index].substring(0, 17);
-            let hashTable = hashControl.getHashMap(userID);
-            let format = ids[index].substring(17, 20);
-            let table = rawTable('../rawfiles/' + userID + '/' + format + '/' + hashTable.get(ids[index]))
-            if (table[0][0].substring(0, 4) == '國史館檔') {}
-            else if (table[0][0].substring(0, 4) == '國史館臺') {}
-            else if (table[0][0].substring(0, 2) == '臺灣') {}
-            else if (table[0][0].substring(0, 2) == '地方') {}
-            
-        })
-        
-=======
 let cleaner = require('../models/cleaners');
 let tableFunc = require('../models/tableFunc');
 
@@ -39,9 +12,11 @@ class csvConverter {
 
         let results = [['唯一編碼', '來源系統', '來源系統縮寫', '文件原系統頁面URL', '題名', '檔案類型',
         '書卷名', '(類目階層)', '原始時間記錄', '西元年', '起始時間', '結束時間', '相關人員', '相關地點', 
-        '相關組織', '關鍵詞', '摘要/全文']];
-        let extra = 16;
-        let lines = 0;
+        '相關組織', '關鍵詞', '摘要/全文'], ['filename', 'doc_source', 'metadata/doc_source', 'metadata/doc_source.href', 'title', 'doctype',
+        'compilation_name', 'metatags/category (A/B/C)', 'time_orig_str', 'year_for_grouping', 'timeseq_not_before', 'timeseq_not_after', 'metatags/PersonName',
+         'metatags/PlaceName', 'metatags/Organization', 'metatags/Keywords', 'doc_content']];
+        let extra = 17;
+        let lines = 1;
         
         contents.forEach(function(ele, index, ids) {        
             let table = cleaner.rawTable(cleaner.recover(contents[index]));                      
@@ -87,6 +62,7 @@ class csvConverter {
                         default:
                             corres.push(extra);
                             results[0].push(hd);
+                            results[1].push('metadata/custom');
                             extra++;
                     }
                 }
@@ -100,7 +76,7 @@ class csvConverter {
                         continue;
                     }
                     lines++;
-                    results.push(Array(extra+1).fill(''));
+                    results.push(Array(extra).fill(''));
                     for (let i = 1; i < table[curRow].length; i++) {
                         if (corres[i] == -1) {continue;}
                         results[lines][corres[i]] = table[curRow][i];
@@ -109,6 +85,7 @@ class csvConverter {
                     results[lines][1] = '國史館檔案史料文物查詢系統';
                     results[lines][2] = 'AHCMS';
                     results[lines][9] = results[lines][10].substring(0, 4);
+                    results[lines][8] = results[lines][10] + " ~ " + results[lines][11];
                     curRow++;
                 }       
             }
@@ -152,6 +129,7 @@ class csvConverter {
                         default:
                             corres.push(extra);
                             results[0].push(hd);
+                            results[1].push('metadata/custom');
                             extra++;
                     }
                 }
@@ -165,7 +143,7 @@ class csvConverter {
                         continue;
                     }
                     lines++;
-                    results.push(Array(extra+1).fill(''));
+                    results.push(Array(extra).fill(''));
                     for (let i = 1; i < table[curRow].length; i++) {
                         if (corres[i] == -1) {continue;}
                         results[lines][corres[i]] = table[curRow][i];
@@ -174,6 +152,7 @@ class csvConverter {
                     results[lines][1] = '國史館臺灣文獻館典藏管理系統';
                     results[lines][2] = 'AHTWH';
                     results[lines][9] = results[lines][10].substring(0, 4);
+                    results[lines][8] = results[lines][10] + " ~ " + results[lines][11];
                     curRow++;
                 }
             }
@@ -211,6 +190,7 @@ class csvConverter {
                         default:
                             corres.push(extra);
                             results[0].push(hd);
+                            results[1].push('metadata/custom');
                             extra++;
                     }
                 }
@@ -224,7 +204,7 @@ class csvConverter {
                         continue;
                     }
                     lines++;
-                    results.push(Array(extra+1).fill(''));
+                    results.push(Array(extra).fill(''));
                     for (let i = 1; i < table[curRow].length; i++) {
                         if (corres[i] == -1) {continue;}
                         else if (corres[i] == 10) {
@@ -237,6 +217,7 @@ class csvConverter {
                     results[lines][1] = '臺灣省議會史料總庫';
                     results[lines][2] = 'NDAP';
                     results[lines][9] = results[lines][10].substring(0, 4);
+                    results[lines][8] = results[lines][10] + " ~ " + results[lines][11];
                     curRow++;
                 }
             }
@@ -276,44 +257,17 @@ class csvConverter {
                             corres.push(4);
                             success++;
                             break;
-                        case '會議主席':
-                            corres.push(12);
-                            success++;
-                            break;
-                        case '提案議員':
-                            corres.push(12);
-                            success++;
-                            break;
-                        case '相關議員':
-                            corres.push(12);
-                            success++;
-                            break;
-                        case '請願人':
-                            corres.push(12);
-                            success++;
-                            break;
-                        case '機關':
-                            corres.push(14);
-                            success++;
-                            break;
-                        case '相關機關':
-                            corres.push(14);
-                            success++;
-                            break;
-                        case '請願機關':
-                            corres.push(14);
-                            success++;
-                            break;
                         case '':
                             corres.push(-1);
                             break;
                         default:
                             corres.push(extra);
                             results[0].push(hd);
+                            results[1].push('metadata/custom');
                             extra++;
                     }
                 }
-                if (success != 14) {
+                if (success != 7) {
                     return '錯誤: 缺乏核心欄位';
                 }
                 curRow++;
@@ -323,11 +277,21 @@ class csvConverter {
                         continue;
                     }
                     lines++;
-                    results.push(Array(extra+1).fill(''));
+                    results.push(Array(extra).fill(''));
                     for (let i = 1; i < table[curRow].length; i++) {
+                        let head = results[0][corres[i]];
                         if (corres[i] == -1) {continue;}
-                        else if ((corres[i] == 12 || corres[i] == 14) && results[lines][corres[i]].length >= 1 && table[curRow][i].length != 0) {                           
-                            results[lines][corres[i]] += '、' + table[curRow][i]; 
+                        else if ((head == '會議主席' || head == '提案議員' || head == '相關議員' || head == '請願人')) {
+                            if (results[lines][12].length >= 1 && table[curRow][i].length != 0) {
+                                results[lines][12] += ';' + table[curRow][i];
+                            } else if (table[curRow][i].length != 0) {results[lines][12] = table[curRow][i];}
+                            results[lines][corres[i]] = table[curRow][i];
+                        }
+                        else if ((head == '機關' || head == '相關' || head == '請願機關')) {                           
+                            if (results[lines][14].length >= 1 && table[curRow][i].length != 0) {
+                                results[lines][14] += ';' + table[curRow][i];
+                            } else if (table[curRow][i].length != 0) {results[lines][14] = table[curRow][i];}
+                            results[lines][corres[i]] = table[curRow][i];
                         }
                         else if (table[curRow][i].length != 0) {results[lines][corres[i]] = table[curRow][i];}
                     }
@@ -335,19 +299,19 @@ class csvConverter {
                     results[lines][1] = '地方議會議事錄';
                     results[lines][2] = 'tlcda';
                     results[lines][9] = results[lines][10].substring(0, 4);
+                    results[lines][8] = results[lines][10] + " ~ " + results[lines][11];
                     curRow++;
                 }
             }
 
             
         })
-        for (let i = 1; i < results.length; i++) {
+        for (let i = 2; i < results.length; i++) {
             if (results[i].length < results[0].length) {
                 results[i] = results[i].concat(Array(results[0].length-results[i].length).fill(''));
             }
         }
         return results;         
->>>>>>> 0ab7f5664011670e1f5f31e036b20815ef4c9d74
     }
 
     rawTable (path) {
