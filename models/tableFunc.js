@@ -67,6 +67,47 @@ class tableFunc {
                 console.log(error);
             }
         };
+        
+        async queryName (id) {
+            const pool = require('./connection_db');        
+            try {
+                let row;
+                let conn = await pool.getConnection();
+                var sql = "Select file_name from fileDB where file_id = ?";
+                row = await conn.query(sql, id);
+                conn.release(); 
+                return row[0].file_name;                 
+            }
+            catch (error) {
+                console.log(error);
+            }
+        };
+
+        async saveJson (js, uid, fid, fname, folder) {
+            const pool = require('./connection_db');        
+            try {
+                let conn = await pool.getConnection();
+                var sql;
+                var row;
+                var resBody = {"file_id" : 'zzz', "file_name" : fname};
+                if (fid == '') {
+                    sql = "INSERT INTO fileDB ("/*not yet*/ + ") VALUES (?, ?, ?, ?)";
+                    await conn.query(sql, [fileName, folder, ft, content]);
+                    sql = "Select file_id from fileDB where file_name = ? and uid = ?";
+                    row = await conn.query(sql, [fileName, uid]);
+                    fid = row[0].file_id;
+                }
+                else {
+                    sql = "UPDATE fileDB SET content = ?, file_name = ? where file_id = ?";
+                    await conn.query(sql, [js, fname, fid]);
+                }   
+                resBody["file_id"] = fid;           
+                conn.release(); 
+                return resBody;
+            } catch (error) {
+                console.log(error);
+            }
+        };
     
 }
 

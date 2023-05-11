@@ -1,7 +1,6 @@
 var fs = require('fs');
 let cleaner = require('../models/cleaners');
 let tableFunc = require('../models/tableFunc');
-const { start } = require('repl');
 
 
 tableFunc = new tableFunc();
