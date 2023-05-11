@@ -1,12 +1,13 @@
 let csvConvert = require('../models/csvConvert');
 let jsonConvert = require('../models/jsonConvert');
-let xmlConvert = require('../models/(xxx)xmlConvert');
+let XMLConvert = require('../models/xmlConvert');
 const fs = require('fs');
 let tableFunc = require('../models/tableFunc');
 
 tableFunc = new tableFunc();
 csvConvert = new csvConvert();
 jsonConvert = new jsonConvert();
+XMLConvert = new XMLConvert();
 
 module.exports = class handler {
     async csv(uid, ids) {
@@ -19,7 +20,7 @@ module.exports = class handler {
     jsonArr(uid, id) {
         return jsonConvert.to2D(uid, id);
     }
-    xml(ids) {
-        xmlConvert(ids);
+    xml(js, corpus_name) {
+        XMLConvert.toXML(js, corpus_name);
     }
 }
