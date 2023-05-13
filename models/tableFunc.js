@@ -1,30 +1,13 @@
 class tableFunc {
 
-    async createNewTB (uid) {
-        const pool = require('./connection_db');        
-        console.log('building table for user: ' + uid);
-            try {
-                let conn = await pool.getConnection();
-                var sql = "CREATE TABLE " + uid + " (fileID int NOT NULL primary key AUTO_INCREMENT, fileName nvarchar(255) NOT NULL, folder nvarchar(255), format nvarchar(255) NOT NULL, content LONGTEXT NOT NULL)";
-                await conn.query(sql); 
-                console.log('build success');
-                conn.release(); 
-            }
-            catch (error) {
-                console.log(error);
-            }
-        };
-
-    async insertFile (uid, fileName, folder, content) {
+    async insertFile (uid, uname, fileName, content, row) {
         const pool = require('./connection_db');        
          console.log('insert file for user: ' + uid);
             try {
                 let conn = await pool.getConnection();
-                var ft = fileName.substr(fileName.length - 3);
-                console.log('format = ' + ft);
                 if (ft == 'son') {ft = 'j' + ft;} 
-                var sql = "INSERT INTO " + uid + "(fileName, folder, format, content) VALUES (?, ?, ?, ?)";
-                await conn.query(sql, [fileName, folder, ft, content]); 
+                var sql = "INSERT INTO file_DB (fileName, USER_ID, USER_NAME, Start_Row, map, content, cores_xml_id, upload_time) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+                await conn.query(sql, [fileName, uid, uname, row, '', content, -1, Date.now()]); 
                 console.log('insert success');
                 conn.release(); 
             }
@@ -33,16 +16,15 @@ class tableFunc {
             }
         };
     
-    async openFile (uid, fileIDs) {
+    async openFile (fileIDs) {
         const pool = require('./connection_db');        
-        console.log('open fileID: ' + fileIDs + ' for user: ' + uid);
         var array = Array(fileIDs.length);
         try {            
             let conn = await pool.getConnection();
             let row;                
-            var sql = "SELECT content FROM " + uid + " WHERE fileID = ?";
+            var sql = "SELECT content FROM file_DB WHERE fileID = ?";
             for (let i = 0; i < fileIDs.length; i++) {
-                row = await conn.query(sql, fileIDs[i]);
+                row = await conn.query(sql, fileIDs[i], uid);
                 array[i] = row[0].content; 
             }       
             conn.release(); 
@@ -53,17 +35,57 @@ class tableFunc {
         }
     };
 
-    async deleteFile (uid, fileID) {
+    async deleteFile (fileID) {
         const pool = require('./connection_db');        
-         console.log('delete file for user: ' + uid);
             try {
                 let conn = await pool.getConnection();
-                var sql = "DELETE FROM " + uid + " WHERE fileID = ?";
+                var sql = "DELETE FROM file_DB WHERE fileID = ?";
                 await conn.query(sql, fileID); 
                 console.log('delete success');
                 conn.release(); 
             }
             catch (error) {
+                console.log(error);
+            }
+        };
+        
+        async queryName (id) {
+            const pool = require('./connection_db');        
+            try {
+                let row;
+                let conn = await pool.getConnection();
+                var sql = "Select fileName from file_DB where fileID = ?";
+                row = await conn.query(sql, id);
+                conn.release(); 
+                return row[0].file_name;                 
+            }
+            catch (error) {
+                console.log(error);
+            }
+        };
+
+        async saveJson (js, uid, uname, fid, fname) {
+            const pool = require('./connection_db');        
+            try {
+                let conn = await pool.getConnection();
+                var sql;
+                var row;
+                var resBody = {"file_id" : 'zzz', "file_name" : fname};
+                if (fid == '') {
+                    sql = "INSERT INTO file_DB (fileName, USER_ID, USER_NAME, Start_Row, map, content, cores_xml_id, upload_time) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+                    await conn.query(sql, [fileName, uid, uname, 1, '', content, -1, Date.now()]);
+                    sql = "Select file_id from file_DB where fileName = ? and USER_ID = ?";
+                    row = await conn.query(sql, [fileName, uid]);
+                    fid = row[0].file_id;
+                }
+                else {
+                    sql = "UPDATE file_DB SET content = ?, fileName = ? where fileID = ?";
+                    await conn.query(sql, [js, fname, fid]);
+                }   
+                resBody["file_id"] = fid;           
+                conn.release(); 
+                return resBody;
+            } catch (error) {
                 console.log(error);
             }
         };
