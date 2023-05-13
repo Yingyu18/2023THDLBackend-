@@ -2,7 +2,7 @@ require('dotenv').config();
 const nodemailer = require('nodemailer');
 const jwt = require('jsonwebtoken');
 const validator = require('validator');
-const User = require('../../server/models/user_model');
+const User = require('../models/user_model');
 const bcrypt = require('bcrypt');
 const {TOKEN_SECRET} = process.env;
 
@@ -17,15 +17,15 @@ const signUp = async (req, res) => {
         res.status(400).send({error:'Request Error: Invalid email format'});
         return;
     }
-    let data = {
-        username : validator.escape(username),
-        email : validator.escape(email),
-        country : validator.escape(country),
-        institution : validator.escape(institution),
-        title : validator.escape(title),
-        researchTopic : validator.escape(researchTopic),
-        password : password
-    }
+    // let data = {
+    //     username : validator.escape(username),
+    //     email : validator.escape(email),
+    //     country : validator.escape(country),
+    //     institution : validator.escape(institution),
+    //     title : validator.escape(title),
+    //     researchTopic : validator.escape(researchTopic),
+    //     password : password
+    // }
     const result = await User.signUp(data);
     if (result.error) {
         res.status(402).send({error: result.error});
@@ -80,6 +80,41 @@ const signUp = async (req, res) => {
     );
 };
 
+const forgetPassword = async (req, res) =>{
+    const {email} = req.body;
+    // 建立一個SMTP傳輸器
+    const transporter = nodemailer.createTransport({
+        service: 'gmail',
+        auth: {
+            user: process.env.GMAIL_ACCOUNT,
+            pass: process.env.GMAIL_PASS
+        }
+        });
+        // 設置郵件選項
+        const auth_token = jwt.sign({
+            email: email,
+            //userId: user.id.toString()
+        }, TOKEN_SECRET);
+        const ACTION_URL = `http://localhost:3000/auth/forget/{auth_token}`
+        const mailOptions = {
+            from: process.env.GMAIL_ACCOUNT,
+            to: email,
+            subject: '台灣史料數位人文平台 點擊連結重設密碼',
+            html: `<p>您好，</p></p><p>點擊下列連結，重設您的密碼。：</p><p><a class="btn" href="${ACTION_URL}" target="_blank" rel="noopener">重設密碼</a></p><p>謝謝您，<br/>台灣史料數位人文平台 團隊敬上</p>`
+        };
+        //使用傳輸器發送郵件
+        transporter.sendMail(mailOptions, function(error, info){
+        if (error) {
+            console.log(error);
+            res.send(error);
+        } else {
+            console.log('郵件發送成功：' + info.response);
+            res.send('發送成功')
+        }
+        });
+    res.status(200).send("sueccess")
+};
+
 const loginQuery = async (identity, password) => {
     if(!identity || !password){
         return {error: 'Request Error: email and password are required.', status: 400};
@@ -98,7 +133,7 @@ const login = async (req, res) => {
 
     if (result.error) {
         const status_code = result.status ? result.status : 401;
-        res.status(status_code).send("wrong email amd password combination");
+        res.status(status_code).send(result.error);
         return;
     }
 
@@ -196,11 +231,11 @@ const updatePassword = async (req, res) => {
 
 };
 
-
 module.exports = {
     signUp,
     signupAuth,
     login,
+    forgetPassword,
     getUserInfo,
     updatePassword,
     updateUserInfo

@@ -17,6 +17,7 @@ const {
   signUp,
   signupAuth,
   login,
+  forgetPassword,
   getUserInfo,
   updatePassword,
   updateUserInfo
@@ -29,6 +30,7 @@ const {
 router.post('/signup', signUp)
 router.post('/login', login)
 router.post('/signupAuth', signupAuth)
+router.post('/forgetPassword', forgetPassword)
 router.post('/updatePassword', authentication, updatePassword)
 router.post('/updateUserInfo', authentication, updateUserInfo)
 router.get('/getUserInfo', authentication, getUserInfo )
