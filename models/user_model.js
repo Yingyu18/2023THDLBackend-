@@ -40,9 +40,9 @@ const signUp = async (data) => {
             //userId: user.id.toString()
         }, TOKEN_SECRET);
         user.access_token = accessToken;
-        const queryStr = `INSERT INTO user_profile (USER_NAME, PASSWORD, EMAIL, INSTITUTION, RESEARCH_TOPIC,COUNTRY, TIME_CREATED, IDENTITY, ACCESS_EXPIRED, AUTH_TOKEN)
-         VALUES  (?,?,?, ?, ?, ?, ?, ?, ?, ?)`;
-        let values = [username, password, email, institution, researchTopic, country, loginAt, title, TOKEN_EXPIRE, accessToken];
+        const queryStr = `INSERT INTO user_profile (USER_NAME, PASSWORD, EMAIL, INSTITUTION, RESEARCH_TOPIC,COUNTRY, TIME_CREATED, TITLE, ACCESS_EXPIRED, AUTH_TOKEN, STATUS)
+         VALUES  (?,?,?, ?, ?, ?, ?, ?, ?, ?, ?)`;
+        let values = [username, password, email, institution, researchTopic, country, loginAt, title, TOKEN_EXPIRE, accessToken, "disabled"];
 
         const result = await conn.query(queryStr, values);
         user.id = result.insertId;
@@ -67,8 +67,14 @@ const login = async (identity, password) => {
         let users = await conn.query('SELECT * FROM user_profile WHERE EMAIL = ?', [identity]);
         if(users.length<1){
             users = await conn.query('SELECT * FROM user_profile WHERE USER_NAME = ?', [identity]);
+            if(users.length<1){
+                return {error: 'account not exist'};    
+            }
         }
         const user = users[0]
+        if(user.STATUS=='disabled'){
+            return {error: 'account not verified'};
+        }
         if (!bcrypt.compareSync(password, user.PASSWORD)){
             await conn.query('COMMIT');
             return {error: 'Password is wrong'};
