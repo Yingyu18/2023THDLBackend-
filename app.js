@@ -29,6 +29,9 @@ app.use('/auth', userRouter);
 //app.use('/dbtest', dbRouter);
 //app.use('/test', trou);
 app.use('/edit/convertTo', convertRouter);
+app.get('/healthcheck', (req, res)=>{
+	res.send('OK');	
+})
 
 
 // catch 404 and forward to error handler

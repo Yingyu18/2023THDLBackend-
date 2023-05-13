@@ -17,15 +17,15 @@ const signUp = async (req, res) => {
         res.status(400).send({error:'Request Error: Invalid email format'});
         return;
     }
-    // let data = {
-    //     username : validator.escape(username),
-    //     email : validator.escape(email),
-    //     country : validator.escape(country),
-    //     institution : validator.escape(institution),
-    //     title : validator.escape(title),
-    //     researchTopic : validator.escape(researchTopic),
-    //     password : password
-    // }
+    let data = {
+        username : validator.escape(username),
+        email : validator.escape(email),
+        country : validator.escape(country),
+        institution : validator.escape(institution),
+        title : validator.escape(title),
+        researchTopic : validator.escape(researchTopic),
+        password : password
+    }
     const result = await User.signUp(data);
     if (result.error) {
         res.status(402).send({error: result.error});
