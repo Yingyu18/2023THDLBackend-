@@ -4,6 +4,7 @@ const jwt = require('jsonwebtoken');
 const validator = require('validator');
 const User = require('../models/user_model');
 const bcrypt = require('bcrypt');
+const https = require('https');
 const {TOKEN_SECRET} = process.env;
 
 const signUp = async (req, res) => {
