@@ -1,29 +1,42 @@
 require('dotenv').config();
 const bcrypt = require('bcrypt');
+var sha256 = require('js-sha256');
 const pool = require('./connection_db');
 const jwt = require('jsonwebtoken');
 const { lutimes } = require('fs');
 const salt = parseInt(process.env.BCRYPT_SALT);
 const {TOKEN_EXPIRE, TOKEN_SECRET} = process.env; // 30 days by seconds
 
-
 const signUp = async (data) => {
-    console.log(data)
     let {username, email, password, country, institution, title, researchTopic} = data;
     const conn = await pool.getConnection();
     try {
         await conn.query('START TRANSACTION');
+    // insert data into docusky user_profile
+        const docuskyUser = await conn.query('SELECT * FROM docusky.user_profile WHERE USERNAME = ? FOR UPDATE', [data.email]);
+        if (docuskyUser.length > 0){
+            await conn.query('COMMIT');
+            return {error: 'Email Already Exists'};
+        }
+        
+        console.log(sha256(password))
+        password = bcrypt.hashSync(password, salt)
+
+        const loginAt = new Date();
+        let queryStr = `INSERT INTO docusky.user_profile (USERNAME, ALT_KEY_VAL, INIT_PASSWORD, INIT_PASSWORD_ENCODED, PASSWORD_ENCODED, TIME_CREATED) VALUES (?,?,?,?,?,?)`;
+        let values = [email, email, password, sha256(password), sha256(password), loginAt];
+        let result = await conn.query(queryStr, values);
+        let id = result.insertId;
+        
+    //inser data into thdlbacktest
         const emails = await conn.query('SELECT EMAIL FROM user_profile WHERE EMAIL = ? FOR UPDATE', [email]);
         if (emails.length > 0){
             await conn.query('COMMIT');
             return {error: 'Email Already Exists'};
         }
-
-        const loginAt = new Date();
-        password = bcrypt.hashSync(password, salt)
         let user = {
             username: username,
-            password: bcrypt.hashSync(password, salt),
+            password: password,
             email: email,
             institution: institution,
             researchTopic: researchTopic,
@@ -40,11 +53,11 @@ const signUp = async (data) => {
             //userId: user.id.toString()
         }, TOKEN_SECRET);
         user.access_token = accessToken;
-        const queryStr = `INSERT INTO user_profile (USER_NAME, PASSWORD, EMAIL, INSTITUTION, RESEARCH_TOPIC,COUNTRY, TIME_CREATED, TITLE, ACCESS_EXPIRED, AUTH_TOKEN, STATUS)
-         VALUES  (?,?,?, ?, ?, ?, ?, ?, ?, ?, ?)`;
-        let values = [username, password, email, institution, researchTopic, country, loginAt, title, TOKEN_EXPIRE, accessToken, "disabled"];
+        queryStr = `INSERT INTO user_profile (USER_NAME, PASSWORD, EMAIL, INSTITUTION, RESEARCH_TOPIC,COUNTRY, TIME_CREATED, TITLE, ACCESS_EXPIRED, AUTH_TOKEN, STATUS, DOCUSKY_ID)
+         VALUES  (?,?,?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`;
+        values = [username, password, email, institution, researchTopic, country, loginAt, title, TOKEN_EXPIRE, accessToken, "disabled", id];
 
-        const result = await conn.query(queryStr, values);
+        result = await conn.query(queryStr, values);
         user.id = result.insertId;
         console.log(result)
 

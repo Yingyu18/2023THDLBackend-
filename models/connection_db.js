@@ -12,4 +12,13 @@ const pool = mariadb.createPool({
 });
 console.log('pool = ' + pool + '\n');
 
-module.exports = pool;
+// const docuskyPool = mariadb.createPool({
+//     host: config.mysql.host,
+//     port: config.mysql.port,
+//     user: config.mysql.user,
+//     password: config.mysql.password,
+//     database: config.mysql.databaseDocusky,
+//     connectionLimit: 5
+// });
+
+module.exports = pool
