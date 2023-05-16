@@ -37,8 +37,8 @@ const signUp = async (req, res) => {
         res.status(500).send({error: 'Database Query Error'});
         return;
     }
-    // TODO: 寄驗證信
-    // 建立一個SMTP傳輸器
+    //寄驗證信
+    //建立SMTP傳輸器
     const transporter = nodemailer.createTransport({
         service: 'gmail',
         auth: {
@@ -127,26 +127,29 @@ const loginQuery = async (identity, password) => {
     }
 };
 
+
 const login = async (req, res) => {
     const data = req.body;
-
     let result = await loginQuery(data.identity, data.password);
-
     if (result.error) {
         const status_code = result.status ? result.status : 401;
         res.status(status_code).send(result.error);
         return;
     }
-
     const user = result.user;
     if (!user) {
         res.status(500).send({error: 'Internal Server Error'});
         return;
-    }
-    
+    } 
+    //user 應該要有Docusky的ID,要先在signup 拿到 Docusky ID
+    //TODO: login Docusky 
+    result = await loginDocuSky(user.EMAIL, user.PASSWORD)
+    //console.log("loginDocusky should retunr SID here : ", result);
+
     res.status(200).send({
-        data: {
+       // data: {
             token: user.ACCESS_TOKEN,
+            SID: result.DocuSky_SID,
             data: {
                 id: user.USER_ID.toString(),
                 username: user.USER_NAME,
@@ -156,8 +159,36 @@ const login = async (req, res) => {
                 title: user.TITLE,
                 researchTopic: user.RESEARCH_TOPIC
             }
-        }
+       // }
     });
+};
+const loginDocuSky = async (dsUname, dsPword) => {
+    return new Promise((resolve, reject) => {
+    const options = {
+        hostname: 'maxwell.csie.ntu.edu.tw', // TO-DO: Need to edit
+        path: `/DocuSky/webApi/userLoginJson.php?dsUname=${dsUname}&dsPword=${dsPword}`,
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      };
+      const request = https.request(options, (response) => {
+        let data = '';
+        response.on('data', (chunk) => {
+          //console.log(chunk)
+          const jsonData = JSON.parse(chunk)
+          data += jsonData.message.split('=')[1];
+        });
+        response.on('end', () => {
+          const sid = { DocuSky_SID: data };
+          resolve(sid)
+        });
+      });
+      request.on('error', (error) => {
+        reject(error);
+      });
+      request.end();
+    })
 };
 
 const signupAuth = async(req, res) =>{
@@ -232,10 +263,13 @@ const updatePassword = async (req, res) => {
 
 };
 
+
+
 module.exports = {
     signUp,
     signupAuth,
     login,
+    loginDocuSky,
     forgetPassword,
     getUserInfo,
     updatePassword,

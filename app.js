@@ -107,7 +107,7 @@ app.post('/login', (req, res) => {
   // request.end();
   const options = {
     hostname: 'maxwell.csie.ntu.edu.tw', // TO-DO: Need to edit
-    path: `/DocuSky/WebApi/userLoginJson.php?dsUname=${req.body.dsUname}&dsPword=${req.body.dsPword}`,
+    path: `/DocuSky/webApi/userLoginJson.php?dsUname=${req.body.dsUname}&dsPword=${req.body.dsPword}`,
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -131,12 +131,6 @@ app.post('/login', (req, res) => {
   request.end();
 
 });
-
-
-//export const loginDocuSky = async (req, res) => {
-
-//};
-
 
 
 // catch 404 and forward to error handler
