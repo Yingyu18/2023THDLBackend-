@@ -4,6 +4,7 @@ const jwt = require('jsonwebtoken');
 const validator = require('validator');
 const User = require('../models/user_model');
 const bcrypt = require('bcrypt');
+const https = require('https');
 const {TOKEN_SECRET} = process.env;
 
 const signUp = async (req, res) => {
@@ -17,15 +18,15 @@ const signUp = async (req, res) => {
         res.status(400).send({error:'Request Error: Invalid email format'});
         return;
     }
-    // let data = {
-    //     username : validator.escape(username),
-    //     email : validator.escape(email),
-    //     country : validator.escape(country),
-    //     institution : validator.escape(institution),
-    //     title : validator.escape(title),
-    //     researchTopic : validator.escape(researchTopic),
-    //     password : password
-    // }
+    let data = {
+        username : validator.escape(username),
+        email : validator.escape(email),
+        country : validator.escape(country),
+        institution : validator.escape(institution),
+        title : validator.escape(title),
+        researchTopic : validator.escape(researchTopic),
+        password : password
+    }
     const result = await User.signUp(data);
     if (result.error) {
         res.status(402).send({error: result.error});
