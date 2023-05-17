@@ -34,7 +34,7 @@ class tableFunc {
       let row;
       var sql = "SELECT content FROM file_DB WHERE fileID = ?";
       for (let i = 0; i < fileIDs.length; i++) {
-        row = await conn.query(sql, fileIDs[i], uid);
+        row = await conn.query(sql, fileIDs[i]);
         array[i] = row[0].content;
       }
       conn.release();

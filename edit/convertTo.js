@@ -7,7 +7,7 @@ handler = new handler();
 
 router.get('/', async function(req, res, next) {
     var ids = [1, 2, 3, 5];
-    var content = await handler.csv('whyWang', ids);
+    var content = await handler.csv(ids);
     res.render('2darray', { table: content });
     //res.send(content);
 });

@@ -10,8 +10,8 @@ jsonConvert = new jsonConvert();
 XMLConvert = new XMLConvert();
 
 module.exports = class handler {
-    async csv(uid, ids) {
-        let contents = await tableFunc.openFile(uid, ids);
+    async csv(ids) {
+        let contents = await tableFunc.openFile(ids);
         return csvConvert.to2dArray(contents);
     }
     json(arr) {
