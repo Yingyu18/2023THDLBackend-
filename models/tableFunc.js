@@ -44,6 +44,24 @@ class tableFunc {
     }
   }
 
+  async getRowId(fileIDs) {
+    const pool = require("./connection_db");
+    var array = Array(fileIDs.length);
+    try {
+      let conn = await pool.getConnection();
+      let row;
+      var sql = "SELECT Start_Row FROM file_DB WHERE fileID = ?";
+      for (let i = 0; i < fileIDs.length; i++) {
+        row = await conn.query(sql, fileIDs[i]);
+        array[i] = row[0].Start_Row;
+      }
+      conn.release();
+      return array;
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
   async deleteFile(fileID) {
     const pool = require("./connection_db");
     try {
