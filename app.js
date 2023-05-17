@@ -39,7 +39,6 @@ app.use('/edit/convertTo', convertRouter);
 app.get('/healthcheck', (req, res)=>{
 	res.send('OK');	
 })
-//app.get('/test', test)
 
 
 

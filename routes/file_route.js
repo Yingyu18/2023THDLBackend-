@@ -20,7 +20,7 @@ router.get('/', function(req, res, next) {
     res.send('file router respond');
 });
 
-router.post('/upload/:format(csv|json|xml)', upload.single('file'), uploadFile); 
-router.post('/delete', deleteFile);
+router.post('/upload/:format(csv|json|xml)', authentication, upload.single('file'), uploadFile); 
+router.post('/delete', authentication, deleteFile);
 module.exports = router;
 

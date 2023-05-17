@@ -141,10 +141,9 @@ const login = async (req, res) => {
         res.status(500).send({error: 'Internal Server Error'});
         return;
     } 
-    //user 應該要有Docusky的ID,要先在signup 拿到 Docusky ID
-    //TODO: login Docusky 
+    //login Docusky 
     result = await loginDocuSky(user.EMAIL, user.PASSWORD)
-    //console.log("loginDocusky should retunr SID here : ", result);
+
 
     res.status(200).send({
        // data: {
@@ -224,8 +223,9 @@ const getUserInfo = async (req, res) => {
     })
 };
 const updateUserInfo = async (req, res) => {
-    if(!req.body.email){
-        res.status(400).sned("Required user email")
+    console.log("if authentication pass user: ", req.user);
+    if(!req.user.email){
+        res.status(400).send("Required user email")
     }
     const user = await User.updateUserInfo(req)
     if(!user){
