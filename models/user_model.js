@@ -95,7 +95,7 @@ const login = async (identity, password) => {
 
         const loginAt = new Date();
         const accessToken = jwt.sign({
-            name: user.NAME,
+            name: user.USER_NAME,
             email: user.EMAIL,
             userId: user.USER_ID.toString(),
         }, TOKEN_SECRET, {expiresIn: TOKEN_EXPIRE});
@@ -149,7 +149,8 @@ const getUserDetail = async (identity) => {
 
 const updateUserInfo = async (req) => {
     try {
-        const {username, email, password, country, institution, title, researchTopic} = req.body;
+        const {username, password, country, institution, title, researchTopic} = req.body;
+        const {email} = req.user;
         if (username){
             const result = await pool.query(`UPDATE user_profile SET USER_NAME = '${username}' WHERE EMAIL = '${email}'`);
         }
@@ -160,6 +161,8 @@ const updateUserInfo = async (req) => {
         }
         if (country){
             const result = await pool.query(`UPDATE user_profile SET COUNTRY = '${country}' WHERE EMAIL = '${email}'`);
+            console.log(email)
+            console.log("edit country result: ", result)
         }
         if (institution){
             const result = await pool.query(`UPDATE user_profile SET INSTITUTION = '${institution}' WHERE EMAIL = '${email}'`);
@@ -172,6 +175,7 @@ const updateUserInfo = async (req) => {
         }
         const user = await pool.query(`SELECT * FROM user_profile WHERE EMAIL = '${email}'`);
         return user[0];
+
     } catch (e) {
         console.log(e)
         return null;
