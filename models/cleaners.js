@@ -26,12 +26,12 @@ class cleaner {
         return time;
     }
 
-    cleanFuckingDogShitPieceOfTrashOfUselessFuckersFuckingCSV(table, idx) {
-        var fuckEqual = table[idx][0].substring(0, 1) == '=' ? 1 : 0;
-        var fuckDBLquotes = table[idx][0].substring(0, 1) == '"' ||  table[idx][0].substring(1, 2) == '"' ? 1 : 0;
+    csvClean(table, idx) {
+        var Equal = table[idx][0].substring(0, 1) == '=' ? 1 : 0;
+        var DBLquotes = table[idx][0].substring(0, 1) == '"' ||  table[idx][0].substring(1, 2) == '"' ? 1 : 0;
         for (let i = idx; i < table.length; i++) {
             for (let j = 0; j < table[i].length; j++) {
-                table[i][j] = table[i][j].substring(fuckEqual+fuckDBLquotes, table[i][j].length - fuckDBLquotes);
+                table[i][j] = table[i][j].substring(Equal+DBLquotes, table[i][j].length - DBLquotes);
             }
         }
         return table;

@@ -86,7 +86,7 @@ class tableFunc {
       var sql = "SELECT map FROM file_DB WHERE fileID = ?";
       row = await conn.query(sql, fileID);     
       conn.release();
-      return row;
+      return row[0].map;
     } catch (error) {
       console.log(error);
     }
