@@ -25,42 +25,51 @@ class cleaner {
         }
         return time;
     }
+
+    cleanFuckingDogShitPieceOfTrashOfUselessFuckersFuckingCSV(table, idx) {
+        var fuckEqual = table[idx][0].substring(0, 1) == '=' ? 1 : 0;
+        var fuckDBLquotes = table[idx][0].substring(0, 1) == '"' ||  table[idx][0].substring(1, 2) == '"' ? 1 : 0;
+        for (let i = idx; i < table.length; i++) {
+            for (let j = 0; j < table[i].length; j++) {
+                table[i][j] = table[i][j].substring(fuckEqual+fuckDBLquotes, table[i][j].length - fuckDBLquotes);
+            }
+        }
+        return table;
+    }
     
-    clean(type, table) {
-        let curRow = type == 0 ? 4 : 3 ;
+    arrangeFormat(type, table, idx) {
+        if (types >= 4) {return table;}
+        let curRow = idx-1;
         let start = -1;
         let end = -1;
         for (let j = 1; j < table[curRow].length; j++) {
-           if (table[curRow][j] == '卷件開始日期' || table[curRow][j] == '"date_from' || table[curRow][j] == '"日期描述' || table[curRow][j] == '日期起') {
+           if (table[curRow][j] == '卷件開始日期' || table[curRow][j] == 'date_from' || table[curRow][j] == '日期描述' || table[curRow][j] == '日期起') {
                 start = j;                
                 if ((type == 3) || (start > 0 && end > 0)) {break;}
            }
-           if (table[curRow][j] == '卷件結束日期' || table[curRow][j] == '"date_stop' || table[curRow][j] == '日期迄') {
+           if (table[curRow][j] == '卷件結束日期' || table[curRow][j] == 'date_stop' || table[curRow][j] == '日期迄') {
                 end = j;                
                 if (start > 0 && end > 0) {break;}
             }
         }
-        if (type >= 2) {
-            for (let j = 1; j < table[curRow].length; j++) {            
-                table[curRow][j] = table[curRow][j].substring(1);
-            }
-        }
         curRow++;
-        while (curRow < table.length) {
-            for (let j = 1; j < table[curRow].length; j++) {
-                if (type >= 2) {
-                    table[curRow][j] = table[curRow][j].substring(1);
-                }                                
-                if (j == start) {
-                    table[curRow][0] = table[curRow][j];
-                    table[curRow][j] = this.timeFormat(type, table[curRow][j]);
-                }
-                if (j == end) {
-                    if (table[curRow][0].length > 1) {table[curRow][0] += ';' + table[curRow][j];}
-                    table[curRow][j] = this.timeFormat(type, table[curRow][j]);
-                }
+        if (type == 3) {
+            while (curRow < table.length) {           
+                table[curRow][0] = table[curRow][start];
+                table[curRow][start] = this.timeFormat(type, table[curRow][start].substring(0, 10));           
+                table[curRow][end] = this.timeFormat(type, table[curRow][start].substring(13, 23));
+                curRow++;
             }
-            curRow++;
+
+        }
+         else {
+            while (curRow < table.length) {           
+                table[curRow][0] = table[curRow][start];
+                table[curRow][start] = this.timeFormat(type, table[curRow][start]);           
+                table[curRow][0] += '~' + table[curRow][end];
+                table[curRow][end] = this.timeFormat(type, table[curRow][end]);
+                curRow++;
+            }
         }
         return table;      
     }

@@ -61,6 +61,36 @@ class tableFunc {
       console.log(error);
     }
   }
+  async getType(fileIDs) {
+    const pool = require("./connection_db");
+    var array = Array(fileIDs.length);
+    try {
+      let conn = await pool.getConnection();
+      let row;
+      var sql = "SELECT Type FROM file_DB WHERE fileID = ?";
+      for (let i = 0; i < fileIDs.length; i++) {
+        row = await conn.query(sql, fileIDs[i]);
+        array[i] = row[0].Type;
+      }
+      conn.release();
+      return array;
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  async getMap(fileID) {
+    const pool = require("./connection_db");
+    try {
+      let conn = await pool.getConnection();
+      var sql = "SELECT map FROM file_DB WHERE fileID = ?";
+      row = await conn.query(sql, fileID);     
+      conn.release();
+      return row;
+    } catch (error) {
+      console.log(error);
+    }
+  }
 
   async deleteFile(fileID) {
     const pool = require("./connection_db");

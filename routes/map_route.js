@@ -17,7 +17,7 @@ router.get('/', function(req, res, next) {
     res.send('file router respond');
 });
 
-router.post('/map/first', authentication, firstMapping); 
-router.post('/map/second', authentication, secondMapping);
-router.post('/map/save', authentication, saveMapping);
+router.post('/first', authentication, firstMapping); 
+router.post('/second', authentication, secondMapping);
+router.post('/savemap', authentication, saveMapping);
 module.exports = router;

@@ -19,8 +19,8 @@ class jsonConverter {
         return js;       
     }
 
-    to2D (uid, fid) { 
-        var js = tableFunc.openFile(uid, fid);
+    to2D (fid) { 
+        var js = tableFunc.openFile(fid);
         let arr = new Array();
         for(var k in js) {arr.push(js[k]);}
         return arr;       

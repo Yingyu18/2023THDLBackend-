@@ -9,9 +9,10 @@ const bodyParser = require('body-parser');
 
 
 var indexRouter = require('./routes/index');
-var convertRouter = require('./edit/convertTo');
-var userRouter = require('./routes/user_route');
-// var fileRouter = require('./routes/file_route');
+var editRouter = require('./routes/edit_route');
+var mapRouter = require('./routes/map_route');
+//var userRouter = require('./routes/user_route');
+//var fileRouter = require('./routes/file_route');
 //var trou = require('./testzone/test');
 // Express Initialization
 const cors = require('cors');
@@ -31,15 +32,16 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', indexRouter);
-app.use('/auth', userRouter);
-//app.use('/file', fileRouter);
+//app.use('/api/auth', userRouter);
+//app.use('/api/file', fileRouter);
+app.use('/edit', editRouter);
+app.use('/map', mapRouter);
+//app.get('/healthcheck', (req, res)=>{
+	//res.send('OK');	
+//})
 //app.use('/dbtest', dbRouter);
 //app.use('/test', trou);
-app.use('/edit/convertTo', convertRouter);
-app.get('/healthcheck', (req, res)=>{
-	res.send('OK');	
-})
-//app.get('/test', test)
+
 
 
 

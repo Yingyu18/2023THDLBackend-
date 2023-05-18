@@ -6,25 +6,26 @@ const csvConvert = require('../models/csvConvert');
 tbfunc = new tbfunc();
 cleaner = new cleaner();
 
-const getColInfo = async (id, row) => {
-    var arr = tbfunc.openFile([id]);
-    arr = cleaner.rawTable(arr);
-    var res = arr[row-1];
-    if (res[0] == null) {return {error : '上傳時指定錯誤列數，標題列為空。'}}
-    else {return res;}    
+class mapModel {
+    getColInfo = async (id, row) => {
+        var arr = tbfunc.openFile([id]);
+        arr = cleaner.rawTable(arr);
+        var res = arr[row-1];
+        if (res[0] == null) {return {error : '上傳時指定錯誤列數，標題列為空。'}}
+        else {return res;}    
 }
 
-const saveMap = async (id, jid, type, fin, res) => {
-    var arr;
-    var idx
-    try {
-        let conn = await pool.getConnection();
-        var sql = "SELECT Start_Row FROM file_DB WHERE fileID = ?";
-        let rs = await conn.query(sql, id);
+    saveMap = async (id, jid, type, fin, res) => {
+        var arr;
+        var idx;
+        try {
+            let conn = await pool.getConnection();
+            var sql = "SELECT Start_Row FROM file_DB WHERE fileID = ?";
+            let rs = await conn.query(sql, id);
         idx = rs.Start_Row;
         if (fin) {
-            arr = csvConvert.to2dArray([id], [res], [idx]);    
-        } else {arr = {message: "對應尚未完成，結果已暫存"};}
+            arr = csvConvert.to2dArray([id], [res], [idx], [type]);    
+        } else {arr = {"message": "對應尚未完成，結果已暫存"};}
         
         if (type == 1) { 
             sql = "UPDATE file_DB SET map = ? WHERE fileID = ?";
@@ -50,8 +51,5 @@ const saveMap = async (id, jid, type, fin, res) => {
         return arr;
     } 
 }
-
-module.exports = {
-    getColInfo,
-    saveMap 
-};
+}
+module.exports = mapModel;

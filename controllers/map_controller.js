@@ -10,7 +10,7 @@ const firstMapping = async (req, res) =>{
     ids.forEach(element => {
         temprow = model.getColInfo(element, rowidxs[cnt]);
         if (temprow.error) {
-            res.status(400).send({message: '上傳時指定錯誤列數，標題列為空。'})
+            res.status(400).send({"message": '上傳時指定錯誤列數，標題列為空。'})
         }
         else {
             arr.push(temprow);
@@ -27,7 +27,7 @@ const secondMapping = async (req, res) => {
     var rowidx = tableFunc.getRowInfo([id]);
     var arr = model.getColInfo(id, rowidx);
     if (arr.error) {
-        res.status(400).send({message: '上傳時指定錯誤列數，標題列為空。'})
+        res.status(400).send({"message": '上傳時指定錯誤列數，標題列為空。'})
     }
     else {res.status(200).send({
         json_head: jhead,
