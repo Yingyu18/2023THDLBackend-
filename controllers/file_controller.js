@@ -21,5 +21,5 @@ const deleteFile = async (req, res) => {
 module.exports = {
     uploadFile,
     deleteFile,
-    downloadFile
+    // downloadFile
 };
