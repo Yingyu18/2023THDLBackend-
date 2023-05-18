@@ -23,6 +23,6 @@ router.get('/', function(req, res, next) {
 
 router.post('/upload/:format(csv|json|xml)', authentication, upload.single('file'), uploadFile); 
 router.post('/delete', authentication, deleteFile);
-router.post('/download/:format(csv|json|xml)', authentication, downloadFile)
+// router.post('/download/:format(csv|json|xml)', authentication, downloadFile)
 module.exports = router;
 

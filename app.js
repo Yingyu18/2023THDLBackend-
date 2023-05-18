@@ -32,7 +32,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', indexRouter);
 app.use('/auth', userRouter);
-// app.use('/file', fileRouter);
+//app.use('/file', fileRouter);
 //app.use('/dbtest', dbRouter);
 //app.use('/test', trou);
 app.use('/edit/convertTo', convertRouter);

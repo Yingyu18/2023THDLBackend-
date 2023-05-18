@@ -149,14 +149,14 @@ const login = async (req, res) => {
        // data: {
             token: user.ACCESS_TOKEN,
             SID: result.DocuSky_SID,
-            data: {
+            record: {
                 id: user.USER_ID.toString(),
                 username: user.USER_NAME,
                 email: user.EMAIL,
                 country: user.COUNTRY,
                 institution: user.INSTITUTION,
                 title: user.TITLE,
-                researchTopic: user.RESEARCH_TOPIC
+                researchTopics: user.RESEARCH_TOPIC
             }
        // }
     });
