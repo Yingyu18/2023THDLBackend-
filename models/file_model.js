@@ -28,7 +28,21 @@ const deleteFile = async(filesId) => {
     }
 };
 
+const getContent = async(fileId) => {
+    const conn = await pool.getConnection()
+    try{
+        let qryStr = `SELECT content FROM file_db WHERE fileID = ?`
+        var result = await conn.query(qryStr, [fileId])
+        //console.log(result)
+        return result[0].content
+    } catch (error){
+        console.log(error)
+        return {error}
+    }
+}
+
 module.exports = {
     uploadFile,
-    deleteFile
+    deleteFile,
+    getContent
 }

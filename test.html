@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Download File Example</title>
+</head>
+<body>
+  <h1>Download File Example</h1>
+  
+  <a id="downloadLink" href="#" download>Download File</a>
+
+  <script>
+    // Assume you have received the URL from the backend
+
+    // Get the download link element
+    const downloadLink = document.getElementById('downloadLink');
+
+    // Set the URL and filename for the download link
+    downloadLink.href = "blob:localhost:3001/21bf2051-2c94-43fd-baf7-4f8ec5695fd5";
+    downloadLink.download = 'file.csv'; // Set the desired filename
+  </script>
+</body>
+</html>
