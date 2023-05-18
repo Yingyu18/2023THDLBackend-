@@ -10,9 +10,11 @@ jsonConvert = new jsonConvert();
 XMLConvert = new XMLConvert();
 
 module.exports = class handler {
-    async csv(uid, ids) {
-        let contents = await tableFunc.openFile(uid, ids);
-        return csvConvert.to2dArray(contents);
+    async csv(ids) {
+        let contents = await tableFunc.openFile(ids);
+        let map = await tableFunc.getRowInfo(ids);
+        let idx = await tableFunc.getRowId(ids);
+        return csvConvert.to2dArray(contents, map, idx);
     }
     json(arr) {
         return jsonConvert.toJson(arr);

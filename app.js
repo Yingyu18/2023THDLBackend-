@@ -31,14 +31,18 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', indexRouter);
-app.use('/api/auth', userRouter);
-app.use('/api/file', fileRouter);
+app.use('/auth', userRouter);
+app.use('/file', fileRouter);
+//app.use('/dbtest', dbRouter);
+//app.use('/test', trou);
 app.use('/edit/convertTo', convertRouter);
 app.get('/healthcheck', (req, res)=>{
 	res.send('OK');	
 })
-//app.use('/dbtest', dbRouter);
-//app.use('/test', trou)
+//app.get('/test', test)
+
+
+
 
 // error handler
 app.use(function(err, req, res, next) {
