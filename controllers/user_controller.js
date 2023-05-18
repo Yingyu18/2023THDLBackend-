@@ -8,7 +8,7 @@ const https = require('https');
 const {TOKEN_SECRET} = process.env;
 
 const signUp = async (req, res) => {
-    let {username, email, password, country, institution, title, researchTopic} = req.body;
+    let {username, email, password, country, institution, title, researchTopics} = req.body;
 
     if(!username || !email || !password || !country || !institution || !title || !researchTopic) {
         res.status(400).send({error:'Request Error: incomplete user information'});
@@ -74,7 +74,7 @@ const signUp = async (req, res) => {
                 country: user.country,
                 institution: user.institution,
                 title: user.title,
-                researchTopic: user.researchTopic
+                researchTopic: user.researchTopics
                 // status: 'disabled',
             }
         }
