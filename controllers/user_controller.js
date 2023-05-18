@@ -9,7 +9,7 @@ const {TOKEN_SECRET} = process.env;
 
 const signUp = async (req, res) => {
     let {username, email, password, country, institution, title, researchTopics} = req.body;
-
+    const researchTopic = researchTopics;
     if(!username || !email || !password || !country || !institution || !title || !researchTopic) {
         res.status(400).send({error:'Request Error: incomplete user information'});
         return;
@@ -24,7 +24,7 @@ const signUp = async (req, res) => {
         country : validator.escape(country),
         institution : validator.escape(institution),
         title : validator.escape(title),
-        researchTopic : validator.escape(researchTopic),
+        researchTopics : validator.escape(researchTopic),
         password : password
     }
     const result = await User.signUp(data);

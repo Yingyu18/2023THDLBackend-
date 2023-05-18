@@ -8,8 +8,7 @@ const salt = parseInt(process.env.BCRYPT_SALT);
 const {TOKEN_EXPIRE, TOKEN_SECRET} = process.env; // 30 days by seconds
 
 const signUp = async (data) => {
-    let {username, email, password, country, institution, title, researchTopics} = data;
-    const researchTopic = researchTopics;
+    let {username, email, password, country, institution, title, researchTopic} = data;
     const conn = await pool.getConnection();
     try {
         await conn.query('START TRANSACTION');
@@ -40,7 +39,7 @@ const signUp = async (data) => {
             password: password,
             email: email,
             institution: institution,
-            researchTopics: researchTopic,
+            researchTopic: researchTopic,
             country: country,
             time_created: loginAt,
             title: title,
