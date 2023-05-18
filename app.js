@@ -11,7 +11,7 @@ const bodyParser = require('body-parser');
 var indexRouter = require('./routes/index');
 var convertRouter = require('./edit/convertTo');
 var userRouter = require('./routes/user_route');
-var fileRouter = require('./routes/file_route');
+// var fileRouter = require('./routes/file_route');
 //var trou = require('./testzone/test');
 // Express Initialization
 const cors = require('cors');
@@ -32,7 +32,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', indexRouter);
 app.use('/auth', userRouter);
-app.use('/file', fileRouter);
+// app.use('/file', fileRouter);
 //app.use('/dbtest', dbRouter);
 //app.use('/test', trou);
 app.use('/edit/convertTo', convertRouter);
