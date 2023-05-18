@@ -24,7 +24,7 @@ const signUp = async (req, res) => {
         country : validator.escape(country),
         institution : validator.escape(institution),
         title : validator.escape(title),
-        researchTopics : validator.escape(researchTopic),
+        researchTopic : validator.escape(researchTopic),
         password : password
     }
     const result = await User.signUp(data);
@@ -74,7 +74,7 @@ const signUp = async (req, res) => {
                 country: user.country,
                 institution: user.institution,
                 title: user.title,
-                researchTopics: user.researchTopics
+                researchTopics: user.researchTopic
                 // status: 'disabled',
             }
         }

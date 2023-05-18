@@ -53,10 +53,11 @@ const signUp = async (data) => {
             //userId: user.id.toString()
         }, TOKEN_SECRET);
         user.access_token = accessToken;
+        
         queryStr = `INSERT INTO user_profile (USER_NAME, PASSWORD, EMAIL, INSTITUTION, RESEARCH_TOPIC,COUNTRY, TIME_CREATED, TITLE, ACCESS_EXPIRED, AUTH_TOKEN, STATUS, DOCUSKY_ID)
          VALUES  (?,?,?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`;
         values = [username, password, email, institution, researchTopic, country, loginAt, title, TOKEN_EXPIRE, accessToken, "disabled", id];
-
+        console.log(values)
         result = await conn.query(queryStr, values);
         user.id = result.insertId;
         console.log(result)
