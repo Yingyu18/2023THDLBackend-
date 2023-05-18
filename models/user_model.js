@@ -8,7 +8,8 @@ const salt = parseInt(process.env.BCRYPT_SALT);
 const {TOKEN_EXPIRE, TOKEN_SECRET} = process.env; // 30 days by seconds
 
 const signUp = async (data) => {
-    let {username, email, password, country, institution, title, researchTopic} = data;
+    let {username, email, password, country, institution, title, researchTopics} = data;
+    const researchTopic = researchTopics;
     const conn = await pool.getConnection();
     try {
         await conn.query('START TRANSACTION');
@@ -39,7 +40,7 @@ const signUp = async (data) => {
             password: password,
             email: email,
             institution: institution,
-            researchTopic: researchTopic,
+            researchTopics: researchTopic,
             country: country,
             time_created: loginAt,
             title: title,
@@ -95,7 +96,7 @@ const login = async (identity, password) => {
 
         const loginAt = new Date();
         const accessToken = jwt.sign({
-            name: user.USER_NAME,
+            name: user.USE_NAME,
             email: user.EMAIL,
             userId: user.USER_ID.toString(),
         }, TOKEN_SECRET, {expiresIn: TOKEN_EXPIRE});
