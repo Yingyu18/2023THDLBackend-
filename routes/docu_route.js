@@ -8,9 +8,9 @@ router.get('/', function(req, res, next) {
   res.send('respond with a resource');
 });
 
-const {
+/*const {
     authentication
-  } = require('../util/util')
+  } = require('../util/util')*/
 
 const {
     docuCheck,
@@ -19,7 +19,7 @@ const {
 
 
 
-router.get('/check', authentication, docuCheck)
+router.get('/check', docuCheck)
 
 
 module.exports = router;
