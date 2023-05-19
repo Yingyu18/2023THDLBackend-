@@ -11,6 +11,7 @@ const bodyParser = require('body-parser');
 var indexRouter = require('./routes/index');
 var editRouter = require('./routes/edit_route');
 var mapRouter = require('./routes/map_route');
+var docuRouter = require('./routes/docu_route');
 //var userRouter = require('./routes/user_route');
 //var fileRouter = require('./routes/file_route');
 //var trou = require('./testzone/test');
@@ -36,6 +37,7 @@ app.use('/', indexRouter);
 //app.use('/api/file', fileRouter);
 app.use('/edit', editRouter);
 app.use('/map', mapRouter);
+app.use('/docu', docuRouter);
 //app.get('/healthcheck', (req, res)=>{
 	//res.send('OK');	
 //})
