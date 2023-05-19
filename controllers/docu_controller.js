@@ -10,7 +10,7 @@ const {
 const docuCheck = async (req, res) =>{ 
     var email = req.body.email;
     var dbname = req.body.dbname;
-    let result =  docuskyChecker(email, dbname);
+    let result = await docuskyChecker(email, dbname);
     
     if (result == true) {res.status(200).json({ message: 'docu DB builded successfully' });}
     else {res.status(400).json({ message: 'docu DB not yet'});}
