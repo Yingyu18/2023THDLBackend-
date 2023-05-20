@@ -33,6 +33,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use('/', indexRouter);
 app.use('/api/auth', userRouter);
 app.use('/api/file', fileRouter);
+app.use('/api/files', fileRouter);
 app.use('/edit/convertTo', convertRouter);
 app.get('/healthcheck', (req, res)=>{
 	res.send('OK');	

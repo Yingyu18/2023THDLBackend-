@@ -96,7 +96,7 @@ const forgetPassword = async (req, res) =>{
             email: email,
             //userId: user.id.toString()
         }, TOKEN_SECRET);
-        const ACTION_URL = `http://localhost:3000/auth/forget/{auth_token}`
+        const ACTION_URL = `http://localhost:3000/auth/forget/${auth_token}`
         const mailOptions = {
             from: process.env.GMAIL_ACCOUNT,
             to: email,
@@ -148,7 +148,7 @@ const login = async (req, res) => {
     res.status(200).send({
        // data: {
             token: user.ACCESS_TOKEN,
-            SID: result.DocuSky_SID,
+            sid: result.DocuSky_SID,
             data: {
                 id: user.USER_ID.toString(),
                 username: user.USER_NAME,
