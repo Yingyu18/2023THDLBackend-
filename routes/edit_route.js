@@ -33,4 +33,12 @@ router.post('/appendNew', authentication, async function(req, res) {
     res.status(200).send(content);
 })
 
+router.post('/buildDB', async function(req, res) {
+    
+    var DBname = req.body.DBname;
+    var content = req.body.content;
+    var res = await handler.xml(content, DBname);
+    res.status(200).send(res);
+})
+
 module.exports = router;

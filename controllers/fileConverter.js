@@ -3,6 +3,7 @@ let jsonConvert = require('../models/jsonConvert');
 let XMLConvert = require('../models/xmlConvert');
 const fs = require('fs');
 let tableFunc = require('../models/tableFunc');
+const pool = require('../models/connection_db');
 
 tableFunc = new tableFunc();
 csvConvert = new csvConvert();
@@ -27,14 +28,16 @@ module.exports = class handler {
             }
         }
     }
-    json(arr) {
-        return jsonConvert.toJson(arr);
+    async tojson(arr) {
+        return await jsonConvert.toJson(arr);
     }
     jsonArr(id) {
         return jsonConvert.to2D(id);
     }
-    xml(js, corpus_name) {
-        XMLConvert.toXML(js, corpus_name);
+    async xml(js, corpus_name) {
+        var xml = XMLConvert.toXML(js, corpus_name);        
+        if (xml) return 'save success, file name: ' + corpus_name + '\n file content:\n' + xml; 
+        else return 'save failed';
     }
 
     async append(id, jid, jhead) {

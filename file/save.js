@@ -12,13 +12,11 @@ router.get('/', async function(req, res, next) {
     var id = req.body.file_id;
     var fname = req.body.file_name;
     var arr = req.body.arr;
-    var fd = req.body.folder;
-    var token = req.body.Token;
     var resBody;
     if (id == null) {id = '';}
     var js = await handler.json(arr);
-    resBody = tableFunc.saveJson(js, uid, id, fname, fd);
-    res.send(resBody);
+    if (js) {res.status(200).send("save sucess, filename = " + fname +'\n content: \n' + js);}
+    else {res.status(200).send("save fail");}
 });
 
 module.exports = router;

@@ -8,21 +8,67 @@ class XMLConverter {
 
     toXML (js, corpus_name) {
         var len = Object.keys(js).length - 2;
-        var cnt = 0;
-        var xml = "<?xml version=\"1.0\"?><ThdlPrototypeExport> \
-                     <corpus name=\"" + corpus_name + "\"> \
-                       <PageParameters> \
-                         <MaxCueItems Default=\"1200\"/> \
-                       </PageParameters>"
-
-        var mtField = "<metadata_field_settings>";
-        var featAnal = "<feature_analysis>";
-        var tags = new Array();
-        var docArr = new Array(len);        
-        var docArr = new Array(len);
-        var xmlArr = new Array(len);
-        var allArr = new Array(len);
-        var tagArr = new Array(len);
+        var cnt = 1;
+        var xml = "<?xml version=\"1.0\"?><ThdlPrototypeExport>\n \
+  <corpus name=\"" + corpus_name + "\">\n \
+    <PageParameters>\n \
+      <MaxCueItems Default=\"1200\"/>\n \
+    </PageParameters>\n \
+      <metadata_field_settings>\n \ ";
+        var featAnal = "    <feature_analysis>\n";    
+        var tags =  "";
+        var docuheads = new Array(len).fill("");
+        var docubodys = new Array(len).fill("");  
+        var docuudef = new Array(len).fill("      <xml_metadata>\n");
+        var docutags = new Array(len).fill("      <MetaTags>\n");
+        var docuconts = new Array(len).fill("      <doc_content>\n");
+        for (let i = 0; i < js["columns"].length; i++) {
+          if (!js["xmlTags"][i].includes("metatags")){
+            xml +="      <"+js["xmlTags"][i] + " show_spotlight=\"Y\">" + js["columns"][i] + "</" + js["xmlTags"][i] + ">\n";
+            if (js["xmlTags"][i].includes("metadata")) {
+              let dataname = js["xmlTags"][i].substring(9);
+              for (let j = 1; j <= len; j++) {
+                docuudef[j] += "        <" + dataname + ">" + js["file" + j][i] + "</" + dataname + ">\n" ;
+              }
+            } else if (js["xmlTags"][i].equals("filename")){ 
+              for (let j = 1; j <= len; j++) {
+                docuheads[j] += "    <document filename=\"" + js["file" + j][i] + "\">\n      <corpus>" + corpus_name + "</corpus>\n";
+              }
+            } else if (js["xmlTags"][i].equals("title")) {
+              for (let j = 1; j <= len; j++) {
+                docuheads[j] += "      <title>" + js["file" + j][i] + "</title>\n";
+              }
+            } else if (js["xmlTags"][i].equals("doc_content")) {
+              for (let j = 1; j <= len; j++) {
+                docuconts[j] += "        " + js["file" + j][i] + "\n      </doc_content>\n";
+              }
+            } else if (js["xmlTags"][i].equals("timeseq_not_before") || js["xmlTags"][i].equals("timeseq_not_after")) {
+              for (let j = 1; j <= len; j++) {
+                docuconts[j] += "      <" + js["xmlTags"][i] + ">" + js["file" + j][i].replaceAll("-", "") + "</" + js["xmlTags"][i] + ">\n";
+              }
+            } else {
+              for (let j = 1; j <= len; j++) {
+                docubodys[j] += "      <" + js["xmlTags"][i] + ">" + js["file" + j][i] + "</" + js["xmlTags"][i] + ">\n";
+              }
+            }
+          } else {
+            let tagName = js["xmlTags"][i].substring(9);
+            featAnal += "      <spotlight category=\"Udef_"+ tagName + "\"  sub_category=\"-\" display_order=\"" + cnt + "\" title=\"" + js["columns"][i] + "/-\"/>\n";
+            tags += "<tag type=\"contentTagging\" name=\"Udef_"+ tagName + "\" default_category=\"Udef_" + tagName + "\" default_sub_category=\"-\"/>\n";
+            cnt++;
+            for (let j = 1; j <= len; j++) {
+              let alltags = js["file" + j][i].split(";");
+              for (let k = 0; k < alltags.length; k++) {
+                docutags[j] += "        <Udef_" + tagName + ">" + alltags[k] + "</Udef_" + tagName + ">\n" ;
+              }
+            }
+          }
+        } 
+        xml += "    </metadata_field_settings>\n" + featAnal + tags +"    </feature_analysis>\n" + "  </corpus>\n  \n  <documents>\n";
+        for (let i = 0; i < len; i++) {
+          xml += docuheads[i] + docubodys[i] + docuudef[i] + "      </xml_metadata>\n" + docuconts[i] + docutags[i] + "      </MetaTags>\n    </document>\n";
+        }
+        xml += "  </documents>\n</ThdlPrototypeExport>";
         return xml;       
     }
                
