@@ -12,6 +12,7 @@ var indexRouter = require('./routes/index');
 var convertRouter = require('./edit/convertTo');
 var userRouter = require('./routes/user_route');
 var fileRouter = require('./routes/file_route');
+var projectRouter = require('./routes/project_route')
 //var trou = require('./testzone/test');
 // Express Initialization
 const cors = require('cors');
@@ -35,6 +36,7 @@ app.use('/api/auth', userRouter);
 app.use('/api/file', fileRouter);
 app.use('/api/files', fileRouter);
 app.use('/edit/convertTo', convertRouter);
+app.use('/api/projects', projectRouter);
 app.get('/healthcheck', (req, res)=>{
 	res.send('OK');	
 })

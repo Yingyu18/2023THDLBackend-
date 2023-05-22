@@ -44,7 +44,7 @@ const uploadFile = async (req, res) =>{
 }
 
 const deleteFile = async (req, res) => {
-    console.log(req)
+    //console.log(req)
     const filesId = req.params.id
     //console.log(req.body)
     ///console.log(filesId[0])

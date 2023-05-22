@@ -22,6 +22,7 @@ const deleteFile = async(filesId) => {
         for(let i=0; i<filesId.length; i++){
             qryStr = `DELETE FROM file_db WHERE fileID = ?`
             var result = await conn.query(qryStr, filesId[i])
+            //console.log(result)
         }
         return result
     } catch (error){
