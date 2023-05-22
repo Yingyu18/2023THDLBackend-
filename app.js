@@ -13,8 +13,10 @@ var editRouter = require('./routes/edit_route');
 var mapRouter = require('./routes/map_route');
 var docuRouter = require('./routes/docu_route');
 var saveRouter = require('./file/save');
-//var userRouter = require('./routes/user_route');
-//var fileRouter = require('./routes/file_route');
+var convertRouter = require('./edit/convertTo');
+var userRouter = require('./routes/user_route');
+var fileRouter = require('./routes/file_route');
+var projectRouter = require('./routes/project_route')
 //var trou = require('./testzone/test');
 // Express Initialization
 const cors = require('cors');
@@ -34,15 +36,18 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', indexRouter);
-//app.use('/api/auth', userRouter);
-//app.use('/api/file', fileRouter);
+app.use('/api/auth', userRouter);
+app.use('/api/file', fileRouter);
+app.use('/api/files', fileRouter);
+app.use('/api/projects', projectRouter);
 app.use('/edit', editRouter);
 app.use('/map', mapRouter);
 app.use('/docu', docuRouter);
 app.use('/file/save', saveRouter);
-//app.get('/healthcheck', (req, res)=>{
-	//res.send('OK');	
-//})
+app.use('/edit/convertTo', convertRouter);
+app.get('/healthcheck', (req, res)=>{
+	res.send('OK');	
+})
 //app.use('/dbtest', dbRouter);
 //app.use('/test', trou);
 

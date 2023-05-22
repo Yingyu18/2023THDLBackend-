@@ -10,6 +10,7 @@ const {TOKEN_SECRET} = process.env;
 const signUp = async (req, res) => {
     let {username, email, password, country, institution, title, researchTopics} = req.body;
     const researchTopic = researchTopics;
+
     if(!username || !email || !password || !country || !institution || !title || !researchTopic) {
         res.status(400).send({error:'Request Error: incomplete user information'});
         return;
@@ -96,7 +97,7 @@ const forgetPassword = async (req, res) =>{
             email: email,
             //userId: user.id.toString()
         }, TOKEN_SECRET);
-        const ACTION_URL = `http://localhost:3000/auth/forget/{auth_token}`
+        const ACTION_URL = `http://localhost:3000/auth/forget/${auth_token}`
         const mailOptions = {
             from: process.env.GMAIL_ACCOUNT,
             to: email,
@@ -148,8 +149,8 @@ const login = async (req, res) => {
     res.status(200).send({
        // data: {
             token: user.ACCESS_TOKEN,
-            SID: result.DocuSky_SID,
-            record: {
+            sid: result.DocuSky_SID,
+            data: {
                 id: user.USER_ID.toString(),
                 username: user.USER_NAME,
                 email: user.EMAIL,
