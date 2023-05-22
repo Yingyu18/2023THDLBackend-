@@ -13,7 +13,7 @@ var editRouter = require('./routes/edit_route');
 var mapRouter = require('./routes/map_route');
 var docuRouter = require('./routes/docu_route');
 var saveRouter = require('./file/save');
-var convertRouter = require('./edit/convertTo');
+//var convertRouter = require('./edit/convertTo');
 var userRouter = require('./routes/user_route');
 var fileRouter = require('./routes/file_route');
 var projectRouter = require('./routes/project_route')
@@ -44,7 +44,7 @@ app.use('/edit', editRouter);
 app.use('/map', mapRouter);
 app.use('/docu', docuRouter);
 app.use('/file/save', saveRouter);
-app.use('/edit/convertTo', convertRouter);
+//app.use('/edit/convertTo', convertRouter);
 app.get('/healthcheck', (req, res)=>{
 	res.send('OK');	
 })
