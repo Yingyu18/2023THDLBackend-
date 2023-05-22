@@ -218,7 +218,7 @@ const getUserInfo = async (req, res) => {
         "country": user.COUNTRY,
         "institution": user.INSTITUTION,
         "title": user.TITLE,
-        "researchTopic":user.RESEARCH_TOPIC
+        "researchTopics":user.RESEARCH_TOPIC
 
     })
 };
@@ -238,7 +238,7 @@ const updateUserInfo = async (req, res) => {
             "country": user.COUNTRY,
             "institution": user.INSTITUTION,
             "title": user.TITLE,
-            "researchTopic":user.RESEARCH_TOPIC
+            "researchTopics":user.RESEARCH_TOPIC
         })
     }
 };
