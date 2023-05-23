@@ -47,7 +47,7 @@ class jsonConverter {
           sql = "Select sourceCsvs from file_DB where fileID = ?";
           let src = await conn.query(sql, [pid]);   
           sql = "UPDATE file_DB SET sourceCsvs = ? where fileID = ?";
-          let result = await conn.query(sql, [src.push(fname), pid]);  
+          let result = await conn.query(sql, [src.push(fid), pid]);  
           sql = "Insert Into sec_map SET fileID = ?, map_ID = ?, sec_map = ?, create_time = ? values (?, ?, ?, ?)";  
           result = await conn.query(sql, [fid, pid, '', Date.now()]);  
           conn.release();

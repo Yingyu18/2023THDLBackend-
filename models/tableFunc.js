@@ -54,7 +54,7 @@ class tableFunc {
       var sql = "SELECT sourceCsvs FROM file_DB WHERE fileID = ?";      
       let row = await conn.query(sql, [pid]);
       row = row[0].sourceCsvs;
-      sql = "SELECT content, source FROM file_DB where fileName = ?"
+      sql = "SELECT content, source FROM file_DB where fileID = ?"
       for (let i = 0; i < row.length; i++) {
         temp = await conn.query(sql, [row[i]]);
         array[0].push(temp[0].content);
