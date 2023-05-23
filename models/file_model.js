@@ -4,12 +4,19 @@ const pool = require("./connection_db")
 const uploadFile = async(data) => {
     const conn = await pool.getConnection()
     try{
-        const {filename, content, userId, uploader, type, size, lastModified, source} = data
+        let {filename, content, userId, uploader, type, size, lastModified, source} = data
         //console.log(data)
-        let qryStr = 'INSERT INTO file_db (fileName, USER_ID, USER_NAME, Start_Row, content, upload_time, type, size, source, lastModified) VALUES (?,?,?,?,?,?,?,?,?)'
-        const result = conn.query(qryStr, [filename, userId, uploader, 1, content, new Date(), type, size, source, lastModified])
+            if(source === '國史館檔案史料文物'){ source = 0;}
+            if(source === '地方議會議事錄總庫'){source = 1;}
+            if(source === '國史館臺灣文獻館'){source = 2;}
+            if(source === '臺灣省議會史料總庫'){source = 3;}
+            if(source ==='自定義資料檔案'){source = 4;} 
+        console.log("test", source)
+        let qryStr = 'INSERT INTO file_db (fileName, USER_ID, USER_NAME, Start_Row, content, upload_time, type, size, source, lastModified) VALUES (?,?,?,?,?,?,?,?,?,?)'
+        const result = await conn.query(qryStr, [filename, userId, uploader, 1, content, new Date(), type, size, source, lastModified])
         return result
     } catch (error){
+        console.log({error:error})
         return {error}
     }
 };
@@ -45,7 +52,7 @@ const getContent = async(fileId) => {
 }
 
 const getCsv = async(req) => {
-    let userId = req.query.userId;
+    let userId = req.user.userId;
     console.log(req.query)
     const conn = await pool.getConnection()
     try{

@@ -5,7 +5,6 @@ const uploadFile = async (req, res) =>{
     const {userId} = req.user
     var {name, uploader, type, size, lastModified, source} = req.body;
     console.log(req.body)
-    const { format } = req.params;
     const content = req.file.buffer.toString('utf8');
     if(!name || !uploader){
         return res.status(400).send({message:"Bad request"})
@@ -90,8 +89,14 @@ const getCsv = async (req, res) => {
     }
     const data = [];
     for (let i = 0; i < csvs.length; i++) {
-        const { fileID, upload_time, fileName, type, size, lastModified, source, url} = csvs[i];
+        let { fileID, upload_time, fileName, type, size, lastModified, source, url} = csvs[i];
         const uploader = csvs[i].USER_NAME;
+        if(source === '0'){source = '國史館檔案史料文物'}
+        else if(source === '1'){source = '地方議會議事錄總庫';}
+        else if(source === '2'){source = '國史館臺灣文獻館';}
+        else if(source === '3'){source = '臺灣省議會史料總庫';}
+        else if(source === '4'){source = '自定義資料檔案';} 
+        else source = "不明來源"
         data.push({ fileID, upload_time, fileName, uploader, type, size, lastModified, source, url });
     }
     let response = {"items": data}
