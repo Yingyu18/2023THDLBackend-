@@ -19,6 +19,7 @@ module.exports = class handler {
         var xml = XMLConvert.toXML(js, corpus_name);
         let res = XMLConvert.saveXML(xml, pid, uid, corpus_name); 
         var bres = docuskyBuilder(email, corpus_name, xml)
+        if (bres) {tableFunc.setBuilt(pid);}
         return {
             "canBeBuild" : bres,
             "xml_id": res

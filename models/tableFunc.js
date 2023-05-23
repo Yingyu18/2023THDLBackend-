@@ -239,6 +239,19 @@ class tableFunc {
       console.log(error);
     }
   }
+  async setBuilt(pid) {
+    const pool = require("./connection_db");
+    try {
+      let conn = await pool.getConnection();
+     
+      sql = "UPDATE file_DB SET is_built = ? where fileID = ?";
+      let res = await conn.query(sql, [true, pid]);
+      conn.release();
+      return 'is_built_set';
+    } catch (error) {
+      console.log(error);
+    }
+  }
 }
 
 module.exports = tableFunc;
