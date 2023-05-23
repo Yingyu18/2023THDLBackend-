@@ -191,7 +191,18 @@ class tableFunc {
       console.log(error);
     }
   }
-
+  async getIsMap(pid) {
+    const pool = require("./connection_db");
+    try {
+      let conn = await pool.getConnection();
+      var sql = "SELECT is_mapped FROM file_DB WHERE fileID = ?";      
+      let res = await conn.query(sql, [pid]);  
+      conn.release();
+      return res[0].is_mapped;
+    } catch (error) {
+      console.log(error);
+    }
+  }
   async deleteFile(fileID) {
     const pool = require("./connection_db");
     try {
