@@ -19,6 +19,8 @@ const uploadFile = async(req) => {
     } catch (error){
         console.log({error:error})
         return {error}
+    } finally {
+        await conn.release();
     }
 }
 
@@ -34,6 +36,8 @@ const getFile = async(req) => {
     } catch (error){
         console.log(error)
         return {error}
+    } finally {
+        await conn.release();
     }
 }
 const getSourceCsvs = async(projectId) =>{
@@ -45,7 +49,9 @@ const getSourceCsvs = async(projectId) =>{
         return results
      } catch (error){
         console.log({error:error})
-     }
+     } finally {
+        await conn.release();
+    }
 }
 
 const updateProject = async(req) => {
@@ -97,6 +103,8 @@ const updateCsvs = async (req) => {
         return 1
     }  catch (error){
         return{error}
+    } finally {
+        await conn.release();
     }
 }
 
@@ -108,6 +116,8 @@ const deleteProject = async (req) => {
         result = await conn.query(`DELETE FROM source_csvs WHERE project_id = ?`, [projectId])
     }  catch (error){
         console.log({error:error})
+    } finally {
+        await conn.release();
     }
 
 }
