@@ -6,32 +6,32 @@ tableFunc = new tableFunc();
 let handler = require('../controllers/fileConverter');
 handler = new handler();
 
+const bodyParser = require('body-parser')
+
 const {
     authentication
   } = require('../util/util')
 
 
-router.post('/goToEdit',  async function(req, res) {
-    const userId = req.body.userId;
+router.post('/goToEdit', bodyParser.json(), authentication, async function(req, res) {
+    const userId = req.user.userId;
     var pid = req.body.project_id;
-    console.log(req.body)
-    console.log('pid = ' + pid);
     var content = await handler.retrieve2D(pid);
     if (content.error) {res.status(400).send(content.error);}
     else {res.status(200).send(content);}
 });
 
 
-router.post('/appendNew', async function(req, res) {
-    const userId = req.body.userId;
+router.post('/appendNew',bodyParser.json(), authentication, async function(req, res) {
+    const userId = req.user.userId;
     var fid = req.body.file_id;
     var pid = req.body.project_id;
     var content = await handler.append(fid, pid);
     res.status(200).send(content);
 })
 
-router.post('/buildDB', async function(req, res) {
-    const userId = req.body.userId;
+router.post('/buildDB', bodyParser.json(), authentication, async function(req, res) {
+    const userId = req.user.userId;
     const email = req.body.emal;
     var DBname = req.body.DBname;
     var pid = req.body.Json_id;
