@@ -8,7 +8,7 @@ class tableFunc {
         ft = "j" + ft;
       }
       var sql =
-        "INSERT INTO file_db (fileName, USER_ID, USER_NAME, Start_Row, content, upload_time, type, lastModified) VALUES (?,?,?,?,?,?,?,?)";
+        "INSERT INTO file_db (fileName, USER_ID, USER_NAME, Start_Row, content, upload_time, source, lastModified) VALUES (?,?,?,?,?,?,?,?)";
       var time = Date.now();
       await conn.query(sql, [
         fileName,
@@ -62,6 +62,19 @@ class tableFunc {
       }
       conn.release();
       return array;
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  async open2DbyXML(xml_id) {
+    const pool = require("./connection_db");
+    try {
+      let conn = await pool.getConnection();
+      var sql = "SELECT fileID FROM sec_map WHERE map_ID = ?";      
+      let jid = await conn.query(sql, xml_id);
+      jid = jid[0].fileID;
+      return jid;
     } catch (error) {
       console.log(error);
     }
@@ -198,20 +211,9 @@ class tableFunc {
       let conn = await pool.getConnection();
       var sql;
       var row;
-      var resBody = { file_id: "zzz", file_name: fname };
-      if (fid == "") {
-        sql =
-          "INSERT INTO file_DB (fileName, USER_ID, USER_NAME, Start_Row, map, content, cores_xml_id, upload_time) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
-        await conn.query(sql, [
-          fileName,
-          uid,
-          uname,
-          1,
-          "",
-          content,
-          -1,
-          Date.now(),
-        ]);
+      var resBody = { file_id: "zzz", file_name: fname};
+      if (fid == -1) {
+        this.insertFile(uid, uname, fname, js, 4)
         sql = "Select file_id from file_DB where fileName = ? and USER_ID = ?";
         row = await conn.query(sql, [fileName, uid]);
         fid = row[0].file_id;

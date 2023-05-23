@@ -13,13 +13,16 @@ router.get('/', function(req, res, next) {
   } = require('../util/util')*/
 
 const {
+    toDocu,
     docuCheck,
+    back2Edit
  } = require('../controllers/docu_controller');
 
 
 
-
-router.get('/check', docuCheck)
+router.post('/toDocu', toDocu);
+router.post('/check', docuCheck);
+router.post('/back2Edit', back2Edit);
 
 
 module.exports = router;

@@ -30,10 +30,11 @@ router.post('/appendNew', authentication, async function(req, res) {
 
 router.post('/buildDB', async function(req, res) {
     const userId = req.user.userId;
+    const email = req.user.emal;
     var DBname = req.body.DBname;
     var pid = req.body.Json_id;
     var content = req.body.content;
-    var res = await handler.buildXml(content, DBname, pid, userId);
+    var res = await handler.buildXml(content, DBname, pid, userId, email);
     res.status(200).send(res);
 })
 
