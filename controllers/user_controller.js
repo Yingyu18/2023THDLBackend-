@@ -12,14 +12,14 @@ const signUp = async (req, res) => {
     const researchTopic = researchTopics;
 
     if(!username || !email || !password || !country || !institution || !title || !researchTopic) {
-        res.status(400).send({error:'Request Error: incomplete user information'});
-        return;
+        return res.status(400).send({error:'Request Error: incomplete user information'});
+        
     }
     if (!validator.isEmail(email)) {
-        res.status(400).send({
+        return res.status(400).send({
             code:400,
             message:'Request Error: Invalid email format'});
-        return;
+        
     }
     let data = {
         username : username,
@@ -32,17 +32,16 @@ const signUp = async (req, res) => {
     }
     const result = await User.signUp(data);
     if (result.error) {
-        res.status(402).send({
+        return res.status(402).send({
             code: 402,
             message: result.error});
-        return;
     }
     const user = result.user;
     if (!user) {
-        res.status(500).send({
+        return res.status(500).send({
             code: 500,
             message: 'Database Query Error'});
-        return;
+
     }
     //寄驗證信
     //建立SMTP傳輸器
