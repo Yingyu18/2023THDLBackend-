@@ -3,12 +3,12 @@ const pool = require("./connection_db")
 const uploadFile = async(req) => {
     const conn = await pool.getConnection();
     try {
-        const {sourceCsvs, name, is_mapped, owner, is_build} = req.body
+        const {sourceCsvs, name, is_mapped, owner, is_built} = req.body
         const {userId} = req.user
-        let qryStr = `INSERT INTO file_db (content, type, Start_Row, upload_time, lastModified, fileName, isMapped, USER_NAME, USER_ID, isBuild, sourceCsvs)
+        let qryStr = `INSERT INTO file_db (content, type, Start_Row, upload_time, lastModified, fileName, isMapped, USER_NAME, USER_ID, isBuilt, sourceCsvs)
          VALUES (?,?,?,?,?,?,?,?,?,?,?)`
          console.log(`${sourceCsvs}`)
-        let result = await conn.query(qryStr, ["", "json", 1, new Date(), new Date(), name, is_mapped, owner, userId, is_build, `${sourceCsvs}`])
+        let result = await conn.query(qryStr, ["", "json", 1, new Date(), new Date(), name, is_mapped, owner, userId, is_built, `${sourceCsvs}`])
         const project_id = result.insertId;
         // insert into sourceCsvs
         for(let i=0; i<sourceCsvs.length; i++){
@@ -52,7 +52,8 @@ const updateProject = async(req) => {
     const conn = await pool.getConnection()
     const projectId = req.params.id
     try{
-        const {name, is_mapped, owner, is_build, content, sourceCsvs} = req.body
+        console.log("test")
+        const {name, is_mapped, owner, is_built, content, sourceCsvs} = req.body
         if(name){
             const result = await conn.query('UPDATE file_db SET fileName=? WHERE fileID=?',[name, projectId])
         }
@@ -62,19 +63,21 @@ const updateProject = async(req) => {
         if(owner){
             const result = await conn.query('UPDATE file_db SET USER_NAME=? WHERE fileID=?',[owner, projectId])
         }
-        if(is_build){
-            const result = await conn.query('UPDATE file_db SET isBuild=? WHERE fileID=?',[is_build, projectId])
+        if(is_built){
+            const result = await conn.query('UPDATE file_db SET isBuilt=? WHERE fileID=?',[is_built, projectId])
         }
         if(content){
             const result = await conn.query('UPDATE file_db SET content=? WHERE fileID=?',[content, projectId])
         }
         if(sourceCsvs){
-            const result = await conn.query('UPDATE file_db SET sourceCsvs=? WHERE fileID=?',[sourceCsvs, projectId])
+            const result = await conn.query('UPDATE file_db SET sourceCsvs=? WHERE fileID=?',[`${sourceCsvs}`, projectId])
         }
         const results = await conn.query(`SELECT * FROM file_db WHERE fileID = ?`, [projectId]);
+        console.log("test", results)
         return results[0];
     } catch (error){
         console.log({error:error})
+        return {error}
     }
 }
 
@@ -88,8 +91,9 @@ const updateCsvs = async (req) => {
             const result = await conn.query(`INSERT INTO source_csvs (project_id, csv_name) VALUES (?,?)`, [projectId, sourceCsvs[i]])
         }
         // TODO : return data
+        return 1
     }  catch (error){
-        console.log({error:error})
+        return{error}
     }
 }
 
