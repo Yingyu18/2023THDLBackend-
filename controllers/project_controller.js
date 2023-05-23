@@ -43,10 +43,10 @@ const getProject = async (req, res) => {
         if(csvs.error){
             return res.status(500).send({message:"internal server error"})
         }
-        // let sourceCsvs = []
-        // for(let i=0; i<csvs.length; i++){
-        //     sourceCsvs[i] = csvs[i].csv_name
-        // }
+        sourceCsvs = []
+        for(let i=0; i<csvs.length; i++){
+            sourceCsvs[i] = csvs[i].csv_name
+        }
         if(isMapped){isMapped=true}else{isMapped=false}
         if(isBuilt){isBuilt=true}else{isBuilt=false}
         data.push({ fileID, upload_time, updated, description, sourceCsvs, fileName, isMapped, owner, thumbnail, isBuilt, description })
