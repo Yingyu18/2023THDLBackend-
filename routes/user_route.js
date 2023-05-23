@@ -17,6 +17,7 @@ const {
   signUp,
   signupAuth,
   login,
+  authRefresh,
   forgetPassword,
   getUserInfo,
   updatePassword,
@@ -30,10 +31,11 @@ const {
 router.post('/signup', signUp)
 router.post('/login', login)
 router.post('/signupAuth', signupAuth)
+router.post('/authRefresh', authentication, authRefresh)
 router.post('/forgetPassword', forgetPassword)
 router.post('/updatePassword', authentication, updatePassword)
 router.post('/updateUserInfo', authentication, updateUserInfo)
-router.get('/getUserInfo', authentication, getUserInfo )
+router.get('/getUserInfo', authentication, getUserInfo)
 
 
 module.exports = router;
