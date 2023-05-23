@@ -13,7 +13,7 @@ const projectMapping = async (req, res) =>{
         res.status(400).send({"error": 'mapping were already completed.'});
         return;
     }
-    var result = model.csvFilter(pid); console.log('resssssssult = ' + result);
+    var result = await model.csvFilter(pid); console.log('resssssssult = ' + result);
     res.status(200).json(result).send();   
     return ; 
 }
