@@ -3,7 +3,8 @@ var fs = require('fs');
 
 const uploadFile = async (req, res) =>{
     const {userId} = req.user
-    var {name, start, uploader, type, size, lastModified, source} = req.body;
+    var {name, uploader, type, size, lastModified, source} = req.body;
+    console.log(req.body)
     const { format } = req.params;
     const content = req.file.buffer.toString('utf8');
     if(!name || !uploader){
@@ -14,7 +15,6 @@ const uploadFile = async (req, res) =>{
     let data = {
         userId: userId,
         filename: name,
-        start: start,
         uploader: uploader,
         type: type,
         size: size,
@@ -51,11 +51,19 @@ const deleteFile = async (req, res) => {
     // update database
     const result = await File.deleteFile(filesId);
     if(result.error){
-        return res.status(500).send({message: "internal server error"})
+        return res.status(500).send(
+            {
+                "code": 500,
+                "message": "Internal server error",
+                "data": {}
+            }
+        )
     }
     res.status(200).json({ message: 'File delete frmo database successfully' });
 }
 
+
+//TODO: complete it
 const downloadFile = async (req, res) => {
     // get content from database
     const filesId = req.body

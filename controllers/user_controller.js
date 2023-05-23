@@ -16,7 +16,9 @@ const signUp = async (req, res) => {
         return;
     }
     if (!validator.isEmail(email)) {
-        res.status(400).send({error:'Request Error: Invalid email format'});
+        res.status(400).send({
+            code:400,
+            message:'Request Error: Invalid email format'});
         return;
     }
     let data = {
@@ -30,12 +32,16 @@ const signUp = async (req, res) => {
     }
     const result = await User.signUp(data);
     if (result.error) {
-        res.status(402).send({error: result.error});
+        res.status(402).send({
+            code: 402,
+            message: result.error});
         return;
     }
     const user = result.user;
     if (!user) {
-        res.status(500).send({error: 'Database Query Error'});
+        res.status(500).send({
+            code: 500,
+            message: 'Database Query Error'});
         return;
     }
     //寄驗證信
@@ -71,11 +77,13 @@ const signUp = async (req, res) => {
                 id: user.id.toString(),
                 username: user.name,
                 email: user.email,
+                verified: false,
+                avatar: "",
                 country: user.country,
                 institution: user.institution,
                 title: user.title,
-                researchTopics: user.researchTopic
-                // status: 'disabled',
+                researchTopics: user.researchTopic,
+                sid: "test"
         }
     );
 };
@@ -131,28 +139,33 @@ const login = async (req, res) => {
     const data = req.body;
     let result = await loginQuery(data.identity, data.password);
     if (result.error) {
-        const status_code = result.status ? result.status : 401;
-        res.status(status_code).send(result.error);
+        //const status_code = result.status ? result.status : 401;
+        res.status(result.error);
         return;
     }
     const user = result.user;
     if (!user) {
-        res.status(500).send({error: 'Internal Server Error'});
+        res.status(500).send({
+            code: 500,
+            message: 'Internal Server Error'});
         return;
     } 
     //login Docusky 
     result = await loginDocuSky(user.EMAIL, user.PASSWORD)
+
     res.status(200).send({
             token: user.ACCESS_TOKEN,
-            sid: result.DocuSky_SID,
             data: {
                 id: user.USER_ID.toString(),
                 username: user.USER_NAME,
                 email: user.EMAIL,
+                verified: true,
+                avatar: "",
                 country: user.COUNTRY,
                 institution: user.INSTITUTION,
                 title: user.TITLE,
-                researchTopics: user.RESEARCH_TOPIC
+                researchTopics: user.RESEARCH_TOPIC,
+                sid: result.DocuSky_SID
             }
     });
 };
@@ -191,38 +204,45 @@ const signupAuth = async(req, res) =>{
     //const email = req.body.email
     jwt.verify(token, TOKEN_SECRET, function(err, decoded){
         if(err){
-            res.status(400).send("invalid token")
+            res.status(400).send({
+                code: 400,
+                message: "invalid token"})
         }
         if(decoded.exp < Date.now()/1000){
-            res.status(400).send("token expired")
+            res.status(400).send({
+                code: 400,
+                message: "token expired"})
         }
         email = decoded.email
     });
     const result = await User.signupAuth(email);
     if (result.error) {
-        res.status(500).send({error: result.error});
+        res.status(500).send({
+            code: 500,
+            message: result.error});
         return;
     }
     res.status(200).send("Success")
 };
 const getUserInfo = async (req, res) => {
-    const id = req.query.id
+    const id = req.user.userId
     const user = await User.getUserDetail(id)
     res.status(200).send({
-        "id": user.USER_ID.toString(),
-        "email": user.EMAIL,
-        "username": user.USER_NAME,
-        "country": user.COUNTRY,
-        "institution": user.INSTITUTION,
-        "title": user.TITLE,
-        "researchTopics":user.RESEARCH_TOPIC
-
+        "token": "",
+        "record":{
+            "id": user.USER_ID.toString(),
+            "email": user.EMAIL,
+            "username": user.USER_NAME,
+            "country": user.COUNTRY,
+            "institution": user.INSTITUTION,
+            "title": user.TITLE,
+            "researchTopics":user.RESEARCH_TOPIC
+        }
     })
 };
 const updateUserInfo = async (req, res) => {
-    console.log("if authentication pass user: ", req.user);
     if(!req.user.email){
-        res.status(400).send("Required user email")
+        res.status(400).send("Bad request")
     }
     const user = await User.updateUserInfo(req)
     if(!user){
@@ -248,15 +268,22 @@ const updatePassword = async (req, res) => {
 
     let user = await User.getUserDetail(email)
     if(!bcrypt.compareSync(oldPassword, user.PASSWORD)){
-        res.status(400).send("Invalid password")
+        res.status(400).send({
+        code: 400,
+        message: "Invalid Password"})
     }
     req.body.password = newPassword
     const result = await User.updateUserInfo(req)
     if (!result) {
-        res.status(500).send("Internal server error");
+        res.status(500).send({
+            code: 500,
+            message: "Internal server error"
+        });
         return;
     }
-    res.status(200).send("Success")
+    res.status(200).send({
+        code: 200,
+        message: "Success"})
 
 };
 

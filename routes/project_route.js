@@ -15,7 +15,7 @@ const {
 
 router.post('/create', authentication, uploadFile)
 router.get('/getProjects', authentication, getProject)
-router.patch('/updateProject/:id', authentication, updateProject)
+router.patch('/updateProjects/:id', authentication, updateProject)
 
 
 module.exports = router;

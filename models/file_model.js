@@ -4,10 +4,10 @@ const pool = require("./connection_db")
 const uploadFile = async(data) => {
     const conn = await pool.getConnection()
     try{
-        const {filename, start, content, userId, uploader, type, size, lastModified, source} = data
+        const {filename, content, userId, uploader, type, size, lastModified, source} = data
         //console.log(data)
         let qryStr = 'INSERT INTO file_db (fileName, USER_ID, USER_NAME, Start_Row, content, upload_time, type, size, source, lastModified) VALUES (?,?,?,?,?,?,?,?,?)'
-        const result = conn.query(qryStr, [filename, userId, uploader, start, content, new Date(), type, size, source, lastModified])
+        const result = conn.query(qryStr, [filename, userId, uploader, 1, content, new Date(), type, size, source, lastModified])
         return result
     } catch (error){
         return {error}
