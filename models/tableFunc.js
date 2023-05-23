@@ -45,6 +45,41 @@ class tableFunc {
     }
   }
 
+  async openForProject(pid) {
+    const pool = require("./connection_db");
+    var array = [[],[]];
+    var temp;
+    try {
+      let conn = await pool.getConnection();
+      var sql = "SELECT sourceCsvs FROM file_DB WHERE fileID = ?";      
+      let row = await conn.query(sql, pid);
+      row = row[0].sourceCsvs;
+      sql = "SELECT content, source FROM file_DB where fileName = ?"
+      for (let i = 0; i < row.length; i++) {
+        temp = await conn.query(sql, row[i]);
+        array[0].push(temp[0].content);
+        array[1].push(temp[0].source);
+      }
+      conn.release();
+      return array;
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  async open2DbyXML(xml_id) {
+    const pool = require("./connection_db");
+    try {
+      let conn = await pool.getConnection();
+      var sql = "SELECT fileID FROM sec_map WHERE map_ID = ?";      
+      let jid = await conn.query(sql, xml_id);
+      jid = jid[0].fileID;
+      return jid;
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
   async getRowId(fileIDs) {
     const pool = require("./connection_db");
     var array = Array(fileIDs.length);
@@ -93,16 +128,48 @@ class tableFunc {
     }
   }
 
+  async getSecMap(fileID, pid) {
+    const pool = require("./connection_db");
+    try {
+      let conn = await pool.getConnection();
+      var sql = "SELECT sec_map FROM sec_map WHERE fileID = ? and pid = ?";
+      row = await conn.query(sql, fileID, pid);     
+      conn.release();
+      return row[0].sec_map;
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
   async getHead(fileID) {
     const pool = require("./connection_db");
     var idx = this.getRowId([fileID]);
     idx = idx[0];
     try {
       let conn = await pool.getConnection();
-      var sql = "SELECT  FROM file_DB WHERE fileID = ?";
-      row = await conn.query(sql, fileID);     
+      var sql = "SELECT content FROM file_DB WHERE fileID = ?";
+      row = await conn.query(sql, fileID);  
+      row = row[0].content.split('\n');
       conn.release();
-      return row[0].map;
+      return row[idx-1];      
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  async getJsonHead(fileID, cnt) {
+    const pool = require("./connection_db");
+    var idx = this.getRowId([fileID]);
+    idx = idx[0];
+    var temp;
+    try {
+      let conn = await pool.getConnection();
+      var sql = "SELECT content FROM file_DB WHERE fileID = ?";
+      temp = await conn.query(sql, fileID);  
+      row = temp[0].content["columns"];
+      if (cnt == 2) {row.push(temp[0].content["xmlTags"]);}
+      conn.release();
+      return row;      
     } catch (error) {
       console.log(error);
     }
@@ -144,20 +211,9 @@ class tableFunc {
       let conn = await pool.getConnection();
       var sql;
       var row;
-      var resBody = { file_id: "zzz", file_name: fname };
-      if (fid == "") {
-        sql =
-          "INSERT INTO file_DB (fileName, USER_ID, USER_NAME, Start_Row, map, content, cores_xml_id, upload_time) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
-        await conn.query(sql, [
-          fileName,
-          uid,
-          uname,
-          1,
-          "",
-          content,
-          -1,
-          Date.now(),
-        ]);
+      var resBody = { file_id: "zzz", file_name: fname};
+      if (fid == -1) {
+        this.insertFile(uid, uname, fname, js, 'json')
         sql = "Select file_id from file_DB where fileName = ? and USER_ID = ?";
         row = await conn.query(sql, [fileName, uid]);
         fid = row[0].file_id;

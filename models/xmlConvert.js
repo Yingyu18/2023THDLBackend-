@@ -31,9 +31,9 @@ class XMLConverter {
         var docuconts = new Array(len).fill("      <doc_content>\n");
         for (let i = 0; i < js["columns"].length; i++) {
           if (!js["xmlTags"][i].includes("metatags")){
-            xml +="      <"+js["xmlTags"][i] + " show_spotlight=\"Y\">" + js["columns"][i] + "</" + js["xmlTags"][i] + ">\n";
             if (js["xmlTags"][i].includes("metadata")) {
               let dataname = js["xmlTags"][i].substring(9);
+              xml +="      <"+ dataname + " show_spotlight=\"Y\">" + js["columns"][i] + "</" + dataname + ">\n";
               for (let j = 1; j <= len; j++) {
                 docuudef[j-1] += "        <" + dataname + ">" + js["file" + j][i] + "</" + dataname + ">\n" ;
               }
@@ -51,15 +51,19 @@ class XMLConverter {
               }
             } else if (js["xmlTags"][i]==="timeseq_not_before" || js["xmlTags"][i]==="timeseq_not_after") {
               for (let j = 1; j <= len; j++) {
-                docuconts[j-1] += "      <" + js["xmlTags"][i] + ">" + js["file" + j][i].replaceAll("-", "") + "</" + js["xmlTags"][i] + ">\n";
+                docubodys[j-1] += "      <" + js["xmlTags"][i] + ">" + js["file" + j][i].replaceAll("-", "") + "</" + js["xmlTags"][i] + ">\n";
               }
             } else {
+              xml +="      <"+js["xmlTags"][i] + " show_spotlight=\"Y\">" + js["columns"][i] + "</" + js["xmlTags"][i] + ">\n";
               for (let j = 1; j <= len; j++) {
                 docubodys[j-1] += "      <" + js["xmlTags"][i] + ">" + js["file" + j][i] + "</" + js["xmlTags"][i] + ">\n";
               }
             }
           } else {
             let tagName = js["xmlTags"][i].substring(9);
+            tagName = tagName.replaceAll("/", '');
+            tagName = tagName.replaceAll("(", '');
+            tagName = tagName.replaceAll(")", '');
             featAnal += "      <spotlight category=\"Udef_"+ tagName + "\"  sub_category=\"-\" display_order=\"" + cnt + "\" title=\"" + js["columns"][i] + "/-\"/>\n";
             tags += "      <tag type=\"contentTagging\" name=\"Udef_"+ tagName + "\" default_category=\"Udef_" + tagName + "\" default_sub_category=\"-\"/>\n";
             cnt++;

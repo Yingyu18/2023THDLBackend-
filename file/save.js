@@ -1,5 +1,6 @@
 var express = require('express');
-var router = express.Router();
+
+let jModel = require('../models/json_model');
 
 let tableFunc = require('../models/tableFunc');
 tableFunc = new tableFunc();
@@ -8,15 +9,19 @@ let handler = require('../controllers/fileConverter');
 handler = new handler();
 
 
-router.get('/', async function(req, res, next) {
-    var id = req.body.file_id;
+
+const saveJson = async function(req, res, next) {
+    var uid = req.user.userID;
+    var uname = req.user.name;
+    var fid = req.body.file_id;
     var fname = req.body.file_name;
     var arr = req.body.arr;
-    var resBody;
-    if (id == null) {id = '';}
-    var js = await handler.json(arr);
-    if (js) {res.status(200).send("save sucess, filename = " + fname +'\n content: \n' + js);}
-    else {res.status(200).send("save fail");}
-});
+    if (fid == null) {fid = -1;}
+    var js = jModel.toJson(arr);
+    let result = tableFunc.saveJson(js, uid, uname, fid, fname);    
+    res.status(200).send(result);
+};
 
-module.exports = router;
+module.exports = {
+    saveJson,
+};

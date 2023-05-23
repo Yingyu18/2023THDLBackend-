@@ -4,6 +4,9 @@ const app = require('../app');
 const multer = require('multer');
 var router = express.Router();
 const upload = multer();
+const {
+  saveJson,
+} = require('../file/save');
 
 
 
@@ -35,6 +38,7 @@ router.post('/download/:format(csv|json|xml)', authentication, downloadFile)
 
 //get file information
 router.get('/getCsvs', authentication, getCsv)
+router.post('/save', authentication, saveJson);
 
 module.exports = router;
 

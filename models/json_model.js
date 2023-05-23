@@ -8,7 +8,7 @@ cleaner = new cleaner();
 
 class jsonConverter {
 
-   async  toJson (arr) { 
+   async toJson (arr) { 
         let js = {
            "columns" : arr[0],
            "xmlTags" : arr[1]

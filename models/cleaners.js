@@ -38,6 +38,12 @@ class cleaner {
     }
     
     arrangeFormat(type, table, idx) {
+        let map = {
+            0: ["AHCMS" ,'國史館檔案史料文物查詢系統'],
+            1 : ["AHTWH", '國史館臺灣文獻館典藏管理系統'],
+            2 : ["NDAP", '臺灣省議會史料總庫'],
+            3 : ["tlcda", '地方議會議事錄']
+        }
         if (types >= 4) {return table;}
         let curRow = idx-1;
         let start = -1;
@@ -51,6 +57,21 @@ class cleaner {
                 end = j;                
                 if (start > 0 && end > 0) {break;}
             }
+            if (table[curRow][j] == '唯一編碼') {
+                for (let i = curRow + 1; i < table.length; i++) {
+                    table[i][j] = map[types][0] + '-' + table[i][j];
+                }
+            }
+            if (table[curRow][j] == '來源系統') {
+                for (let i = curRow + 1; i < table.length; i++) {
+                    table[i][j] = map[types][1];
+                }
+            }
+            if (table[curRow][j] == '來源系統縮寫') {
+                for (let i = curRow + 1; i < table.length; i++) {
+                    table[i][j] = map[types][0];
+                }
+            }
         }
         curRow++;
         if (type == 3) {
@@ -60,7 +81,6 @@ class cleaner {
                 table[curRow][end] = this.timeFormat(type, table[curRow][start].substring(13, 23));
                 curRow++;
             }
-
         }
          else {
             while (curRow < table.length) {           
