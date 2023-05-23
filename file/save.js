@@ -1,6 +1,7 @@
 var express = require('express');
 
 let jModel = require('../models/json_model');
+jModel = new jModel();
 
 let tableFunc = require('../models/tableFunc');
 tableFunc = new tableFunc();

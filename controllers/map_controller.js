@@ -1,7 +1,11 @@
 let model = require('../models/map_model');
-const tableFunc = require('../models/tableFunc');
-const jModel = require('../models/json_model');
-const cModel = require('../models/csv_model');
+let tableFunc = require('../models/tableFunc');
+let jModel = require('../models/json_model');
+let cModel = require('../models/csv_model');
+jModel = new jModel();
+cModel = new cModel();
+tableFunc = new tableFunc();
+model = new model();
 
 const projectMapping = async (req, res) =>{
     var pid = req.body.project_id;

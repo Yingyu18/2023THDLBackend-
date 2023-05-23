@@ -1,9 +1,9 @@
 var fs = require('fs');
 let cleaner = require('./cleaners');
 let tableFunc = require('./tableFunc');
-const jsConv = require('./json_model');
+let jsConv = require('./json_model');
 
-
+jsConv = new jsConv();
 tableFunc = new tableFunc();
 cleaner = new cleaner();
 

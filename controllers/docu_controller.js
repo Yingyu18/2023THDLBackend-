@@ -3,8 +3,11 @@ const {
     docuskyChecker,
   } = require('../models/docuskyChecker');
 
-const tableFunc = require('../models/tableFunc');
-const jModel = require('../models/json_model');
+let tableFunc = require('../models/tableFunc');
+let jModel = require('../models/json_model');
+
+tableFunc = new tableFunc();
+jModel = new jModel();
 
 const docuCheck = async (req, res) =>{ 
     var email = req.user.email;
