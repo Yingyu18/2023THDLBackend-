@@ -87,18 +87,18 @@ class XMLConverter {
       try {
         let conn = await pool.getConnection();
         let sql = "Select map_ID from sec_map where fileID = ?";
-        let res = await conn.query(sql, pid);
+        let res = await conn.query(sql, [pid]);
         if (res[0].map_ID) {
           sql = "UPDATE file_DB SET content = ? where fileID = ?" ;
-          res = await conn.query(sql, xml, res[0].map_ID);
+          res = await conn.query(sql, [xml, res[0].map_ID]);
           return res[0].map_ID;
         } else {
           let user = await getUserDetail(uid);
           res = await tableFunc.insertFile(uid, user.username, corpus_name, xml, 'xml');
           sql = "Select fileID from file_DB where fileName = ?";
-          let fid = await conn.query(sql, corpus_name);
+          let fid = await conn.query(sql, [corpus_name]);
           sql = "Insert Into sec_map SET fileID = ?, map_ID = ?, sec_map = ?, create_time = ? values (?, ?, ?, ?)";  
-          result = await conn.query(sql, pid, fid[0].fileID, '', Date.now());
+          result = await conn.query(sql, [pid, fid[0].fileID, '', Date.now()]);
           return fid[0].fileID;
         }
         

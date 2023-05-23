@@ -1,8 +1,6 @@
 var fs = require('fs');
 let cleaner = require('./cleaners');
 let tableFunc = require('./tableFunc');
-const mapModel = require('./map_model');
-const pool = require('./connection_db');
 const jsConv = require('./json_model');
 
 

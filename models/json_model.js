@@ -31,7 +31,7 @@ class jsonConverter {
         try {
           let conn = await pool.getConnection();
           var sql = "Select is_mapped from file_DB where fileID = ?";
-          let result = await conn.query(sql, pid);      
+          let result = await conn.query(sql, [pid]);      
           conn.release();
           return result;  
         } catch (error) {
@@ -43,13 +43,13 @@ class jsonConverter {
         try {
           let conn = await pool.getConnection();
           var sql = "Select fileName from file_DB where fileID = ?";
-          let fname = await conn.query(sql, fid);   
+          let fname = await conn.query(sql, [fid]);   
           sql = "Select sourceCsvs from file_DB where fileID = ?";
-          let src = await conn.query(sql, pid);   
+          let src = await conn.query(sql, [pid]);   
           sql = "UPDATE file_DB SET sourceCsvs = ? where fileID = ?";
-          let result = await conn.query(sql, src.push(fname), pid);  
+          let result = await conn.query(sql, [src.push(fname), pid]);  
           sql = "Insert Into sec_map SET fileID = ?, map_ID = ?, sec_map = ?, create_time = ? values (?, ?, ?, ?)";  
-          result = await conn.query(sql, fid, pid, '', Date.now());  
+          result = await conn.query(sql, [fid, pid, '', Date.now()]);  
           conn.release();
           return 'success';  
         } catch (error) {
@@ -61,7 +61,7 @@ class jsonConverter {
         try {
           let conn = await pool.getConnection();
           var sql = "UPDATE file_DB SET is_mapped = ? where fileID = ?";
-          let result = await conn.query(sql, false, pid);      
+          let result = await conn.query(sql, [false, pid]);      
           conn.release();
           return 'csv append success';  
         } catch (error) {

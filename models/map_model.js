@@ -22,20 +22,20 @@ class mapModel {
             let rs;        
             if (type == 1) { 
                 sql = "UPDATE file_DB SET map = ? WHERE fileID = ?";
-                rs = await conn.query(sql, res.toString(), fid);
+                rs = await conn.query(sql, [res.toString(), fid]);
                 if (fin == 1) {
                     res = cModel.to2dArray(jid, idx, 1);
                     res = jModel.toJson(res);
                     sql = "UPDATE file_DB SET content = ? is_mapped = ? WHERE fileID = ?";
-                    rs = await conn.query(sql, res, true, jid);
+                    rs = await conn.query(sql, [res, true, jid]);
                 } else {
                     sql = "UPDATE sec_map SET sec_map = ? WHERE fileID = ? and json_ID = ?";
-                    rs = await conn.query(sql, res, fid, jid);
+                    rs = await conn.query(sql, [res, fid, jid]);
                     if (fin == 1) {
                         res = cModel.to2dArray(jid, idx, 2);
                         res = jModel.toJson(res);
                         sql = "UPDATE file_DB SET content = ? is_mapped = ? WHERE fileID = ?";
-                        rs = await conn.query(sql, res, true, jid);
+                        rs = await conn.query(sql, [res, true, jid]);
                     }
                 } 
             }                
@@ -49,14 +49,14 @@ class mapModel {
     try {
         let conn = await pool.getConnection();
         var sql = "SELECT sourceCsvs FROM file_DB WHERE fileID = ?";
-        let arr = await conn.query(sql, pid);
+        let arr = await conn.query(sql, [pid]);
         let fhead = new Array();
         let shead = new Array();
         let fid = new Array();
         arr = tbfunc.getSrcsID(arr[0].sourceCsvs);
         sql = "SELECT map FROM file_DB WHERE fileID = ?";
         for (let i = 0; i < arr.length; i++) {
-            let row = await conn.query(sql, arr[i]);            
+            let row = await conn.query(sql, [arr[i]]);            
             if (row[0].map.includes(',,') || row[0].map === '') {
                 fid.push(arr[i]);
                 fhead.push(tbfunc.getHead(arr[i]));

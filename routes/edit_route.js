@@ -11,17 +11,19 @@ const {
   } = require('../util/util')
 
 
-router.post('/goToEdit', authentication, async function(req, res) {
-    const userId = req.user.userId;
+router.post('/goToEdit',  async function(req, res) {
+    const userId = req.body.userId;
     var pid = req.body.project_id;
+    console.log(req.body)
+    console.log('pid = ' + pid);
     var content = await handler.retrieve2D(pid);
     if (content.error) {res.status(400).send(content.error);}
     else {res.status(200).send(content);}
 });
 
 
-router.post('/appendNew', authentication, async function(req, res) {
-    const userId = req.user.userId;
+router.post('/appendNew', async function(req, res) {
+    const userId = req.body.userId;
     var fid = req.body.file_id;
     var pid = req.body.project_id;
     var content = await handler.append(fid, pid);
@@ -29,8 +31,8 @@ router.post('/appendNew', authentication, async function(req, res) {
 })
 
 router.post('/buildDB', async function(req, res) {
-    const userId = req.user.userId;
-    const email = req.user.emal;
+    const userId = req.body.userId;
+    const email = req.body.emal;
     var DBname = req.body.DBname;
     var pid = req.body.Json_id;
     var content = req.body.content;
