@@ -20,12 +20,12 @@ const signUp = async (req, res) => {
         return;
     }
     let data = {
-        username : validator.escape(username),
-        email : validator.escape(email),
-        country : validator.escape(country),
-        institution : validator.escape(institution),
-        title : validator.escape(title),
-        researchTopic : validator.escape(researchTopic),
+        username : username,
+        email : email,
+        country : country,
+        institution : institution,
+        title : title,
+        researchTopic : researchTopic,
         password : password
     }
     const result = await User.signUp(data);
@@ -49,7 +49,7 @@ const signUp = async (req, res) => {
         });
         // 設置郵件選項
         const auth_token = user.access_token
-        const ACTION_URL = `http://localhost:3000/auth/{auth_token}`
+        const ACTION_URL = `http://localhost:3000/auth/${auth_token}`
         const mailOptions = {
             from: process.env.GMAIL_ACCOUNT,
             to: email,
@@ -68,7 +68,6 @@ const signUp = async (req, res) => {
         });
 
     res.status(200).send({
-            data: {
                 id: user.id.toString(),
                 username: user.name,
                 email: user.email,
@@ -77,7 +76,6 @@ const signUp = async (req, res) => {
                 title: user.title,
                 researchTopics: user.researchTopic
                 // status: 'disabled',
-            }
         }
     );
 };
@@ -144,10 +142,7 @@ const login = async (req, res) => {
     } 
     //login Docusky 
     result = await loginDocuSky(user.EMAIL, user.PASSWORD)
-
-
     res.status(200).send({
-       // data: {
             token: user.ACCESS_TOKEN,
             sid: result.DocuSky_SID,
             data: {
@@ -159,7 +154,6 @@ const login = async (req, res) => {
                 title: user.TITLE,
                 researchTopics: user.RESEARCH_TOPIC
             }
-       // }
     });
 };
 const loginDocuSky = async (dsUname, dsPword) => {
@@ -193,7 +187,8 @@ const loginDocuSky = async (dsUname, dsPword) => {
 
 const signupAuth = async(req, res) =>{
     const token = req.body.token
-    const email = req.body.email
+    let email
+    //const email = req.body.email
     jwt.verify(token, TOKEN_SECRET, function(err, decoded){
         if(err){
             res.status(400).send("invalid token")
@@ -201,6 +196,7 @@ const signupAuth = async(req, res) =>{
         if(decoded.exp < Date.now()/1000){
             res.status(400).send("token expired")
         }
+        email = decoded.email
     });
     const result = await User.signupAuth(email);
     if (result.error) {
