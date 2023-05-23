@@ -18,8 +18,8 @@ const saveJson = async function(req, res, next) {
     var fname = req.body.file_name;
     var arr = req.body.arr;
     if (fid == null) {fid = -1;}
-    var js = jModel.toJson(arr);
-    let result = tableFunc.saveJson(js, uid, uname, fid, fname);    
+    var js = await jModel.toJson(arr);
+    let result = await tableFunc.saveJson(js, uid, uname, fid, fname);    
     res.status(200).send(result);
 };
 

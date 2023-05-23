@@ -25,16 +25,16 @@ class mapModel {
                 sql = "UPDATE file_DB SET map = ? WHERE fileID = ?";
                 rs = await conn.query(sql, [res.toString(), fid]);
                 if (fin == 1) {
-                    res = cModel.to2dArray(jid, idx, 1);
-                    res = jModel.toJson(res);
+                    res = await cModel.to2dArray(jid, idx, 1);
+                    res = await jModel.toJson(res);
                     sql = "UPDATE file_DB SET content = ? isMapped = ? WHERE fileID = ?";
                     rs = await conn.query(sql, [res, true, jid]);
                 } else {
                     sql = "UPDATE sec_map SET sec_map = ? WHERE fileID = ? and json_ID = ?";
                     rs = await conn.query(sql, [res, fid, jid]);
                     if (fin == 1) {
-                        res = cModel.to2dArray(jid, idx, 2);
-                        res = jModel.toJson(res);
+                        res = await cModel.to2dArray(jid, idx, 2);
+                        res = await jModel.toJson(res);
                         sql = "UPDATE file_DB SET content = ? isMapped = ? WHERE fileID = ?";
                         rs = await conn.query(sql, [res, true, jid]);
                     }
@@ -56,17 +56,20 @@ class mapModel {
         let shead = new Array();
         let fid = new Array(); 
         var type;
+        let temp;
         sql = "SELECT map FROM file_DB WHERE fileID = ?";
         for (let i = 0; i < arr.length; i++) {
             let row = await conn.query(sql, [arr[i]]);            
             if (row[0].map == null) {
                 fid.push(arr[i]);
-                fhead.push(tbfunc.getHead(arr[i]));
+                temp = await tbfunc.getHead(arr[i])
+                fhead.push(temp);
                 shead.push(row[0].map);
                 type = 1;
             } else if (row[0].map.includes(',,') || row[0].map == '') {
                 fid.push(arr[i]);
-                fhead.push(tbfunc.getHead(arr[i]));
+                temp = await tbfunc.getHead(arr[i])
+                fhead.push(temp);
                 shead.push(row[0].map);
                 type = 1;
             } else if (type != 1) {
@@ -74,12 +77,14 @@ class mapModel {
                 if (tmp == null) {
                     type = 2;
                     fid.push(arr[i]);
-                    fhead.push(tbfunc.getHead(arr[i]));
+                    temp = await tbfunc.getHead(arr[i])
+                    fhead.push(temp);
                     shead.push(tmp);
                 } else if (tmp.includes(',,') || tmp === '') {
                     type = 2;
                     fid.push(arr[i]);
-                    fhead.push(tbfunc.getHead(arr[i]));
+                    temp = await tbfunc.getHead(arr[i])
+                    fhead.push(temp);
                     shead.push(tmp);
                 }
             }

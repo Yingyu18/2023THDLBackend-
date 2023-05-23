@@ -36,12 +36,12 @@ const fileMapping = async (req, res) => {
             res.status(400).send({"error": 'mapping were already completed.'});
             return ;
         }
-        else {m_head = tableFunc.getJsonHead(pid, 1);}
+        else {m_head = await tableFunc.getJsonHead(pid, 1);}
     }
-   
+    var fhead = await tableFunc.getHead(fid);
    res.status(200).send({
         "file_id": fid,
-        "file_head": tableFunc.getHead(fid),
+        "file_head": fhead,
         "map_head": m_head,
     }); 
     return ;
@@ -54,7 +54,7 @@ const savemap = async (req, res) => {
     var type = req.body.type;
     var res = req.body.map_res;
     var fin = req.body.finish;
-    var arr = model.saveMap(fid, pid, type, fin, res);
+    var arr = await model.saveMap(fid, pid, type, fin, res);
     if (arr.error) {
         res.status(400).send({message: arr.error});
         return ;
@@ -69,14 +69,15 @@ const getmap = async (req, res) => {
     var fid = req.body.file_id;
     var type = req.body.type;
     var pid = req.body.json_id;
-    var arr = type == 1 ? tableFunc.getMap(fid) : tableFunc.getSecMap(fid, pid);
+    var arr = type == 1 ? await tableFunc.getMap(fid) : await tableFunc.getSecMap(fid, pid);
     res.status(200).send({"map": arr});
     return ;
 }
 
 const retrieveMapped = async (req, res) => {    
     var pid = req.body.project_id;
-    res.status(200).send(tableFunc.getIsMap(pid));
+    var result = await tableFunc.getIsMap(pid);
+    res.status(200).send(result);
 }
 module.exports = {
     projectMapping,
