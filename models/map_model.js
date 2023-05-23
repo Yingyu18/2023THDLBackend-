@@ -94,6 +94,7 @@ class mapModel {
             "type" : type
           }
         result["map_head"] = type == 1 ? this.core : tbfunc.getJsonHead(pid, 1); 
+        console.log(result);
         return result;
     } catch (error) {
        console.log(error);
