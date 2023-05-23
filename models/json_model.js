@@ -31,7 +31,8 @@ class jsonConverter {
         try {
           let conn = await pool.getConnection();
           var sql = "Select isMapped from file_DB where fileID = ?";
-          let result = await conn.query(sql, [pid]);      
+          let result = await conn.query(sql, [pid]); 
+          result = result[0].isMapped;  
           conn.release();
           return result;  
         } catch (error) {
