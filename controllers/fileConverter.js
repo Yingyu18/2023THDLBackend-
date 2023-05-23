@@ -1,5 +1,5 @@
 let csvConvert = require('../models/csvConvert');
-let jsonConvert = require('../models/jsonConvert');
+let jsonConvert = require('../models/json_model');
 let XMLConvert = require('../models/xmlConvert');
 const fs = require('fs');
 let tableFunc = require('../models/tableFunc');
@@ -11,7 +11,7 @@ jsonConvert = new jsonConvert();
 XMLConvert = new XMLConvert();
 
 module.exports = class handler {
-    async csv(ids) {
+    async makeCsv(ids) {
         let contents = await tableFunc.openFile(ids);
         let idx = await tableFunc.getRowId(ids);
         let types = await tableFunc.getType(ids);
@@ -31,34 +31,24 @@ module.exports = class handler {
     async tojson(arr) {
         return await jsonConvert.toJson(arr);
     }
-    jsonArr(id) {
-        return jsonConvert.to2D(id);
-    }
-    async xml(js, corpus_name) {
-        var xml = XMLConvert.toXML(js, corpus_name);        
-        if (xml) return 'save success, file name: ' + corpus_name + '\n file content:\n' + xml; 
-        else return 'save failed';
-    }
 
-    async append(id, jid, jhead) {
-        let content = await tableFunc.openFile([id]);
-        let idx = await tableFunc.getRowId([id]);
-        let arr = csvConvert.secMapCheck(id, jid, idx[0]);
-        let types = await tableFunc.getType([id]);
-        if (arr != 0) { 
-            return {
-                "needMap" : 1, 
-                "array" : arr,
-                "json_id": jid,
-                "json_head": jhead
-            }
-        } else {
-            return {
-                "needMap" : 0, 
-                "array" :  csvConvert.mergeToJson(content[0], jid, types[0], idx[0]),
-                "json_id": jid,
-                "json_head": jhead
-            }
-        }
+    async buildXml(js, corpus_name, pid, uid) {
+        var xml = XMLConvert.toXML(js, corpus_name);
+        let res = XMLConvert.saveXML(xml, pid, uid, corpus_name); 
+        return res;
+    }
+    async retrieve2D(pid) {
+        const result = jsonConvert.to2D(pid);
+        if (result.error) {return result.error;}
+        if (jsonConvert.needMapCheck(pid)) {return result;}
+        else {return {error: "plz finish mapping ur CSVs before editing."}}
+    }
+    async append(fid, pid) {
+       let res = jsonConvert.insertNewCSV(fid, pid);
+       if (res === 'success') {
+         res = jsonConvert.resetMapStatus(pid);
+         return res;
+       }
+       else {return {error: 'insert failed.'}}
     }
 }

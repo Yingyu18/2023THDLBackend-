@@ -50,6 +50,38 @@ class mapModel {
     } else {
         return arr;
     } 
-}
+  }
+    csvFilter = async (pid) => {
+    try {
+        let conn = await pool.getConnection();
+        var sql = "SELECT sourceCsvs FROM file_DB WHERE fileID = ?";
+        let arr = await conn.query(sql, pid);
+        let fhead = new Array();
+        let shead = new Array();
+        let fid = new Array();
+        arr = tbfunc.getSrcsID(arr[0].sourceCsvs);
+        sql = "SELECT map FROM file_DB WHERE fileID = ?";
+        for (let i = 0; i < arr.length; i++) {
+            let row = await conn.query(sql, arr[i]);            
+            if (row[0].map.includes(',,')) {
+                fid.push(arr[i]);
+                fhead.push(tbfunc.);
+                type = 1;
+            } 
+          }                      
+        conn.release();
+        let result = {
+            "file_ids": arr,
+            "project_id": pid,
+            "file_heads": [],
+            "saved_heads": [],
+            "map_head": [],
+            "type" : 0
+          }
+    } catch (error) {
+       console.log(error);
+    }
+
+  }
 }
 module.exports = mapModel;

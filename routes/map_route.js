@@ -8,16 +8,18 @@ const {
   } = require('../util/util')
 
 const {
-    firstMapping,
-    secondMapping,
-    saveMapping
+    projectMapping,
+    fileMapping,
+    savemap,
+    getmap
   } = require('../controllers/map_controller');
 
 router.get('/', function(req, res, next) {
     res.send('file router respond');
 });
 
-router.post('/first', authentication, firstMapping); 
-router.post('/second', authentication, secondMapping);
-router.post('/savemap', authentication, saveMapping);
+router.post('/projectMapping', authentication, projectMapping); 
+router.post('/fileMapping', authentication, fileMapping);
+router.post('/savemap', authentication, savemap);
+router.post('/getmap', authentication, getmap);
 module.exports = router;

@@ -3,7 +3,7 @@ let cleaner = require('../models/cleaners');
 let tableFunc = require('../models/tableFunc');
 const mapModel = require('../models/map_model');
 const pool = require('./connection_db');
-const jsConv = require('./jsonConvert');
+const jsConv = require('./json_model');
 
 
 tableFunc = new tableFunc();
@@ -35,26 +35,6 @@ class csvConverter {
         '相關組織': 14, 
         '關鍵詞': 15, 
         '摘要/全文': 16 
-    }
-
-    needMapCheck(ids, idx) {
-        var arr = new Array();
-        for (let i = 0; i < ids.length; i++) {
-            rs = tableFunc.getMap(ids[i]).split(",");
-            if (mapModel.getColInfo(ids[i], idx[i]).length != rs.length()) {
-                arr.push(ids[i]);
-            }            
-        }
-        return arr;        
-    }
-    async secMapCheck(id, jid, idx) {
-        const conn = await pool.getConnection();
-        var sql = "select sec_map from sec_map where fileID = ? and json_ID = ?";
-        var res = await conn.query(sql, id, jid);
-        if (res[0].sec_map == null || res[0].sec_map.split(",").length != tableFunc.getColInfo(id, idx).length) {
-            return tableFunc.getColInfo(id, idx);
-        } 
-        else {return 0;}
     }
 
     to2dArray (contents, idx, types) { 

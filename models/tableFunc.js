@@ -1,5 +1,5 @@
 class tableFunc {
-  async insertFile(uid, uname, fileName, content, row) {
+  async insertFile(uid, uname, fileName, content, type) {
     const pool = require("./connection_db");
     console.log("insert file for user: " + uid);
     try {
@@ -8,16 +8,17 @@ class tableFunc {
         ft = "j" + ft;
       }
       var sql =
-        "INSERT INTO file_DB (fileName, USER_ID, USER_NAME, Start_Row, map, content, cores_xml_id, upload_time) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+        "INSERT INTO file_db (fileName, USER_ID, USER_NAME, Start_Row, content, upload_time, type, lastModified) VALUES (?,?,?,?,?,?,?,?)";
+      var time = Date.now();
       await conn.query(sql, [
         fileName,
         uid,
         uname,
-        row,
-        "",
-        content,
         -1,
-        Date.now(),
+        content,
+        time,
+        type,        
+        time,        
       ]);
       console.log("insert success");
       conn.release();
@@ -92,6 +93,38 @@ class tableFunc {
     }
   }
 
+  async getHead(fileID) {
+    const pool = require("./connection_db");
+    var idx = this.getRowId([fileID]);
+    idx = idx[0];
+    try {
+      let conn = await pool.getConnection();
+      var sql = "SELECT  FROM file_DB WHERE fileID = ?";
+      row = await conn.query(sql, fileID);     
+      conn.release();
+      return row[0].map;
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  async getSrcsID(fnames) {
+    const pool = require("./connection_db");
+    try {
+      let conn = await pool.getConnection();
+      let result = new Array();
+      var sql = "SELECT fileID FROM file_DB WHERE fileName= ?";
+      for (let i = 0; i < fnames.length; i++) {
+        row = await conn.query(sql, fnames[i]);
+        result.push(row[0].fileID);
+      }     
+      conn.release();
+      return result;
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
   async deleteFile(fileID) {
     const pool = require("./connection_db");
     try {
@@ -100,20 +133,6 @@ class tableFunc {
       await conn.query(sql, fileID);
       console.log("delete success");
       conn.release();
-    } catch (error) {
-      console.log(error);
-    }
-  }
-
-  async queryName(id) {
-    const pool = require("./connection_db");
-    try {
-      let row;
-      let conn = await pool.getConnection();
-      var sql = "Select fileName from file_DB where fileID = ?";
-      row = await conn.query(sql, id);
-      conn.release();
-      return row[0].file_name;
     } catch (error) {
       console.log(error);
     }
