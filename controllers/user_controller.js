@@ -5,7 +5,7 @@ const validator = require('validator');
 const User = require('../models/user_model');
 const bcrypt = require('bcrypt');
 const https = require('https');
-const {TOKEN_SECRET} = process.env;
+const {TOKEN_EXPIRE, TOKEN_SECRET} = process.env; 
 
 const signUp = async (req, res) => {
     let {username, email, password, country, institution, title, researchTopics} = req.body;
@@ -155,7 +155,7 @@ const login = async (req, res) => {
 
     res.status(200).send({
             token: user.ACCESS_TOKEN,
-            data: {
+            record: {
                 id: user.USER_ID.toString(),
                 username: user.USER_NAME,
                 email: user.EMAIL,
@@ -169,6 +169,30 @@ const login = async (req, res) => {
             }
     });
 };
+const authRefresh = async (req, res) => {
+    const accessToken = jwt.sign({
+        name: req.user.name,
+        email: req.user.email,
+        userId: req.user.userId.toString(),
+    }, TOKEN_SECRET, {expiresIn: TOKEN_EXPIRE});
+    res.status(200).send({
+        token: accessToken,
+        "record": {
+            "id": "string",
+            "username": "username123",
+            "verified": true,
+            "email": "test@example.com",
+            "name": "test",
+            "avatar": "filename.jpg",
+            "country": "test",
+            "institution": "test",
+            "researchTopics": "test",
+            "title": "test",
+            "sid": "test"
+          }
+    });
+}
+
 const loginDocuSky = async (dsUname, dsPword) => {
     return new Promise((resolve, reject) => {
     const options = {
@@ -293,6 +317,7 @@ module.exports = {
     signUp,
     signupAuth,
     login,
+    authRefresh,
     loginDocuSky,
     forgetPassword,
     getUserInfo,

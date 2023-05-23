@@ -51,7 +51,6 @@ const getCsv = async(req) => {
     try{
         let qryStr = `SELECT * FROM file_db WHERE USER_ID = ? AND type = ?`
         var results = await conn.query(qryStr, [userId, "csv"])
-        console.log("result", results)
         return results
     } catch (error){
         console.log(error)
