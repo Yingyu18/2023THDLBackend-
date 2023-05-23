@@ -96,7 +96,7 @@ const login = async (identity, password) => {
 
         const loginAt = new Date();
         const accessToken = jwt.sign({
-            name: user.USE_NAME,
+            name: user.USER_NAME,
             email: user.EMAIL,
             userId: user.USER_ID.toString(),
         }, TOKEN_SECRET, {expiresIn: TOKEN_EXPIRE});
