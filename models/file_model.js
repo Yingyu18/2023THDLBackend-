@@ -13,7 +13,7 @@ const uploadFile = async(data) => {
             if(source ==='自定義資料檔案'){source = 4;} 
         console.log("test", source)
         let qryStr = 'INSERT INTO file_db (fileName, USER_ID, USER_NAME, Start_Row, content, upload_time, size, source, lastModified) VALUES (?,?,?,?,?,?,?,?,?)'
-        const result = await conn.query(qryStr, [filename, userId, uploader, 1, content, new Date(), size, source, lastModified])
+        const result = await conn.query(qryStr, [filename, userId, uploader, 1, content, new Date().getTime().toString(), size, source, lastModified])
         return result
     } catch (error){
         console.log({error:error})

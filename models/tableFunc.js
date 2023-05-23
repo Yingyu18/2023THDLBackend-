@@ -9,7 +9,7 @@ class tableFunc {
       }
       var sql =
         "INSERT INTO file_db (fileName, USER_ID, USER_NAME, Start_Row, content, upload_time, type, lastModified) VALUES (?,?,?,?,?,?,?,?)";
-      var time = Date.now();
+      var time = new Date().getTime().toString();
       await conn.query(sql, [
         fileName,
         uid,
@@ -103,7 +103,7 @@ class tableFunc {
     try {
       let conn = await pool.getConnection();
       let row;
-      var sql = "SELECT Type FROM file_DB WHERE fileID = ?";
+      var sql = "SELECT type FROM file_DB WHERE fileID = ?";
       for (let i = 0; i < fileIDs.length; i++) {
         row = await conn.query(sql, [fileIDs[i]]);
         array[i] = row[0].Type;
@@ -195,10 +195,10 @@ class tableFunc {
     const pool = require("./connection_db");
     try {
       let conn = await pool.getConnection();
-      var sql = "SELECT is_mapped FROM file_DB WHERE fileID = ?";      
+      var sql = "SELECT isMapped FROM file_DB WHERE fileID = ?";      
       let res = await conn.query(sql, [pid]);  
       conn.release();
-      return res[0].is_mapped;
+      return res[0].isMapped;
     } catch (error) {
       console.log(error);
     }
@@ -225,9 +225,9 @@ class tableFunc {
       var resBody = { file_id: "zzz", file_name: fname};
       if (fid == -1) {
         this.insertFile(uid, uname, fname, js, 'json')
-        sql = "Select file_id from file_DB where fileName = ? and USER_ID = ?";
+        sql = "Select fileID from file_DB where fileName = ? and USER_ID = ?";
         row = await conn.query(sql, [fileName, uid]);
-        fid = row[0].file_id;
+        fid = row[0].fileID;
       } else {
         sql = "UPDATE file_DB SET content = ?, fileName = ? where fileID = ?";
         await conn.query(sql, [js, fname, fid]);
@@ -235,6 +235,19 @@ class tableFunc {
       resBody["file_id"] = fid;
       conn.release();
       return resBody;
+    } catch (error) {
+      console.log(error);
+    }
+  }
+  async setBuilt(pid) {
+    const pool = require("./connection_db");
+    try {
+      let conn = await pool.getConnection();
+     
+      sql = "UPDATE file_DB SET isBuilt = ? where fileID = ?";
+      let res = await conn.query(sql, [true, pid]);
+      conn.release();
+      return 'is_built_set';
     } catch (error) {
       console.log(error);
     }

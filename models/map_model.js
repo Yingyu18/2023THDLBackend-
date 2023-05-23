@@ -2,11 +2,12 @@ require('dotenv').config();
 const pool = require('./connection_db');
 let tbfunc = require('./tableFunc');
 let cleaner = require('./cleaners');
-const cModel = require('./csv_model');
-const jModel = require('./json_model');
-const tableFunc = require('./tableFunc');
+let cModel = require('./csv_model');
+let jModel = require('./json_model');
 tbfunc = new tbfunc();
 cleaner = new cleaner();
+cModel = new cModel();
+jModel = new jModel();
 
 class mapModel {
      core = ['唯一編碼', '來源系統', '來源系統縮寫', '文件原系統頁面URL', '題名', '檔案類型',
@@ -26,7 +27,7 @@ class mapModel {
                 if (fin == 1) {
                     res = cModel.to2dArray(jid, idx, 1);
                     res = jModel.toJson(res);
-                    sql = "UPDATE file_DB SET content = ? is_mapped = ? WHERE fileID = ?";
+                    sql = "UPDATE file_DB SET content = ? isMapped = ? WHERE fileID = ?";
                     rs = await conn.query(sql, [res, true, jid]);
                 } else {
                     sql = "UPDATE sec_map SET sec_map = ? WHERE fileID = ? and json_ID = ?";
@@ -34,7 +35,7 @@ class mapModel {
                     if (fin == 1) {
                         res = cModel.to2dArray(jid, idx, 2);
                         res = jModel.toJson(res);
-                        sql = "UPDATE file_DB SET content = ? is_mapped = ? WHERE fileID = ?";
+                        sql = "UPDATE file_DB SET content = ? isMapped = ? WHERE fileID = ?";
                         rs = await conn.query(sql, [res, true, jid]);
                     }
                 } 

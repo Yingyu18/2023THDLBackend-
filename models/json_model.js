@@ -30,7 +30,7 @@ class jsonConverter {
     async needMapCheck(pid) {
         try {
           let conn = await pool.getConnection();
-          var sql = "Select is_mapped from file_DB where fileID = ?";
+          var sql = "Select isMapped from file_DB where fileID = ?";
           let result = await conn.query(sql, [pid]);      
           conn.release();
           return result;  
