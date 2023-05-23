@@ -39,9 +39,9 @@ app.use('/api/auth', userRouter);
 app.use('/api/file', fileRouter);
 app.use('/api/files', fileRouter);
 app.use('/api/projects', projectRouter);
-app.use('/edit', editRouter);
-app.use('/map', mapRouter);
-app.use('/docu', docuRouter);
+app.use('/api/edit', editRouter);
+app.use('/api/map', mapRouter);
+app.use('/api/docu', docuRouter);
 
 //app.use('/edit/convertTo', convertRouter);
 app.get('/healthcheck', (req, res)=>{
