@@ -49,10 +49,7 @@ const getmap = async (req, res) => {
     var type = req.body.type;
     var pid = req.body.json_id;
     var arr = type == 1 ? tableFunc.getMap(fid) : tableFunc.getSecMap(fid, pid);
-    res.status(200).send({
-        "done": fileMapCheck (arr),
-        "map": arr,
-    });
+    res.status(200).send({"map": arr});
 }
 
 const retrieveMapped = async (req, res) => {    
