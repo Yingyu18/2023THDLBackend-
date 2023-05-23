@@ -55,6 +55,7 @@ class mapModel {
         let fhead = new Array();
         let shead = new Array();
         let fid = new Array(); 
+        var type;
         sql = "SELECT map FROM file_DB WHERE fileID = ?";
         for (let i = 0; i < arr.length; i++) {
             let row = await conn.query(sql, [arr[i]]);            
