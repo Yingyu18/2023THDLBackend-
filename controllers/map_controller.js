@@ -14,7 +14,7 @@ const projectMapping = async (req, res) =>{
         return;
     }
     var result = model.csvFilter(pid);
-    res.status(200).send(result);   
+    res.status(200).json(result).send();   
     return ; 
 }
 
