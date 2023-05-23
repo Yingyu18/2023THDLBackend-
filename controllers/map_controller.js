@@ -1,78 +1,58 @@
 let model = require('../models/map_model');
 const tableFunc = require('../models/tableFunc');
 const jModel = require('../models/json_model');
+const cModel = require('../models/csv_model');
 
 const projectMapping = async (req, res) =>{
     var pid = req.body.project_id;
     if (jModel.needMapCheck(pid)) {res.status(400).send({"error": 'mapping were already completed.'});}
     var result = model.csvFilter(pid);
-    var cnt = 0;
-    var temprow;
-    ids.forEach(element => {
-        temprow = model.getColInfo(element, rowidxs[cnt]);
-        if (temprow.error) {
-            res.status(400).send({"message": '上傳時指定錯誤列數，標題列為空。'})
-        }
-        else {
-            arr.push(temprow);
-            cnt++;
-        }
-    });
-    res.status(200).send({
-        "file_ids": "Array <int>",
-        "project_id": pid,
-        "file_heads": "Array<Array <String>>",
-        "map_head": "Array <String>",
-        "type" : "int"
-      });
-    
+    return res.status(200).send(result);    
 }
 
 const fileMapping = async (req, res) => {
-    var id = req.body.file_id;
-    var jid = req.body.json_id;
-    var jhead = req.body.json_head;
-    var rowidx = tableFunc.getRowInfo([id]);
-    var arr = model.getColInfo(id, rowidx);
-    if (arr.error) {
-        res.status(400).send({"message": '上傳時指定錯誤列數，標題列為空。'})
+    var fid = req.body.file_id;
+    var pid = req.body.project_id;
+    var type = req.body.type;
+    var m_head;
+
+    if (type == 1) {
+        if (cModel.firstMapCheck(fid)){res.status(400).send({"error": 'mapping were already completed.'});}
+        else {m_head = cModel.core[0];}
     }
-    else {res.status(200).send({
-        json_head: jhead,
-        file_head: arr,
-        json_id: jid,
-    });}
+    else {
+        if (cModel.secondMapCheck(fid, pid)){res.status(400).send({"error": 'mapping were already completed.'});}
+        else {m_head = tableFunc.getJsonHead(pid, 1);}
+    }
+   
+    return res.status(200).send({
+        "file_id": fid,
+        "file_head": tableFunc.getHead(fid),
+        "map_head": m_head,
+    }); 
 }
 
-const savemap = async (req, res) => {    
-    var id = req.body.file_id;
+const savemap = async (req, res) => {
+    var uid = req.user.userID;  
+    var fid = req.body.file_id;
+    var pid = req.body.json_id;
     var type = req.body.type;
     var res = req.body.map_res;
     var fin = req.body.finish;
-    var arr = model.saveMap(id, jid, type, fin, res);
-    if (arr.error) {
-        res.status(400).send({message: arr.error})
-    }
-    else {res.status(200).send({
-        jid: req.body.json_id,
-        next: fin,
-        array: arr
-    });}
+    var arr = model.saveMap(fid, pid, type, fin, res);
+    if (arr.error) {res.status(400).send({message: arr.error});}
+    else {res.status(200).send('save success');}
 }
 const getmap = async (req, res) => {    
-    var id = req.body.file_id;
+    var uid = req.user.userID;
+    var fid = req.body.file_id;
     var type = req.body.type;
-    var res = req.body.map_res;
-    var fin = req.body.finish;
-    var arr = model.saveMap(id, jid, type, fin, res);
-    if (arr.error) {
-        res.status(400).send({message: arr.error})
-    }
-    else {res.status(200).send({
-        jid: req.body.json_id,
-        next: fin,
-        array: arr
-    });}
+    var pid = req.body.json_id;
+    var arr = type == 1 ? tableFunc.getMap(fid) : tableFunc.getSecMap(fid, pid);
+    res.status(200).send({
+        "done": fileMapCheck (arr),
+        "map": arr,
+    });
 }
 
 module.exports = {
