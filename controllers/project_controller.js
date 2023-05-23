@@ -2,7 +2,8 @@ const Project = require('../models/project_model');
 
 const uploadFile = async (req, res)=> {
     console.log("test", req.body)
-    if (!req.body.sourceCsvs || !req.body.name || !req.body.owner) {
+    if (!req.body.sourceCsvs || !req.body.
+        name || !req.body.owner) {
         return res.status(400).send({message:"Bad request"})
     }
 
@@ -34,7 +35,7 @@ const getProject = async (req, res) => {
     const data = [];
     for (let i = 0; i < projects.length; i++) {
         console.log(projects[i])
-        let { fileID, upload_time, fileName, lastModified, isMapped, isBuilt, description} = projects[i]
+        let { fileID, upload_time, fileName, lastModified, isMapped, isBuilt, description, sourceCsvs} = projects[i]
         const owner = projects[i].USER_NAME
         const updated = lastModified
         const thumbnail = ''
@@ -42,10 +43,10 @@ const getProject = async (req, res) => {
         if(csvs.error){
             return res.status(500).send({message:"internal server error"})
         }
-        let sourceCsvs = []
-        for(let i=0; i<csvs.length; i++){
-            sourceCsvs[i] = csvs[i].csv_name
-        }
+        // let sourceCsvs = []
+        // for(let i=0; i<csvs.length; i++){
+        //     sourceCsvs[i] = csvs[i].csv_name
+        // }
         if(isMapped){isMapped=true}else{isMapped=false}
         if(isBuilt){isBuilt=true}else{isBuilt=false}
         data.push({ fileID, upload_time, updated, description, sourceCsvs, fileName, isMapped, owner, thumbnail, isBuilt, description })

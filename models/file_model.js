@@ -4,7 +4,7 @@ const pool = require("./connection_db")
 const uploadFile = async(data) => {
     const conn = await pool.getConnection()
     try{
-        let {filename, content, userId, uploader, type, size, lastModified, source} = data
+        let {filename, content, userId, uploader, size, lastModified, source} = data
         //console.log(data)
             if(source === '國史館檔案史料文物'){ source = 0;}
             if(source === '地方議會議事錄總庫'){source = 1;}
@@ -12,8 +12,8 @@ const uploadFile = async(data) => {
             if(source === '臺灣省議會史料總庫'){source = 3;}
             if(source ==='自定義資料檔案'){source = 4;} 
         console.log("test", source)
-        let qryStr = 'INSERT INTO file_db (fileName, USER_ID, USER_NAME, Start_Row, content, upload_time, type, size, source, lastModified) VALUES (?,?,?,?,?,?,?,?,?,?)'
-        const result = await conn.query(qryStr, [filename, userId, uploader, 1, content, new Date(), type, size, source, lastModified])
+        let qryStr = 'INSERT INTO file_db (fileName, USER_ID, USER_NAME, Start_Row, content, upload_time, size, source, lastModified) VALUES (?,?,?,?,?,?,?,?,?)'
+        const result = await conn.query(qryStr, [filename, userId, uploader, 1, content, new Date(), size, source, lastModified])
         return result
     } catch (error){
         console.log({error:error})
