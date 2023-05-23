@@ -9,7 +9,7 @@ class tableFunc {
       }
       var sql =
         "INSERT INTO file_db (fileName, USER_ID, USER_NAME, Start_Row, content, upload_time, type, lastModified) VALUES (?,?,?,?,?,?,?,?)";
-      var time = Date.now();
+      var time = new Date().getTime().toString();
       await conn.query(sql, [
         fileName,
         uid,
