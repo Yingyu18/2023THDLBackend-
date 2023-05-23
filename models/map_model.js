@@ -65,7 +65,7 @@ class mapModel {
             let row = await conn.query(sql, arr[i]);            
             if (row[0].map.includes(',,')) {
                 fid.push(arr[i]);
-                fhead.push(tbfunc.);
+//                fhead.push(tbfunc.);
                 type = 1;
             } 
           }                      
