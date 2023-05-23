@@ -8,7 +8,7 @@ class tableFunc {
         ft = "j" + ft;
       }
       var sql =
-        "INSERT INTO file_db (fileName, USER_ID, USER_NAME, Start_Row, content, upload_time, source, lastModified) VALUES (?,?,?,?,?,?,?,?)";
+        "INSERT INTO file_db (fileName, USER_ID, USER_NAME, Start_Row, content, upload_time, type, lastModified) VALUES (?,?,?,?,?,?,?,?)";
       var time = Date.now();
       await conn.query(sql, [
         fileName,
@@ -213,7 +213,7 @@ class tableFunc {
       var row;
       var resBody = { file_id: "zzz", file_name: fname};
       if (fid == -1) {
-        this.insertFile(uid, uname, fname, js, 4)
+        this.insertFile(uid, uname, fname, js, 'json')
         sql = "Select file_id from file_DB where fileName = ? and USER_ID = ?";
         row = await conn.query(sql, [fileName, uid]);
         fid = row[0].file_id;
