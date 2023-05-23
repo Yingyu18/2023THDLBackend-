@@ -51,6 +51,7 @@ class mapModel {
         let conn = await pool.getConnection();
         var sql = "SELECT sourceCsvs FROM file_DB WHERE fileID = ?";
         let arr = await conn.query(sql, [pid]);
+        arr = arr[0].sourceCsvs.split(',');
         let fhead = new Array();
         let shead = new Array();
         let fid = new Array(); 
