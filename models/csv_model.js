@@ -15,11 +15,11 @@ class csvConverter {
     'compilation_name', 'metatags/categoryABC', 'time_orig_str', 'year_for_grouping', 'timeseq_not_before', 'timeseq_not_after', 'metatags/PersonName',
      'metatags/PlaceName', 'metatags/Organization', 'metatags/Keywords', 'doc_content']];
 
-    to2dArray (jid, sidx, type) {
-        let temp = tableFunc.openForProject(jid); 
+    async to2dArray (jid, sidx, type) {
+        let temp = await tableFunc.openForProject(jid); 
         let contents = temp[0]; 
         let types = temp[1];
-        let results = type == 1 ? this.core : tableFunc.openJsonHead(jid, 2);        
+        let results = type == 1 ? this.core : await tableFunc.openJsonHead(jid, 2);        
         let extra = results[0].length;
         let lines = 2;
         contents.forEach(function(ele, index, ids) { 
@@ -58,8 +58,8 @@ class csvConverter {
         return results;
     }
 
-    mergeToJson (cont, jid) {
-        var js = jsConv.to2d([jid]);
+    async mergeToJson (cont, jid) {
+        var js = await jsConv.to2d([jid]);
         var len = js.length;
         js[0] = cont[0];
         js[1] = cont[1];
@@ -73,13 +73,13 @@ class csvConverter {
     }
     
     async firstMapCheck(fid) {
-        let map = tableFunc.getMap(fid);
+        let map = await tableFunc.getMap(fid);
         if (map == null) {return false;}
         else if (map.includes(',,') || map === '') {return false;} 
         else {return true;}
     }
     async secondMapCheck(fid, pid) {
-        let map = tableFunc.getSecMap(fid, pid);
+        let map = await tableFunc.getSecMap(fid, pid);
         if (map == null) {return false;}
         else if (map.includes(',,') || map === '') {return false;}
         else {return true;}

@@ -40,7 +40,7 @@ class cleaner {
         return table;
     }
     
-    arrangeFormat(type, table, idx) {
+    async arrangeFormat(type, table, idx) {
         let map = {
             0: ["AHCMS" ,'國史館檔案史料文物查詢系統'],
             1 : ["AHTWH", '國史館臺灣文獻館典藏管理系統'],
@@ -97,7 +97,7 @@ class cleaner {
         return table;      
     }
 
-    rawTable (data) {        
+    async rawTable (data) {        
         data = data.split('\n');
         var result = Array(data.length);  
         var sli = 0;
