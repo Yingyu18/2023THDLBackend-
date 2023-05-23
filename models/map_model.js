@@ -51,13 +51,15 @@ class mapModel {
         let conn = await pool.getConnection();
         var sql = "SELECT sourceCsvs FROM file_DB WHERE fileID = ?";
         let arr = await conn.query(sql, [pid]);
+        arr = arr[0].sourceCsvs.split(',');
         let fhead = new Array();
         let shead = new Array();
         let fid = new Array(); 
+        var type;
         sql = "SELECT map FROM file_DB WHERE fileID = ?";
         for (let i = 0; i < arr.length; i++) {
             let row = await conn.query(sql, [arr[i]]);            
-            if (row[0].map == null || row[0].map.includes(',,') || row[0].map == '') {
+            if (row == null || row[0].map.includes(',,') || row[0].map == '') {
                 fid.push(arr[i]);
                 fhead.push(tbfunc.getHead(arr[i]));
                 shead.push(row[0].map);

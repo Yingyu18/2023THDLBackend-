@@ -9,7 +9,7 @@ model = new model();
 
 const projectMapping = async (req, res) =>{
     var pid = req.body.project_id;
-    if (jModel.needMapCheck(pid)) {
+    if (jModel.needMapCheck(pid) == 1) {
         res.status(400).send({"error": 'mapping were already completed.'});
         return;
     }
