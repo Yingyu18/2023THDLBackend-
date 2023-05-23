@@ -17,8 +17,14 @@ router.post('/goToEdit', bodyParser.json(), authentication, async function(req, 
     const userId = req.user.userId;
     var pid = req.body.project_id;
     var content = await handler.retrieve2D(pid);
-    if (content.error) {res.status(400).send(content.error);}
-    else {res.status(200).send(content);}
+    if (content.error) {
+        res.status(400).send(content.error);
+        return ;
+    }
+    else {
+        res.status(200).send(content);
+        return ;
+    }
 });
 
 
@@ -28,6 +34,7 @@ router.post('/appendNew',bodyParser.json(), authentication, async function(req, 
     var pid = req.body.project_id;
     var content = await handler.append(fid, pid);
     res.status(200).send(content);
+    return ;
 })
 
 router.post('/buildDB', bodyParser.json(), authentication, async function(req, res) {
@@ -38,6 +45,7 @@ router.post('/buildDB', bodyParser.json(), authentication, async function(req, r
     var content = req.body.content;
     var res = await handler.buildXml(content, DBname, pid, userId, email);
     res.status(200).send(res);
+    return ;
 })
 
 module.exports = router;
