@@ -223,23 +223,24 @@ const signupAuth = async(req, res) =>{
     res.status(200).send("Success")
 };
 const getUserInfo = async (req, res) => {
-    const id = req.query.id
+    const id = req.user.userId
     const user = await User.getUserDetail(id)
     res.status(200).send({
-        "id": user.USER_ID.toString(),
-        "email": user.EMAIL,
-        "username": user.USER_NAME,
-        "avatar": '',
-        "country": user.COUNTRY,
-        "institution": user.INSTITUTION,
-        "title": user.TITLE,
-        "researchTopics":user.RESEARCH_TOPIC
+        "token": "",
+        "record":{
+            "id": user.USER_ID.toString(),
+            "email": user.EMAIL,
+            "username": user.USER_NAME,
+            "country": user.COUNTRY,
+            "institution": user.INSTITUTION,
+            "title": user.TITLE,
+            "researchTopics":user.RESEARCH_TOPIC
+        }
     })
 };
 const updateUserInfo = async (req, res) => {
-    console.log("if authentication pass user: ", req.user);
     if(!req.user.email){
-        res.status(400).send("Required user email")
+        res.status(400).send("Bad request")
     }
     const user = await User.updateUserInfo(req)
     if(!user){
