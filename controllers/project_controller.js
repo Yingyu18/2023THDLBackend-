@@ -70,7 +70,7 @@ const updateProject = async (req, res) => {
         sourceCsvs[i] = csvs[i].csv_name
     }
     res.status(200).send({
-            "id": result.fileID,
+            "fileID": result.fileID,
             "uploaded_time": result.upload_time,
             "updated": result.lastModified,
             "sourceCsvs": sourceCsvs,
