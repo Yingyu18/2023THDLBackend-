@@ -26,6 +26,9 @@ class cleaner {
         return time;
     }
 
+// idx = start row - 1
+//content.split('\n').split(',')
+
     csvClean(table, idx) {
         var Equal = table[idx][0].substring(0, 1) == '=' ? 1 : 0;
         var DBLquotes = table[idx][0].substring(0, 1) == '"' ||  table[idx][0].substring(1, 2) == '"' ? 1 : 0;

@@ -11,7 +11,11 @@ const uploadFile = async(data) => {
             if(source === '國史館臺灣文獻館'){source = 2;}
             if(source === '臺灣省議會史料總庫'){source = 3;}
             if(source ==='自定義資料檔案'){source = 4;} 
-        console.log("test", source)
+        
+        let start = 4; //其他
+        if(source === 1){start=5} //地方議會
+        else if(source===4){start=1} // 自定義
+
         let qryStr = 'INSERT INTO file_db (fileName, USER_ID, USER_NAME, Start_Row, content, upload_time, size, source, lastModified) VALUES (?,?,?,?,?,?,?,?,?)'
         const result = await conn.query(qryStr, [filename, userId, uploader, 1, content, new Date().getTime().toString(), size, source, lastModified])
         return result
