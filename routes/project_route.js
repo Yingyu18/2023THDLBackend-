@@ -10,9 +10,12 @@ const {
   const {
     uploadFile,
     getProject,
-    updateProject
+    updateProject,
+    deleteProject
   } = require('../controllers/project_controller');
+const { } = require('../models/file_model');
 
+router.delete('/delete', authentication, deleteProject)
 router.post('/create', authentication, uploadFile)
 router.get('/getProjects', authentication, getProject)
 router.patch('/updateProjects/:id', authentication, updateProject)
