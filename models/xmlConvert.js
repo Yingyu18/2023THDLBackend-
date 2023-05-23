@@ -14,7 +14,7 @@ class XMLConverter {
     <PageParameters>\n \
       <MaxCueItems Default=\"1200\"/>\n \
     </PageParameters>\n \
-      <metadata_field_settings>\n \ ";
+      <metadata_field_settings>\n\ ";
         var featAnal = "    <feature_analysis>\n";    
         var tags =  "";
         var docuheads = new Array(len).fill("");
@@ -28,38 +28,38 @@ class XMLConverter {
             if (js["xmlTags"][i].includes("metadata")) {
               let dataname = js["xmlTags"][i].substring(9);
               for (let j = 1; j <= len; j++) {
-                docuudef[j] += "        <" + dataname + ">" + js["file" + j][i] + "</" + dataname + ">\n" ;
+                docuudef[j-1] += "        <" + dataname + ">" + js["file" + j][i] + "</" + dataname + ">\n" ;
               }
-            } else if (js["xmlTags"][i].equals("filename")){ 
+            } else if (js["xmlTags"][i]==="filename"){ 
               for (let j = 1; j <= len; j++) {
-                docuheads[j] += "    <document filename=\"" + js["file" + j][i] + "\">\n      <corpus>" + corpus_name + "</corpus>\n";
+                docuheads[j-1] += "    <document filename=\"" + js["file" + j][i] + "\">\n      <corpus>" + corpus_name + "</corpus>\n";
               }
-            } else if (js["xmlTags"][i].equals("title")) {
+            } else if (js["xmlTags"][i]==="title") {
               for (let j = 1; j <= len; j++) {
-                docuheads[j] += "      <title>" + js["file" + j][i] + "</title>\n";
+                docuheads[j-1] += "      <title>" + js["file" + j][i] + "</title>\n";
               }
-            } else if (js["xmlTags"][i].equals("doc_content")) {
+            } else if (js["xmlTags"][i]==="doc_content") {
               for (let j = 1; j <= len; j++) {
-                docuconts[j] += "        " + js["file" + j][i] + "\n      </doc_content>\n";
+                docuconts[j-1] += "        " + js["file" + j][i] + "\n      </doc_content>\n";
               }
-            } else if (js["xmlTags"][i].equals("timeseq_not_before") || js["xmlTags"][i].equals("timeseq_not_after")) {
+            } else if (js["xmlTags"][i]==="timeseq_not_before" || js["xmlTags"][i]==="timeseq_not_after") {
               for (let j = 1; j <= len; j++) {
-                docuconts[j] += "      <" + js["xmlTags"][i] + ">" + js["file" + j][i].replaceAll("-", "") + "</" + js["xmlTags"][i] + ">\n";
+                docuconts[j-1] += "      <" + js["xmlTags"][i] + ">" + js["file" + j][i].replaceAll("-", "") + "</" + js["xmlTags"][i] + ">\n";
               }
             } else {
               for (let j = 1; j <= len; j++) {
-                docubodys[j] += "      <" + js["xmlTags"][i] + ">" + js["file" + j][i] + "</" + js["xmlTags"][i] + ">\n";
+                docubodys[j-1] += "      <" + js["xmlTags"][i] + ">" + js["file" + j][i] + "</" + js["xmlTags"][i] + ">\n";
               }
             }
           } else {
             let tagName = js["xmlTags"][i].substring(9);
             featAnal += "      <spotlight category=\"Udef_"+ tagName + "\"  sub_category=\"-\" display_order=\"" + cnt + "\" title=\"" + js["columns"][i] + "/-\"/>\n";
-            tags += "<tag type=\"contentTagging\" name=\"Udef_"+ tagName + "\" default_category=\"Udef_" + tagName + "\" default_sub_category=\"-\"/>\n";
+            tags += "      <tag type=\"contentTagging\" name=\"Udef_"+ tagName + "\" default_category=\"Udef_" + tagName + "\" default_sub_category=\"-\"/>\n";
             cnt++;
             for (let j = 1; j <= len; j++) {
               let alltags = js["file" + j][i].split(";");
               for (let k = 0; k < alltags.length; k++) {
-                docutags[j] += "        <Udef_" + tagName + ">" + alltags[k] + "</Udef_" + tagName + ">\n" ;
+                docutags[j-1] += "        <Udef_" + tagName + ">" + alltags[k] + "</Udef_" + tagName + ">\n" ;
               }
             }
           }
