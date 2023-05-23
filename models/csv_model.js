@@ -74,15 +74,15 @@ class csvConverter {
     
     async firstMapCheck(fid) {
         let map = tableFunc.getMap(fid);
-        if (map == null || map.includes(',,') || map === '') {
-            return false;
-        } else {return true;}
+        if (map == null) {return false;}
+        else if (map.includes(',,') || map === '') {return false;} 
+        else {return true;}
     }
     async secondMapCheck(fid, pid) {
         let map = tableFunc.getSecMap(fid, pid);
-        if (map == null || map.includes(',,') || map == '') {
-            return false;
-        } else {return true;}
+        if (map == null) {return false;}
+        else if (map.includes(',,') || map === '') {return false;}
+        else {return true;}
     }
 }
 

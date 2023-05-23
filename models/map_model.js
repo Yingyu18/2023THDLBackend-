@@ -59,14 +59,24 @@ class mapModel {
         sql = "SELECT map FROM file_DB WHERE fileID = ?";
         for (let i = 0; i < arr.length; i++) {
             let row = await conn.query(sql, [arr[i]]);            
-            if (row == null || row[0].map.includes(',,') || row[0].map == '') {
+            if (row[0].map == null) {
+                fid.push(arr[i]);
+                fhead.push(tbfunc.getHead(arr[i]));
+                shead.push(row[0].map);
+                type = 1;
+            } else if (row[0].map.includes(',,') || row[0].map == '') {
                 fid.push(arr[i]);
                 fhead.push(tbfunc.getHead(arr[i]));
                 shead.push(row[0].map);
                 type = 1;
             } else if (type != 1) {
                 let tmp = tbfunc.getSecMap(arr[i], pid);
-                if (tmp == null || tmp.includes(',,') || tmp === '') {
+                if (tmp == null) {
+                    type = 2;
+                    fid.push(arr[i]);
+                    fhead.push(tbfunc.getHead(arr[i]));
+                    shead.push(tmp);
+                } else if (tmp.includes(',,') || tmp === '') {
                     type = 2;
                     fid.push(arr[i]);
                     fhead.push(tbfunc.getHead(arr[i]));
@@ -84,13 +94,16 @@ class mapModel {
             "type" : type
           }
         result["map_head"] = type == 1 ? this.core : tbfunc.getJsonHead(pid, 1); 
+        console.log(result);
+        return result;
     } catch (error) {
        console.log(error);
     }
   }
 
   fileMapCheck (map) {
-    if (map == null || map == '' || map.includes(',,')) {return false;}
+    if (map == null) {return false;}
+    else if (map == '' || map.includes(',,')) {return false;}
     else {return true;}
   }
 }
