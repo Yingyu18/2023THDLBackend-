@@ -5,7 +5,6 @@ let jsonConvert = require('../models/json_model');
 let XMLConvert = require('../models/xmlConvert');
 const fs = require('fs');
 let tableFunc = require('../models/tableFunc');
-const pool = require('../models/connection_db');
 
 tableFunc = new tableFunc();
 jsonConvert = new jsonConvert();

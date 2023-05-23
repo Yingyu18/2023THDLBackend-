@@ -6,12 +6,14 @@ tableFunc = new tableFunc();
 let handler = require('../controllers/fileConverter');
 handler = new handler();
 
+const bodyParser = require('body-parser')
+
 const {
     authentication
   } = require('../util/util')
 
 
-router.post('/goToEdit', authentication, async function(req, res) {
+router.post('/goToEdit', bodyParser.json(), authentication, async function(req, res) {
     const userId = req.user.userId;
     var pid = req.body.project_id;
     var content = await handler.retrieve2D(pid);
@@ -20,7 +22,7 @@ router.post('/goToEdit', authentication, async function(req, res) {
 });
 
 
-router.post('/appendNew', authentication, async function(req, res) {
+router.post('/appendNew',bodyParser.json(), authentication, async function(req, res) {
     const userId = req.user.userId;
     var fid = req.body.file_id;
     var pid = req.body.project_id;
@@ -28,9 +30,9 @@ router.post('/appendNew', authentication, async function(req, res) {
     res.status(200).send(content);
 })
 
-router.post('/buildDB', async function(req, res) {
+router.post('/buildDB', bodyParser.json(), authentication, async function(req, res) {
     const userId = req.user.userId;
-    const email = req.user.emal;
+    const email = req.body.emal;
     var DBname = req.body.DBname;
     var pid = req.body.Json_id;
     var content = req.body.content;
