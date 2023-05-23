@@ -120,7 +120,7 @@ class tableFunc {
     try {
       let conn = await pool.getConnection();
       var sql = "SELECT map FROM file_DB WHERE fileID = ?";
-      row = await conn.query(sql, [fileID]);     
+      let row = await conn.query(sql, [fileID]);     
       conn.release();
       return row[0].map;
     } catch (error) {
@@ -133,7 +133,7 @@ class tableFunc {
     try {
       let conn = await pool.getConnection();
       var sql = "SELECT sec_map FROM sec_map WHERE fileID = ? and pid = ?";
-      row = await conn.query(sql, [fileID, pid]);     
+      let row = await conn.query(sql, [fileID, pid]);     
       conn.release();
       return row[0].sec_map;
     } catch (error) {
@@ -148,7 +148,7 @@ class tableFunc {
     try {
       let conn = await pool.getConnection();
       var sql = "SELECT content FROM file_DB WHERE fileID = ?";
-      row = await conn.query(sql, [fileID]);  
+      let row = await conn.query(sql, [fileID]);  
       row = row[0].content.split('\n');
       conn.release();
       return row[idx-1];      
@@ -166,7 +166,7 @@ class tableFunc {
       let conn = await pool.getConnection();
       var sql = "SELECT content FROM file_DB WHERE fileID = ?";
       temp = await conn.query(sql, [fileID]);  
-      row = temp[0].content["columns"];
+      let row = temp[0].content["columns"];
       if (cnt == 2) {row.push(temp[0].content["xmlTags"]);}
       conn.release();
       return row;      
@@ -182,7 +182,7 @@ class tableFunc {
       let result = new Array();
       var sql = "SELECT fileID FROM file_DB WHERE fileName= ?";
       for (let i = 0; i < fnames.length; i++) {
-        row = await conn.query(sql, [fnames[i]]);
+        let row = await conn.query(sql, [fnames[i]]);
         result.push(row[0].fileID);
       }     
       conn.release();
