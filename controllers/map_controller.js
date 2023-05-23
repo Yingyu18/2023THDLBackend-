@@ -55,9 +55,14 @@ const getmap = async (req, res) => {
     });
 }
 
+const retrieveMapped = async (req, res) => {    
+    var pid = req.body.project_id;
+    res.status(200).send(tableFunc.getIsMap(pid));
+}
 module.exports = {
     projectMapping,
     fileMapping,
     savemap,
-    getmap
+    getmap,
+    retrieveMapped
 };
