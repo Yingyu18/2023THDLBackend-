@@ -12,7 +12,6 @@ var indexRouter = require('./routes/index');
 var editRouter = require('./routes/edit_route');
 var mapRouter = require('./routes/map_route');
 var docuRouter = require('./routes/docu_route');
-var saveRouter = require('./file/save');
 //var convertRouter = require('./edit/convertTo');
 var userRouter = require('./routes/user_route');
 var fileRouter = require('./routes/file_route');
@@ -43,7 +42,7 @@ app.use('/api/projects', projectRouter);
 app.use('/edit', editRouter);
 app.use('/map', mapRouter);
 app.use('/docu', docuRouter);
-app.use('/file/save', saveRouter);
+
 //app.use('/edit/convertTo', convertRouter);
 app.get('/healthcheck', (req, res)=>{
 	res.send('OK');	
@@ -70,5 +69,5 @@ app.use(function(err, req, res, next) {
 app.use(function(req, res, next) {
   next(createError(404));
 });
-app.listen(3001,() => console.log('Server is running on port 3001'));
+//app.listen(3001,() => console.log('Server is running on port 3001'));
 module.exports = app;
