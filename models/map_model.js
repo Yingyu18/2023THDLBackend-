@@ -53,12 +53,11 @@ class mapModel {
         let arr = await conn.query(sql, [pid]);
         let fhead = new Array();
         let shead = new Array();
-        let fid = new Array();
-        arr = tbfunc.getSrcsID(arr[0].sourceCsvs);
+        let fid = new Array(); 
         sql = "SELECT map FROM file_DB WHERE fileID = ?";
         for (let i = 0; i < arr.length; i++) {
             let row = await conn.query(sql, [arr[i]]);            
-            if (row[0].map.includes(',,') || row[0].map === '') {
+            if (row[0].map.includes(',,') || row[0].map == '') {
                 fid.push(arr[i]);
                 fhead.push(tbfunc.getHead(arr[i]));
                 shead.push(row[0].map);

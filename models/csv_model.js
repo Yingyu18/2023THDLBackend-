@@ -80,7 +80,7 @@ class csvConverter {
     }
     async secondMapCheck(fid, pid) {
         let map = tableFunc.getSecMap(fid, pid);
-        if (map == null || map.includes(',,') || map === '') {
+        if (map == null || map.includes(',,') || map == '') {
             return false;
         } else {return true;}
     }
