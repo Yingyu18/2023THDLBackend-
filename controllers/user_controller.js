@@ -175,20 +175,22 @@ const authRefresh = async (req, res) => {
         email: req.user.email,
         userId: req.user.userId.toString(),
     }, TOKEN_SECRET, {expiresIn: TOKEN_EXPIRE});
+    let user = User.getUserDetail(req.user.email)
+    result = await loginDocuSky(user.EMAIL, user.PASSWORD)
     res.status(200).send({
         token: accessToken,
         "record": {
-            "id": "string",
-            "username": "username123",
+            "id": user.userId.toString(),
+            "username": req.user.name,
             "verified": true,
-            "email": "test@example.com",
+            "email": req.user.email,
             "name": "test",
-            "avatar": "filename.jpg",
-            "country": "test",
-            "institution": "test",
-            "researchTopics": "test",
-            "title": "test",
-            "sid": "test"
+            "avatar": "",
+            "country": user.COUNTRY,
+            "institution": user.INSTITUTION,
+            "researchTopics": user.researchTopic,
+            "title": user.TITLE,
+            "sid": result.DocuSky_SID
           }
     });
 }
