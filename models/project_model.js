@@ -87,6 +87,8 @@ const updateProject = async(req) => {
     } catch (error){
         console.log({error:error})
         return {error}
+    } finally {
+        await conn.release();
     }
 }
 
