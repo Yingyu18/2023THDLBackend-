@@ -18,7 +18,7 @@ const { } = require('../models/file_model');
 router.delete('/delete', authentication, deleteProject)
 router.post('/create', authentication, uploadFile)
 router.get('/getProjects', authentication, getProject)
-router.patch('/updateProjects/:id', authentication, updateProject)
+router.patch('/updateProject/:id', authentication, updateProject)
 
 
 module.exports = router;
