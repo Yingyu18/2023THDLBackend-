@@ -23,8 +23,8 @@ const signUp = async (data) => {
         password = bcrypt.hashSync(password, salt)
 
         const loginAt = new Date();
-        let queryStr = `INSERT INTO docusky.user_profile (USERNAME, ALT_KEY_VAL, INIT_PASSWORD, INIT_PASSWORD_ENCODED, PASSWORD_ENCODED, TIME_CREATED) VALUES (?,?,?,?,?,?)`;
-        let values = [email, email, password, sha256(password), sha256(password), loginAt];
+        let queryStr = `INSERT INTO docusky.user_profile (USERNAME, ALT_KEY_VAL, INIT_PASSWORD, INIT_PASSWORD_ENCODED, PASSWORD_ENCODED, TIME_CREATED, STATUS, EXPIRATION_TIME) VALUES (?,?,?,?,?,?,?,?)`;
+        let values = [email, email, password, sha256(password), sha256(password), loginAt, "READY", "2030-12-31 00:00:00.000"];
         let result = await conn.query(queryStr, values);
         let id = result.insertId;
         
@@ -77,7 +77,6 @@ const login = async (identity, password) => {
     const conn = await pool.getConnection();
     try {
         await conn.query('START TRANSACTION');
-
         let users = await conn.query('SELECT * FROM user_profile WHERE EMAIL = ?', [identity]);
         if(users.length<1){
             users = await conn.query('SELECT * FROM user_profile WHERE USER_NAME = ?', [identity]);
@@ -85,6 +84,7 @@ const login = async (identity, password) => {
                 return {error: 400};    
             }
         }
+
         const user = users[0]
         if(user.STATUS=='disabled'){
             return {error: 402};

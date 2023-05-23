@@ -83,7 +83,7 @@ const signUp = async (req, res) => {
                 institution: user.institution,
                 title: user.title,
                 researchTopics: user.researchTopic,
-                sid: "test"
+                sid: ""
         }
     );
 };
@@ -128,7 +128,8 @@ const loginQuery = async (identity, password) => {
         return {error: 'Request Error: email and password are required.', status: 400};
     }
     try {
-        return await User.login(identity, password);
+        const result = await User.login(identity, password);
+        return result
     } catch (error) {
         return {error};
     }
@@ -139,9 +140,9 @@ const login = async (req, res) => {
     const data = req.body;
     let result = await loginQuery(data.identity, data.password);
     if (result.error) {
-        //const status_code = result.status ? result.status : 401;
-        res.status(result.error);
-        return;
+        console.log(result.error)
+        return res.status(result.error).send({message:"not authorized"});
+        
     }
     const user = result.user;
     if (!user) {
@@ -150,6 +151,7 @@ const login = async (req, res) => {
             message: 'Internal Server Error'});
         return;
     } 
+
     //login Docusky 
     result = await loginDocuSky(user.EMAIL, user.PASSWORD)
 
@@ -170,25 +172,26 @@ const login = async (req, res) => {
     });
 };
 const authRefresh = async (req, res) => {
+    console.log(req.user.email)
     const accessToken = jwt.sign({
         name: req.user.name,
         email: req.user.email,
         userId: req.user.userId.toString(),
     }, TOKEN_SECRET, {expiresIn: TOKEN_EXPIRE});
-    let user = User.getUserDetail(req.user.email)
+    let user = await User.getUserDetail(req.user.email)
+    
     result = await loginDocuSky(user.EMAIL, user.PASSWORD)
     res.status(200).send({
         token: accessToken,
         "record": {
-            "id": user.userId.toString(),
+            "id": req.user.userId.toString(),
             "username": req.user.name,
             "verified": true,
             "email": req.user.email,
-            "name": "test",
             "avatar": "",
             "country": user.COUNTRY,
             "institution": user.INSTITUTION,
-            "researchTopics": user.researchTopic,
+            "researchTopics": user.RESEARCH_TOPIC,
             "title": user.TITLE,
             "sid": result.DocuSky_SID
           }
