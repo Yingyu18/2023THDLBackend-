@@ -1,13 +1,16 @@
 const Project = require('../models/project_model');
 
 const uploadFile = async (req, res)=> {
+    console.log("test", req.body)
     if (!req.body.sourceCsvs || !req.body.name || !req.body.owner) {
         return res.status(400).send({message:"Bad request"})
     }
+
     const result = await Project.uploadFile(req)
     if(result.error){
         return res.status(500).send({message:"internal server error"})
     }
+
     res.status(200).send({
         "fileID": result.toString(),
         "upload_time": new Date(),
@@ -17,6 +20,7 @@ const uploadFile = async (req, res)=> {
         "isMapped": false,
         "owner": req.body.owner,
         "thumbnail": "",
+        "description": req.body.description,
         "isBuilt": false,
       })
 }
@@ -29,7 +33,8 @@ const getProject = async (req, res) => {
     }
     const data = [];
     for (let i = 0; i < projects.length; i++) {
-        let { fileID, upload_time, fileName, lastModified, isMapped, isBuilt} = projects[i]
+        console.log(projects[i])
+        let { fileID, upload_time, fileName, lastModified, isMapped, isBuilt, description} = projects[i]
         const owner = projects[i].USER_NAME
         const updated = lastModified
         const thumbnail = ''
@@ -43,7 +48,7 @@ const getProject = async (req, res) => {
         }
         if(isMapped){isMapped=true}else{isMapped=false}
         if(isBuilt){isBuilt=true}else{isBuilt=false}
-        data.push({ fileID, upload_time, updated, sourceCsvs, fileName, isMapped, owner, thumbnail, isBuilt })
+        data.push({ fileID, upload_time, updated, description, sourceCsvs, fileName, isMapped, owner, thumbnail, isBuilt, description })
     }
     let response = {"items": data}
     res.status(200).send(response)
@@ -78,7 +83,8 @@ const updateProject = async (req, res) => {
             "isMapped": result.isMapped,
             "owner": result.USER_NAME,
             "thumbnail": "",
-            "isBuilt": result.isBuild
+            "isBuilt": result.isBuild,
+            "description": req.body.description
     })
 }
 const deleteProject = async (req, res) => {
