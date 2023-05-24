@@ -1,5 +1,7 @@
 const Project = require('../models/project_model');
 const File = require('../models/file_model');
+const MapModel = require("../models/map_model");
+const mapModel = new MapModel();
 
 const uploadFile = async (req, res)=> {
     //console.log("test", req.body)
@@ -9,12 +11,14 @@ const uploadFile = async (req, res)=> {
 
     const result = await Project.uploadFile(req)
     if(result.error){
-        return res.status(500).send({message:"internal server error"})
+        return res.status(500).send({message:result.error})
     }
 
     const projectID = result
     //update sec_map table
     const {sourceCsvs} = req.body
+    let isMapped = 1
+    let lastMap = ''
     for(let i=0; i<sourceCsvs.length; i++){
         let id = sourceCsvs[i]
         let result = await File.getCsv(id)
@@ -22,6 +26,7 @@ const uploadFile = async (req, res)=> {
             return res.status(500).send({message:"internal server error"})
         }
         //if complete second map, update sec_map
+        lastMap = result.map
         if(isSecMapped(result.map)){
             let data = {
                 csvID: id,
@@ -34,6 +39,25 @@ const uploadFile = async (req, res)=> {
                 return res.status(500).send({message:"internal server error"})
             }
         }
+        else(isMapped = 0)
+    }
+    // update project isMapped to 1
+    if(isMapped){
+        req = {
+            body:{
+                is_mapped:1
+            },
+            params:{
+                id:projectID
+            }
+    }
+        const result = await Project.updateProject(req)
+        if(result.error){
+            return res.status(500).send({message:"update isMapped fail"})
+        }
+        const fid = sourceCsvs[sourceCsvs.length-1]
+        const jid = projectID
+        mapModel.saveMap(fid, jid, 1, 1, lastMap)
     }
 
     res.status(200).send({
