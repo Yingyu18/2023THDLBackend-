@@ -15,7 +15,7 @@ class mapModel {
     '相關組織', '關鍵詞', '摘要/全文'];
 
     saveMap = async (fid, jid, type, fin, res) => {
-        var idx = await tbfunc.getRowId(fid)-1;
+        var idx = await tbfunc.getRowId(fid);
         var res = 'save success';
         try {
             let conn = await pool.getConnection();
