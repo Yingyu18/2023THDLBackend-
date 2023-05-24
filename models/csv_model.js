@@ -35,7 +35,7 @@ class csvConverter {
                     results[0].push(maps[k][i]);
                     results[1].push('metadata/'+maps[k][i]);
                     extra++;
-                } else {corres[i] = results.indexOf(maps[k][i]);}
+                } else {corres[i] = results[0].indexOf(maps[k][i]);}
             }            
             for (let i = sidx[k]; i < table.length; i++) {
                 results.push(new Array(extra).fill(''));
