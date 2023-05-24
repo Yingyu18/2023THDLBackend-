@@ -102,7 +102,7 @@ class XMLConverter {
         }
         else {
           sql = "UPDATE file_DB SET content = ? where fileID = ?" ;
-          res = await conn.query(sql, [xml, res[0].map_ID]);
+          let tuirywe = await conn.query(sql, [xml, res[0].map_ID]);
           return res[0].map_ID;
         } 
         
