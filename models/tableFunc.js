@@ -14,7 +14,7 @@ class tableFunc {
         fileName,
         uid,
         uname,
-        -1,
+        1,
         content,
         time,
         type,        
@@ -229,8 +229,8 @@ class tableFunc {
         row = await conn.query(sql, [fileName, uid]);
         fid = row[0].fileID;
       } else {
-        sql = "UPDATE file_DB SET content = ?, fileName = ? where fileID = ?";
-        await conn.query(sql, [js, fname, fid]);
+        sql = "UPDATE file_DB SET content = ?, fileName = ?, lastModified = ? where fileID = ?";
+        await conn.query(sql, [js, fname, new Date().getTime().toString(), fid]);
       }
       resBody["file_id"] = fid;
       conn.release();
