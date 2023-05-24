@@ -53,7 +53,7 @@ class tableFunc {
       let conn = await pool.getConnection();
       var sql = "SELECT sourceCsvs FROM file_DB WHERE fileID = ?";      
       let row = await conn.query(sql, [pid]);
-      row = row[0].sourceCsvs; console.log('converting 2d csv ids = ' + row);
+      row = row[0].sourceCsvs.split(','); console.log('converting 2d csv ids = ' + row);
       sql = "SELECT content, source FROM file_DB where fileID = ?"
       for (let i = 0; i < row.length; i++) {
         console.log('opening idx with ' + row[i]);
