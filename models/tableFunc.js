@@ -217,7 +217,18 @@ class tableFunc {
     }
   }
   async copySecMap(srcs, jid) {
-
+    let conn = await pool.getConnection();
+    let sql = "Select sec_map from sec_map where map_ID = ? and fileID = ?";
+    let sql2 = "INSERT INTO sec_map (fileID, map_ID, sec_map) Values (?, ?, ?)";
+    let mapResult;
+    let ctah;
+    srcs = srcs.split(',');
+    for (let i = 0; i < srcs.length; i++) {
+      mapResult = await conn.query(sql, [jid, srcs[i]]);
+      mapResult = mapResult[0].sec_map;
+      ctah = await conn.query(sql2, [srcs[i], jid, mapResult]);
+    }
+    return 'copy done';
   } 
 
   async saveJson(js, uid, uname, fid, fname, isnew) {
@@ -237,9 +248,7 @@ class tableFunc {
         row = row[0].sourceCsvs;
         sql = "UPDATE file_DB SET sourceCsvs = ? where fileID = ?";
         let ttttmp = await conn.query(sql, [row, fid]);        
-        ttttmp = this.copySecMap(row, jid)
-
-
+        ttttmp = this.copySecMap(row, jid);
       } else {
         sql = "UPDATE file_DB SET content = ?, fileName = ?, lastModified = ? where fileID = ?";
         let asd = await conn.query(sql, [js, fname, new Date().getTime().toString(), fid]);
