@@ -31,7 +31,8 @@ class mapModel {
                 rs = await conn.query(sql, [fid, jid]);
                 if (rs[0] == null) {
                     sql = "INSERT INTO sec_map (fileID, map_ID, sec_map, create_time) Values (?, ?, ?, ?)";
-                    rs = await conn.query(sql, [fid, jid, res.toString(), new Date().getTime.toString()]);
+                    let time = new Date().getTime.toString();
+                    rs = await conn.query(sql, [fid, jid, res.toString(), time]);
                 } else {
                     sql = "UPDATE sec_map SET sec_map = ? WHERE fileID = ? and map_ID = ?";
                     rs = await conn.query(sql, [res.toString, fid, jid]);
