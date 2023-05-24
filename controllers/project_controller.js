@@ -1,15 +1,39 @@
 const Project = require('../models/project_model');
+const File = require('../models/file_model');
 
 const uploadFile = async (req, res)=> {
     console.log("test", req.body)
-    if (!req.body.sourceCsvs || !req.body.
-        name || !req.body.owner) {
+    if (!req.body.sourceCsvs || !req.body.name || !req.body.owner) {
         return res.status(400).send({message:"Bad request"})
     }
 
     const result = await Project.uploadFile(req)
     if(result.error){
         return res.status(500).send({message:"internal server error"})
+    }
+
+    const projectID = result
+    //update sec_map table
+    const {sourceCsvs} = req.body
+    for(let i=0; i<sourceCsvs.length; i++){
+        let id = sourceCsvs[i]
+        let result = await File.getCsv(id)
+        if(result.error){
+            return res.status(500).send({message:"internal server error"})
+        }
+        //if complete second map, update sec_map
+        if(isSecMapped(result.map)){
+            let data = {
+                csvID: id,
+                projectID:projectID,
+                map: result.map
+            }
+            result = await File.insertSecMap(data)
+            if(result.error){
+                console.log(result.error)
+                return res.status(500).send({message:"internal server error"})
+            }
+        }
     }
 
     res.status(200).send({
@@ -24,6 +48,19 @@ const uploadFile = async (req, res)=> {
         "description": req.body.description,
         "isBuilt": false,
       })
+}
+
+function isSecMapped(map){
+    console.log(map[0], map[map.length-1])
+    if(map == '' || map[0] == ',' ||  map[map.length-1] == ','){
+        return 0
+    }
+    for(let i=0; i<map.length-1; i++){
+        if(map[i] == ','&&map[i+1] == ',') {
+            return 0
+        }
+    }
+    return 1
 }
 
 const getProject = async (req, res) => {
