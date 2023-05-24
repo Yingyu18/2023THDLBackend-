@@ -97,7 +97,7 @@ class cleaner {
                 table[curRow][end] = await this.timeFormat(type, table[curRow][end]);
                 curRow++;
             }
-        } console.log ('arranged table = ' + table);
+        }
         return table;      
     }
 
@@ -105,8 +105,7 @@ class cleaner {
         data = data.split('\n');  
         for (let i = 0; i < data.length; i++) {
             data[i] = data[i].split(',');
-        }console.log('no slice = ' + data);
-        console.log('slice = ' + data.slice(0, data.length-1));        
+        }      
         return data.slice(0, data.length-1);
         
     }
