@@ -36,7 +36,7 @@ class csvConverter {
                     extra++;
                 } else {corres[i] = results.indexOf(maps[k][i]);}
             }            
-            for (let i = sidx[k]-1; i < table.length; i++) {
+            for (let i = sidx[k]; i < table.length; i++) {
                 results.push(new Array(extra).fill(''));
                 for (let j = 0; j < table[i].length; j++) {
                     if (corres[j] < 0) {continue;}
