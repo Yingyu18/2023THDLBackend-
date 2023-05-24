@@ -30,7 +30,7 @@ class mapModel {
                 sql = "select fileID From sec_map WHERE fileID = ? and map_ID = ?";
                 rs = await conn.query(sql, [fid, jid]);
                 if (rs[0] == null) {
-                    sql = "INSERT INTO sec_map (fileID, map_ID, sec_map) Values (?, ?, ?, )";
+                    sql = "INSERT INTO sec_map (fileID, map_ID, sec_map) Values (?, ?, ?)";
                     rs = await conn.query(sql, [fid, jid, res.toString()]);
                 } else {
                     sql = "UPDATE sec_map SET sec_map = ? WHERE fileID = ? and map_ID = ?";
