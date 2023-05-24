@@ -55,7 +55,7 @@ class csvConverter {
                 results[i].push(new Array(results[0].length - results[i].length).fill(''));
             }
         }
-        if (type == 2) {result = mergeToJson(result, jid)}
+        if (type == 2) {results = mergeToJson(results, jid)}
         return results;
     }
 
