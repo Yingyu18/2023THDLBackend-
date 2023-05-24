@@ -14,9 +14,8 @@ class cleaner {
         return str.replace(reg, (match)=>(map[match]));
     }
 
-    timeFormat(type, time) {
+   async timeFormat(type, time) {        
         if (time == '' || time == null) {return '0000-00-00';}
-        time = time.replaceAll('/', '-');
         if (time[6] == '-') {time = time.substring(0, 5) + '0' + time.substring(5);}
         if (time.lenght < 10 || time[9] == ' ') {time = time.substring(0, 8) + '0' + time.substring(8);}
         if (type == 3) {
@@ -47,10 +46,11 @@ class cleaner {
             2 : ["NDAP", '臺灣省議會史料總庫'],
             3 : ["tlcda", '地方議會議事錄']
         }
-        if (types >= 4) {return table;}
+        if (type >= 4) {return table;}
         let curRow = idx-1;
         let start = -1;
         let end = -1;
+        console.log('tb len = ' + table.length + ',  cur = ' + curRow + 'tb == ' + table);
         for (let j = 1; j < table[curRow].length; j++) {
            if (table[curRow][j] == '卷件開始日期' || table[curRow][j] == 'date_from' || table[curRow][j] == '日期描述' || table[curRow][j] == '日期起') {
                 start = j;                
@@ -80,17 +80,20 @@ class cleaner {
         if (type == 3) {
             while (curRow < table.length) {           
                 table[curRow][0] = table[curRow][start];
-                table[curRow][start] = this.timeFormat(type, table[curRow][start].substring(0, 10));           
-                table[curRow][end] = this.timeFormat(type, table[curRow][start].substring(13, 23));
+                table[curRow][start] = await this.timeFormat(type, table[curRow][start].substring(0, 10));           
+                table[curRow][end] = await this.timeFormat(type, table[curRow][start].substring(13, 23));
                 curRow++;
             }
         }
          else {
-            while (curRow < table.length) {           
+            while (curRow < table.length) {   
+                console.log('st = ' + table[curRow][start] + 'et = ' + table[curRow][end]);        
                 table[curRow][0] = table[curRow][start];
-                table[curRow][start] = this.timeFormat(type, table[curRow][start]);           
+                table[curRow][start] = String(table[curRow][start]).replaceAll('/', '-');
+                table[curRow][start] = await this.timeFormat(type, table[curRow][start]);           
                 table[curRow][0] += '~' + table[curRow][end];
-                table[curRow][end] = this.timeFormat(type, table[curRow][end]);
+                table[curRow][end] = String(table[curRow][end]).replaceAll('/', '-');
+                table[curRow][end] = await this.timeFormat(type, table[curRow][end]);
                 curRow++;
             }
         }
@@ -98,20 +101,11 @@ class cleaner {
     }
 
     async rawTable (data) {        
-        data = data.split('\n');
-        var result = Array(data.length);  
-        var sli = 0;
-        if (data[4][0].substring(0, 1) == '"') {sli = 1;}        
+        data = data.split('\n');  
         for (let i = 0; i < data.length; i++) {
-            let row = data[i].split(',');
-            if (sli != 0 && i >= 3) {
-                row.forEach(function(ele, index, row) {
-                    row[index] = row[index].slice(sli, -sli);
-                });
-            }
-            result[i] = row;
-        }    
-        return result;    
+            data[i] = data[i].split(',');
+        }
+        return data.slice(0, data.length-2); 
     }
 
     recover(str) {        

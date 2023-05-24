@@ -16,26 +16,27 @@ class csvConverter {
      'metatags/PlaceName', 'metatags/Organization', 'metatags/Keywords', 'doc_content']];
 
     async to2dArray (jid, sidx, type) {
-        let temp = await tableFunc.openForProject(jid); 
+        let temp = await tableFunc.openForProject(jid);  console.log('sidx = ' + sidx);
         let contents = temp[0]; 
         let types = temp[1];
         let results = type == 1 ? this.core : await tableFunc.openJsonHead(jid, 2);        
         let extra = results[0].length;
         let lines = 2;
-        contents.forEach(function(ele, index, ids) { 
-            let table = cleaner.rawTable(contents[index]);
-            if (type == 1) {table = cleaner.arrangeFormat(types[index], table, sidx[index]);}             
-            let corres = new Array (table[idx[index]-1].length);
-            for (let i = 0; i < table[idx[index]-1].length; i++) {
-                if (table[idx[index]-1][i] == 'no') {corres[i] = -1;}
-                else if (results.indexOf(table[idx[index]-1][i]) == -1) {
+        for (let k = 0; k < contents.length; k++) {
+            console.log('contents = ' + contents[k]);
+            let table = await cleaner.rawTable(contents[k]);console.log('table = ' + table);
+            if (type == 1) {table = await cleaner.arrangeFormat(types[k], table, sidx[k]);}             
+            let corres = new Array (table[sidx[k]-1].length);
+            for (let i = 0; i < table[sidx[k]-1].length; i++) {
+                if (table[sidx[k]-1][i] == 'no') {corres[i] = -1;}
+                else if (results.indexOf(table[sidx[k]-1][i]) == -1) {
                     corres[i] = extra;
-                    results[0].push(table[idx[index]-1][i]);
-                    results[1].push('metadata/'+table[idx[index]-1][i]);
+                    results[0].push(table[sidx[k]-1][i]);
+                    results[1].push('metadata/'+table[sidx[k]-1][i]);
                     extra++;
-                } else {corres[i] = results.indexOf(table[idx[index]-1][i]);}
+                } else {corres[i] = results.indexOf(table[sidx[k]-1][i]);}
             }            
-            for (let i = idx[index]-1; i < table.length; i++) {
+            for (let i = sidx[k]-1; i < table.length; i++) {
                 results.push(new Array(extra).fill(''));
                 for (let j = 0; j < table[i].length; j++) {
                     if (corres[j] < 0) {continue;}
@@ -48,13 +49,13 @@ class csvConverter {
                 if (type == 1) {results[lines][8] = table[i][0];}
                 lines++;
             } 
-        })
+        }
         for (let i = 2; i < results.length; i++) {
             if (results[i].length < results[0].length) {
                 results[i].push(new Array(results[0].length - results[i].length).fill(''));
             }
         }
-        if (type == 2) {result = mergeToJson(result, jid)}
+        if (type == 2) {results = mergeToJson(results, jid)}
         return results;
     }
 

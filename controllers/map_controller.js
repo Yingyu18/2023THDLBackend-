@@ -57,15 +57,10 @@ const savemap = async (req, res) => {
     var type = req.body.type;
     var result = req.body.map_res;
     var fin = req.body.finish;
-    var arr = await model.saveMap(fid, pid, type, fin, result);
-    if (arr.error) {
-        res.status(400).send({message: arr.error});
-        return ;
-    }
-    else {
-        res.status(200).send('save success');
-        return ;
-    }
+    var arr = await model.saveMap(fid, pid, type, fin, result);    
+    res.status(200).send('save success');
+    return ;
+    
 }
 const getmap = async (req, res) => {    
     var uid = req.user.userID;
@@ -79,8 +74,8 @@ const getmap = async (req, res) => {
 
 const retrieveMapped = async (req, res) => {    
     var pid = req.body.project_id;
-    var result = await tableFunc.getIsMap(pid);
-    res.status(200).send(result);
+    var result = await tableFunc.getIsMap(pid); console.log(result);
+    res.status(200).send({"is_mapped" : result});
 }
 module.exports = {
     projectMapping,

@@ -20,10 +20,14 @@ class jsonConverter {
     }
 
     async to2D (fid) { 
-        var js = await tableFunc.openFile([fid]);
-        if (js === null || js === '') {return {error: 'no such content, complete map first'}}
+        var js = await tableFunc.openFile([fid]); console.log('js = ' + js);
+        js = JSON.parse(js);
+        if (js == null || js == '') {return {error: 'no such content, complete map first'}}
         let arr = new Array();
-        for(var k in js) {arr.push(js[k]);}
+        for(var k in js) {
+          console.log('k = ' + k , '---- cont = ' + js[k]);
+          arr.push(js[k]);
+        }
         return arr;       
     }
 
@@ -49,8 +53,8 @@ class jsonConverter {
           let src = await conn.query(sql, [pid]);   
           sql = "UPDATE file_DB SET sourceCsvs = ? where fileID = ?";
           let result = await conn.query(sql, [src.push(fid), pid]);  
-          sql = "Insert Into sec_map SET fileID = ?, map_ID = ?, sec_map = ?, create_time = ? values (?, ?, ?, ?)";  
-          result = await conn.query(sql, [fid, pid, '', Date.now()]);  
+          sql = "Insert Into sec_map SET fileID = ?, map_ID = ?, sec_map = ? values (?, ?, ?)";  
+          result = await conn.query(sql, [fid, pid, '']);  
           conn.release();
           return 'success';  
         } catch (error) {
@@ -61,8 +65,8 @@ class jsonConverter {
     async resetMapStatus(pid) {
         try {
           let conn = await pool.getConnection();
-          var sql = "UPDATE file_DB SET is_mapped = ? where fileID = ?";
-          let result = await conn.query(sql, [false, pid]);      
+          var sql = "UPDATE file_DB SET isMapped = ? where fileID = ?";
+          let result = await conn.query(sql, [0, pid]);      
           conn.release();
           return 'csv append success';  
         } catch (error) {

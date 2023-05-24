@@ -27,18 +27,15 @@ module.exports = class handler {
         
     }
     async retrieve2D(pid) {
-        const result = await jsonConvert.to2D(pid);
-        let ck = await jsonConvert.needMapCheck(pid);
+        const result = await jsonConvert.to2D(pid); console.log('result Json = ' + result);
+        let ck = await jsonConvert.needMapCheck(pid);console.log('isMapped = ' + ck);
         if (result.error) {return result.error;}
-        if (ck ) {return result;}
+        if (ck) {return result;}
         else {return {error: "plz finish mapping ur CSVs before editing."}}
     }
     async append(fid, pid) {
-       let res = await jsonConvert.insertNewCSV(fid, pid);
-       if (res == 'success') {
-         res = await jsonConvert.resetMapStatus(pid);
-         return res;
-       }
-       else {return {error: 'insert failed.'}}
+       let res = await jsonConvert.insertNewCSV(fid, pid);       
+       res = await jsonConvert.resetMapStatus(pid);
+       return {'message': 'insert done.'}
     }
 }

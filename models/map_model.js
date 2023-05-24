@@ -29,18 +29,22 @@ class mapModel {
                 rs = await conn.query(sql, [res.toString(), fid]);
                 sql = "select fileID From sec_map WHERE fileID = ? and map_ID = ?";
                 rs = await conn.query(sql, [fid, jid]);
-                if (rs == null) {
-                    sql = "INSERT INTO sec_map (fileID, map_ID, sec_map, create_time) Values (?, ?, ?, ?)";
-                    rs = await conn.query(sql, [fid, jid, res.toString(), new Date().getTime.toString()]);
+                if (rs[0] == null) {
+                    sql = "INSERT INTO sec_map (fileID, map_ID, sec_map) Values (?, ?, ?)";
+                    rs = await conn.query(sql, [fid, jid, res.toString()]);
                 } else {
                     sql = "UPDATE sec_map SET sec_map = ? WHERE fileID = ? and map_ID = ?";
-                    rs = await conn.query(sql, [res.toString, fid, jid]);
+                    rs = await conn.query(sql, [res.toString(), fid, jid]);
                 }
                 if (fin == 1) {
+                    sql = "select sourceCsvs from file_DB WHERE fileID = ?";
+                    rs = await conn.query(sql, [jid]);
+                    rs = rs[0].sourceCsvs.split(',');
+                    idx =  await tbfunc.getRowId(rs);
                     tmp = await cModel.to2dArray(jid, idx, 1);
                     tmp = await jModel.toJson(tmp);
-                    sql = "UPDATE file_DB SET content = ? isMapped = ? WHERE fileID = ?";
-                    rs = await conn.query(sql, [tmp, true, jid]);
+                    sql = "UPDATE file_DB SET content = ?, isMapped = ? WHERE fileID = ?";
+                    rs = await conn.query(sql, [tmp, 1, jid]);
                 } 
             }  else {
                 console.log('type = ' + type + 'res = ' + res + 'tostring = ' + res.toString());
@@ -49,8 +53,8 @@ class mapModel {
                 if (fin == 1) {
                     tmp = await cModel.to2dArray(jid, idx, 2);
                     tmp = await jModel.toJson(tmp);
-                    sql = "UPDATE file_DB SET content = ? isMapped = ? WHERE fileID = ?";
-                    rs = await conn.query(sql, [tmp, true, jid]);
+                    sql = "UPDATE file_DB SET content = ?, isMapped = ? WHERE fileID = ?";
+                    rs = await conn.query(sql, [tmp, 1, jid]);
                 }
             } 
                            
@@ -80,7 +84,8 @@ class mapModel {
                 fhead.push(temp);
                 shead.push(row[0].map);
                 type = 1;
-            } else if (row[0].map.includes(',,') || row[0].map == '' || row[0].map.charAt(row[0].map.length - 1) == ',') {
+            } else if (row[0].map.includes(',,') || row[0].map == '' 
+            || row[0].map.charAt(row[0].map.length - 1) == ',' || row[0].map.charAt(0) == ',') {
                 fid.push(arr[i]);
                 temp = await tbfunc.getHead(arr[i])
                 fhead.push(temp);

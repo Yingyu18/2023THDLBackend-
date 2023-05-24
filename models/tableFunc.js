@@ -53,9 +53,10 @@ class tableFunc {
       let conn = await pool.getConnection();
       var sql = "SELECT sourceCsvs FROM file_DB WHERE fileID = ?";      
       let row = await conn.query(sql, [pid]);
-      row = row[0].sourceCsvs;
+      row = row[0].sourceCsvs.split(','); console.log('converting 2d csv ids = ' + row);
       sql = "SELECT content, source FROM file_DB where fileID = ?"
       for (let i = 0; i < row.length; i++) {
+        console.log('opening idx with ' + row[i]);
         temp = await conn.query(sql, [row[i]]);
         array[0].push(temp[0].content);
         array[1].push(temp[0].source);
@@ -215,6 +216,20 @@ class tableFunc {
       console.log(error);
     }
   }
+  async copySecMap(srcs, jid) {
+    let conn = await pool.getConnection();
+    let sql = "Select sec_map from sec_map where map_ID = ? and fileID = ?";
+    let sql2 = "INSERT INTO sec_map (fileID, map_ID, sec_map) Values (?, ?, ?)";
+    let mapResult;
+    let ctah;
+    srcs = srcs.split(',');
+    for (let i = 0; i < srcs.length; i++) {
+      mapResult = await conn.query(sql, [jid, srcs[i]]);
+      mapResult = mapResult[0].sec_map;
+      ctah = await conn.query(sql2, [srcs[i], jid, mapResult]);
+    }
+    return 'copy done';
+  } 
 
   async saveJson(js, uid, uname, fid, fname, isnew) {
     const pool = require("./connection_db");
@@ -231,8 +246,9 @@ class tableFunc {
         sql = "Select sourceCsvs from file_DB where fileID = ?";
         row = await conn.query(sql, [jid]);
         row = row[0].sourceCsvs;
-        sql = "Select sourceCsvs from file_DB where fileID = ?";
-
+        sql = "UPDATE file_DB SET sourceCsvs = ? where fileID = ?";
+        let ttttmp = await conn.query(sql, [row, fid]);        
+        ttttmp = await this.copySecMap(row, jid);
       } else {
         sql = "UPDATE file_DB SET content = ?, fileName = ?, lastModified = ? where fileID = ?";
         let asd = await conn.query(sql, [js, fname, new Date().getTime().toString(), fid]);

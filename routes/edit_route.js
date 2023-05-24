@@ -14,7 +14,7 @@ const {
 
 
 router.post('/goToEdit', bodyParser.json(), authentication, async function(req, res) {
-    const userId = req.user.userId;
+    console.log('auth done');
     var pid = req.body.project_id;
     var content = await handler.retrieve2D(pid);
     if (content.error) {
@@ -29,7 +29,6 @@ router.post('/goToEdit', bodyParser.json(), authentication, async function(req, 
 
 
 router.post('/appendNew',bodyParser.json(), authentication, async function(req, res) {
-    const userId = req.user.userId;
     var fid = req.body.file_id;
     var pid = req.body.project_id;
     var content = await handler.append(fid, pid);
