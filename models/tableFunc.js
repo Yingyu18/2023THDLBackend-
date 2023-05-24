@@ -217,7 +217,7 @@ class tableFunc {
     }
   }
   async copySecMap(srcs, jid) {
-    
+
   } 
 
   async saveJson(js, uid, uname, fid, fname, isnew) {
@@ -236,9 +236,8 @@ class tableFunc {
         row = await conn.query(sql, [jid]);
         row = row[0].sourceCsvs;
         sql = "UPDATE file_DB SET sourceCsvs = ? where fileID = ?";
-        let ttttmp = await conn.query(sql, [row, fid]);
-        
-        this.copySecMap(srcs, jid)
+        let ttttmp = await conn.query(sql, [row, fid]);        
+        ttttmp = this.copySecMap(row, jid)
 
 
       } else {
