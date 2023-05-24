@@ -160,14 +160,19 @@ class tableFunc {
     var idx = await this.getRowId([fileID]);
     idx = idx[0];
     var temp;
+    let arr = [[],[]]
     try {
       let conn = await pool.getConnection();
       var sql = "SELECT content FROM file_DB WHERE fileID = ?";
       temp = await conn.query(sql, [fileID]);  
-      let row = temp[0].content["columns"];
-      if (cnt == 2) {row.push(temp[0].content["xmlTags"]);}
+      let row = JSON.parse(temp[0].content);
       conn.release();
-      return row;      
+      if (cnt == 2) {
+        arr[0]=row.columns;
+        arr[1]=row.xmlTags;
+        return arr;
+      }
+      else {return row.columns;}
     } catch (error) {
       console.log(error);
     }
@@ -271,7 +276,7 @@ class tableFunc {
       console.log(error);
     }
   }
-  
+
   async setBuilt(pid) {
     const pool = require("./connection_db");
     try {
