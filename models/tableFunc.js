@@ -259,6 +259,19 @@ class tableFunc {
       console.log(error);
     }
   }
+  async simplesaveJson(js, fid) {
+    const pool = require("./connection_db");
+    try {
+      let conn = await pool.getConnection();
+      var sql = "UPDATE file_DB SET content = ?, lastModified = ? where fileID = ?" 
+      let asd = await conn.query(sql, [js, new Date().getTime().toString(), fid]);
+      conn.release();
+      return 'done';
+    } catch (error) {
+      console.log(error);
+    }
+  }
+  
   async setBuilt(pid) {
     const pool = require("./connection_db");
     try {
