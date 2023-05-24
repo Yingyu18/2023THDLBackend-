@@ -88,10 +88,10 @@ class cleaner {
             while (curRow < table.length) {   
                 console.log('st = ' + table[curRow][start] + 'et = ' + table[curRow][end]);        
                 table[curRow][0] = table[curRow][start];
-                table[curRow][start] = table[curRow][start].replaceAll('/', '-');
+                table[curRow][start] = String(table[curRow][start]).replaceAll('/', '-');
                 table[curRow][start] = await this.timeFormat(type, table[curRow][start]);           
                 table[curRow][0] += '~' + table[curRow][end];
-                table[curRow][end] = table[curRow][end].replaceAll('/', '-');
+                table[curRow][end] = String(table[curRow][end]).replaceAll('/', '-');
                 table[curRow][end] = await this.timeFormat(type, table[curRow][end]);
                 curRow++;
             }
