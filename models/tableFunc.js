@@ -1,5 +1,3 @@
-const { default: isEmail } = require("validator/lib/isemail");
-
 class tableFunc {
   async insertFile(uid, uname, fileName, content, type) {
     const pool = require("./connection_db");
