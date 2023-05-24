@@ -49,8 +49,8 @@ class jsonConverter {
           let src = await conn.query(sql, [pid]);   
           sql = "UPDATE file_DB SET sourceCsvs = ? where fileID = ?";
           let result = await conn.query(sql, [src.push(fid), pid]);  
-          sql = "Insert Into sec_map SET fileID = ?, map_ID = ?, sec_map = ?, create_time = ? values (?, ?, ?, ?)";  
-          result = await conn.query(sql, [fid, pid, '', Date.now()]);  
+          sql = "Insert Into sec_map SET fileID = ?, map_ID = ?, sec_map = ? values (?, ?, ?)";  
+          result = await conn.query(sql, [fid, pid, '']);  
           conn.release();
           return 'success';  
         } catch (error) {
@@ -61,8 +61,8 @@ class jsonConverter {
     async resetMapStatus(pid) {
         try {
           let conn = await pool.getConnection();
-          var sql = "UPDATE file_DB SET is_mapped = ? where fileID = ?";
-          let result = await conn.query(sql, [false, pid]);      
+          var sql = "UPDATE file_DB SET isMapped = ? where fileID = ?";
+          let result = await conn.query(sql, [0, pid]);      
           conn.release();
           return 'csv append success';  
         } catch (error) {
