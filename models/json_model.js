@@ -16,8 +16,9 @@ class jsonConverter {
            "xmlTags" : arr[1]
         }
         for (let i = 2; i < arr.length; i++) {
-            console.log('i = ' + i );
+            console.log('i = ' + arr[i] );
             js[String("file" + (i-1))] = arr[i];
+            console.log('json i = ' + js[String("file" + (i-1))]);
         }
         return js;       
     }
