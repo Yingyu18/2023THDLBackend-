@@ -132,7 +132,7 @@ class tableFunc {
     const pool = require("./connection_db");
     try {
       let conn = await pool.getConnection();
-      var sql = "SELECT sec_map FROM sec_map WHERE fileID = ? and pid = ?";
+      var sql = "SELECT sec_map FROM sec_map WHERE fileID = ? and map_ID = ?";
       let row = await conn.query(sql, [fileID, pid]);     
       conn.release();
       return row[0].sec_map;
@@ -159,7 +159,7 @@ class tableFunc {
 
   async getJsonHead(fileID, cnt) {
     const pool = require("./connection_db");
-    var idx = this.getRowId([fileID]);
+    var idx = await this.getRowId([fileID]);
     idx = idx[0];
     var temp;
     try {
@@ -216,21 +216,26 @@ class tableFunc {
     }
   }
 
-  async saveJson(js, uid, uname, fid, fname) {
+  async saveJson(js, uid, uname, fid, fname, isnew) {
     const pool = require("./connection_db");
     try {
       let conn = await pool.getConnection();
       var sql;
       var row;
       var resBody = { file_id: "zzz", file_name: fname};
-      if (fid == -1) {
-        this.insertFile(uid, uname, fname, js, 'json')
+      if (isnew == 1) {
+        let idk = await this.insertFile(uid, uname, fname, js, 'json')
         sql = "Select fileID from file_DB where fileName = ? and USER_ID = ?";
         row = await conn.query(sql, [fileName, uid]);
         fid = row[0].fileID;
+        sql = "Select sourceCsvs from file_DB where fileID = ?";
+        row = await conn.query(sql, [jid]);
+        row = row[0].sourceCsvs;
+        sql = "Select sourceCsvs from file_DB where fileID = ?";
+
       } else {
         sql = "UPDATE file_DB SET content = ?, fileName = ?, lastModified = ? where fileID = ?";
-        await conn.query(sql, [js, fname, new Date().getTime().toString(), fid]);
+        let asd = await conn.query(sql, [js, fname, new Date().getTime().toString(), fid]);
       }
       resBody["file_id"] = fid;
       conn.release();

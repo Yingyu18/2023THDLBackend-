@@ -15,33 +15,47 @@ class mapModel {
     '相關組織', '關鍵詞', '摘要/全文'];
 
     saveMap = async (fid, jid, type, fin, res) => {
-        var idx = tableFunc.getRowId(fid)-1;
-        var res = 'save success';
+        console.log('im in~~~~');
+        var idx = await tbfunc.getRowId([fid]); console.log ('save idx = ' + idx);
+        var result = 'save success';
+        let tmp;
         try {
             let conn = await pool.getConnection();
             let sql;
-            let rs;        
+            let rs;     
             if (type == 1) { 
                 sql = "UPDATE file_DB SET map = ? WHERE fileID = ?";
+                console.log('type = ' + type + 'res = ' + res + 'tostring = ' + res.toString());
                 rs = await conn.query(sql, [res.toString(), fid]);
-                if (fin == 1) {
-                    res = await cModel.to2dArray(jid, idx, 1);
-                    res = await jModel.toJson(res);
-                    sql = "UPDATE file_DB SET content = ? isMapped = ? WHERE fileID = ?";
-                    rs = await conn.query(sql, [res, true, jid]);
+                sql = "select fileID From sec_map WHERE fileID = ? and map_ID = ?";
+                rs = await conn.query(sql, [fid, jid]);
+                if (rs == null) {
+                    sql = "INSERT INTO sec_map (fileID, map_ID, sec_map, create_time) Values (?, ?, ?, ?)";
+                    rs = await conn.query(sql, [fid, jid, res.toString(), new Date().getTime.toString()]);
                 } else {
-                    sql = "UPDATE sec_map SET sec_map = ? WHERE fileID = ? and json_ID = ?";
-                    rs = await conn.query(sql, [res, fid, jid]);
-                    if (fin == 1) {
-                        res = await cModel.to2dArray(jid, idx, 2);
-                        res = await jModel.toJson(res);
-                        sql = "UPDATE file_DB SET content = ? isMapped = ? WHERE fileID = ?";
-                        rs = await conn.query(sql, [res, true, jid]);
-                    }
+                    sql = "UPDATE sec_map SET sec_map = ? WHERE fileID = ? and map_ID = ?";
+                    rs = await conn.query(sql, [res.toString, fid, jid]);
+                }
+                if (fin == 1) {
+                    tmp = await cModel.to2dArray(jid, idx, 1);
+                    tmp = await jModel.toJson(tmp);
+                    sql = "UPDATE file_DB SET content = ? isMapped = ? WHERE fileID = ?";
+                    rs = await conn.query(sql, [tmp, true, jid]);
                 } 
-            }                
+            }  else {
+                console.log('type = ' + type + 'res = ' + res + 'tostring = ' + res.toString());
+                sql = "UPDATE sec_map SET sec_map = ? WHERE fileID = ? and map_ID = ?";
+                rs = await conn.query(sql, [res.toString(), fid, jid]);
+                if (fin == 1) {
+                    tmp = await cModel.to2dArray(jid, idx, 2);
+                    tmp = await jModel.toJson(tmp);
+                    sql = "UPDATE file_DB SET content = ? isMapped = ? WHERE fileID = ?";
+                    rs = await conn.query(sql, [tmp, true, jid]);
+                }
+            } 
+                           
         conn.release();
-        return res;
+        return result;
       } catch (error) {
         console.log(error);
       }
@@ -55,25 +69,25 @@ class mapModel {
         let fhead = new Array();
         let shead = new Array();
         let fid = new Array(); 
-        var type;
+        var type = 0;
         let temp;
         sql = "SELECT map FROM file_DB WHERE fileID = ?";
         for (let i = 0; i < arr.length; i++) {
-            let row = await conn.query(sql, [arr[i]]);            
+            let row = await conn.query(sql, [arr[i]]); console.log(i + 'retrieve = ' +row+ 'type = ' + type+ ' map = '+ row[0].map);      
             if (row[0].map == null) {
                 fid.push(arr[i]);
                 temp = await tbfunc.getHead(arr[i])
                 fhead.push(temp);
                 shead.push(row[0].map);
                 type = 1;
-            } else if (row[0].map.includes(',,') || row[0].map == '') {
+            } else if (row[0].map.includes(',,') || row[0].map == '' || row[0].map.charAt(row[0].map.length - 1) == ',') {
                 fid.push(arr[i]);
                 temp = await tbfunc.getHead(arr[i])
                 fhead.push(temp);
                 shead.push(row[0].map);
                 type = 1;
             } else if (type != 1) {
-                let tmp = tbfunc.getSecMap(arr[i], pid);
+                let tmp = await tbfunc.getSecMap(arr[i], pid);
                 if (tmp == null) {
                     type = 2;
                     fid.push(arr[i]);
@@ -90,6 +104,7 @@ class mapModel {
             }
           }
         conn.release();
+        console.log('type = ' + type);
         let result = {
             "file_ids": fid,
             "project_id": pid,
@@ -98,7 +113,7 @@ class mapModel {
             "map_head": [],
             "type" : type
           }
-        result["map_head"] = type == 1 ? this.core : tbfunc.getJsonHead(pid, 1); 
+        result["map_head"] = type == 1 ? this.core : await tbfunc.getJsonHead(pid, 1); 
         console.log(result);
         return result;
     } catch (error) {

@@ -8,7 +8,7 @@ const pool = mariadb.createPool({
     user: config.mysql.user,
     password: config.mysql.password,
     database: config.mysql.database,
-    connectionLimit: 5000,
+    connectionLimit: 500,
     acquireTimeout: 300000
 
 });
