@@ -34,11 +34,8 @@ module.exports = class handler {
         else {return {error: "plz finish mapping ur CSVs before editing."}}
     }
     async append(fid, pid) {
-       let res = await jsonConvert.insertNewCSV(fid, pid);
-       if (res == 'success') {
-         res = await jsonConvert.resetMapStatus(pid);
-         return res;
-       }
-       else {return {error: 'insert failed.'}}
+       let res = await jsonConvert.insertNewCSV(fid, pid);       
+       res = await jsonConvert.resetMapStatus(pid);
+       return {'message': 'insert done.'}
     }
 }
