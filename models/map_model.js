@@ -116,7 +116,7 @@ class mapModel {
                     temp = await tbfunc.getHead(arr[i])
                     fhead.push(temp);
                     shead.push(tmp);
-                } else if (tmp.includes(',,') || tmp === '') {
+                } else if (tmp.includes(',,') || tmp == '' || tmp.charAt(tmp.length - 1) == ',' || tmp.charAt(0) == ',') {
                     type = 2;
                     fid.push(arr[i]);
                     temp = await tbfunc.getHead(arr[i])
