@@ -248,7 +248,7 @@ class tableFunc {
         row = row[0].sourceCsvs;
         sql = "UPDATE file_DB SET sourceCsvs = ? where fileID = ?";
         let ttttmp = await conn.query(sql, [row, fid]);        
-        ttttmp = this.copySecMap(row, jid);
+        ttttmp = await this.copySecMap(row, jid);
       } else {
         sql = "UPDATE file_DB SET content = ?, fileName = ?, lastModified = ? where fileID = ?";
         let asd = await conn.query(sql, [js, fname, new Date().getTime().toString(), fid]);

@@ -86,7 +86,8 @@ class cleaner {
             }
         }
          else {
-            while (curRow < table.length) {           
+            while (curRow < table.length) {   
+                console.log('st = ' + table[curRow][start] + 'et = ' + table[curRow][end]);        
                 table[curRow][0] = table[curRow][start];
                 table[curRow][start] = this.timeFormat(type, table[curRow][start]);           
                 table[curRow][0] += '~' + table[curRow][end];
