@@ -214,6 +214,7 @@ class tableFunc {
     }
   }
   async copySecMap(srcs, jid) {
+    const pool = require("./connection_db");
     let conn = await pool.getConnection();
     let sql = "Select sec_map from sec_map where map_ID = ? and fileID = ?";
     let sql2 = "INSERT INTO sec_map (fileID, map_ID, sec_map) Values (?, ?, ?)";
