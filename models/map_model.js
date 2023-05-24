@@ -45,7 +45,7 @@ class mapModel {
                     let maps = new Array();
                     let tpmap;
                     for (let i = 0; i < rs.length; i++) {
-                        tpmap = tbfunc.getMap(rs[i]).split(',');
+                        tpmap = await tbfunc.getMap(rs[i]).split(',');
                         maps.push(tpmap);
                     }
                     tmp = await cModel.to2dArray(jid, idx, 1, maps);
@@ -65,7 +65,7 @@ class mapModel {
                     let maps = new Array();
                     let tpmap;
                     for (let i = 0; i < rs.length; i++) {
-                        tpmap = tbfunc.getSecMap(rs[i], jid);
+                        tpmap = await tbfunc.getSecMap(rs[i], jid);
                         console.log('tpmap + = = =' + tpmap);
                         maps.push(tpmap.split());
                     }
