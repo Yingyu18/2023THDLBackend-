@@ -243,7 +243,7 @@ class tableFunc {
         fid = row[0].fileID;
         sql = "Select sourceCsvs from file_DB where fileID = ?";
         row = await conn.query(sql, [fid]);
-        row = row[0].sourceCsvs;
+        row = row[0].sourceCsvs; console.log('rwwwo = ' + row);
         sql = "UPDATE file_DB SET sourceCsvs = ? where fileID = ?";
         let ttttmp = await conn.query(sql, [row, fid]);        
         ttttmp = await this.copySecMap(row, fid);
