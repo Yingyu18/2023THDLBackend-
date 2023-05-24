@@ -15,7 +15,7 @@ class csvConverter {
     'compilation_name', 'metatags/categoryABC', 'time_orig_str', 'year_for_grouping', 'timeseq_not_before', 'timeseq_not_after', 'metatags/PersonName',
      'metatags/PlaceName', 'metatags/Organization', 'metatags/Keywords', 'doc_content']];
 
-    async to2dArray (jid, sidx, type) {
+    async to2dArray (jid, sidx, type, maps) {
         let temp = await tableFunc.openForProject(jid);  console.log('sidx = ' + sidx);
         let contents = temp[0]; 
         let types = temp[1];
@@ -27,16 +27,16 @@ class csvConverter {
             let table = await cleaner.rawTable(contents[k]);console.log('table = ' + table);
             if (type == 1) {table = await cleaner.arrangeFormat(types[k], table, sidx[k]);}             
             let corres = new Array (table[sidx[k]-1].length);
-            for (let i = 0; i < table[sidx[k]-1].length; i++) {
-                if (table[sidx[k]-1][i] == 'no') {corres[i] = -1;}
-                else if (results.indexOf(table[sidx[k]-1][i]) == -1) {
+            for (let i = 0; i < maps[k].length; i++) {
+                if (maps[k][i] == 'no') {corres[i] = -1;}
+                else if (results[0].indexOf(maps[k][i]) == -1) {
                     corres[i] = extra;
-                    results[0].push(table[sidx[k]-1][i]);
-                    results[1].push('metadata/'+table[sidx[k]-1][i]);
+                    results[0].push(maps[k][i]);
+                    results[1].push('metadata/'+maps[k][i]);
                     extra++;
-                } else {corres[i] = results.indexOf(table[sidx[k]-1][i]);}
+                } else {corres[i] = results.indexOf(maps[k][i]);}
             }            
-            for (let i = sidx[k]-1; i < table.length; i++) {
+            for (let i = sidx[k]; i < table.length; i++) {
                 results.push(new Array(extra).fill(''));
                 for (let j = 0; j < table[i].length; j++) {
                     if (corres[j] < 0) {continue;}

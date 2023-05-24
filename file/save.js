@@ -12,7 +12,7 @@ handler = new handler();
 
 
 const saveJson = async function(req, res, next) {
-    var uid = req.user.userID;
+    var uid = req.user.userId;
     var uname = req.user.name;
     var fid = req.body.file_id;
     var fname = req.body.file_name;

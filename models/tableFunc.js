@@ -4,9 +4,6 @@ class tableFunc {
     console.log("insert file for user: " + uid);
     try {
       let conn = await pool.getConnection();
-      if (ft == "son") {
-        ft = "j" + ft;
-      }
       var sql =
         "INSERT INTO file_db (fileName, USER_ID, USER_NAME, Start_Row, content, upload_time, type, lastModified) VALUES (?,?,?,?,?,?,?,?)";
       var time = new Date().getTime().toString();
@@ -217,6 +214,7 @@ class tableFunc {
     }
   }
   async copySecMap(srcs, jid) {
+    const pool = require("./connection_db");
     let conn = await pool.getConnection();
     let sql = "Select sec_map from sec_map where map_ID = ? and fileID = ?";
     let sql2 = "INSERT INTO sec_map (fileID, map_ID, sec_map) Values (?, ?, ?)";
@@ -228,6 +226,7 @@ class tableFunc {
       mapResult = mapResult[0].sec_map;
       ctah = await conn.query(sql2, [srcs[i], jid, mapResult]);
     }
+    conn.release();
     return 'copy done';
   } 
 
@@ -239,16 +238,16 @@ class tableFunc {
       var row;
       var resBody = { file_id: "zzz", file_name: fname};
       if (isnew == 1) {
+        sql = "Select sourceCsvs from file_DB where fileID = ?";
+        row = await conn.query(sql, [fid]);
+        let orgIdx = row[0].sourceCsvs;
         let idk = await this.insertFile(uid, uname, fname, js, 'json')
         sql = "Select fileID from file_DB where fileName = ? and USER_ID = ?";
-        row = await conn.query(sql, [fileName, uid]);
-        fid = row[0].fileID;
-        sql = "Select sourceCsvs from file_DB where fileID = ?";
-        row = await conn.query(sql, [jid]);
-        row = row[0].sourceCsvs;
+        row = await conn.query(sql, [fname, uid]);
+        fid = row[0].fileID;        
         sql = "UPDATE file_DB SET sourceCsvs = ? where fileID = ?";
-        let ttttmp = await conn.query(sql, [row, fid]);        
-        ttttmp = await this.copySecMap(row, jid);
+        let ttttmp = await conn.query(sql, [orgIdx, fid]);        
+        ttttmp = await this.copySecMap(orgIdx, fid);
       } else {
         sql = "UPDATE file_DB SET content = ?, fileName = ?, lastModified = ? where fileID = ?";
         let asd = await conn.query(sql, [js, fname, new Date().getTime().toString(), fid]);
@@ -260,6 +259,19 @@ class tableFunc {
       console.log(error);
     }
   }
+  async simplesaveJson(js, fid) {
+    const pool = require("./connection_db");
+    try {
+      let conn = await pool.getConnection();
+      var sql = "UPDATE file_DB SET content = ?, lastModified = ? where fileID = ?" 
+      let asd = await conn.query(sql, [js, new Date().getTime().toString(), fid]);
+      conn.release();
+      return 'done';
+    } catch (error) {
+      console.log(error);
+    }
+  }
+  
   async setBuilt(pid) {
     const pool = require("./connection_db");
     try {

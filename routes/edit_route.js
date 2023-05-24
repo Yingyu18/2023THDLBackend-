@@ -6,12 +6,14 @@ tableFunc = new tableFunc();
 let handler = require('../controllers/fileConverter');
 handler = new handler();
 
+let jModel = require('../models/json_model');
+jModel = new jModel();
+
 const bodyParser = require('body-parser')
 
 const {
     authentication
   } = require('../util/util')
-
 
 router.post('/goToEdit', bodyParser.json(), authentication, async function(req, res) {
     console.log('auth done');
@@ -38,11 +40,13 @@ router.post('/appendNew',bodyParser.json(), authentication, async function(req, 
 
 router.post('/buildDB', bodyParser.json(), authentication, async function(req, res) {
     const userId = req.user.userId;
-    const email = req.body.emal;
+    const email = req.user.email;
     var DBname = req.body.DBname;
     var pid = req.body.Json_id;
-    var content = req.body.content;
-    var res = await handler.buildXml(content, DBname, pid, userId, email);
+    var content = req.body.content; console.log('received content = ' + content);
+    var js = await jModel.toJson(content);
+    let saveREs = await tableFunc.simplesaveJson(js, pid);
+    var res = await handler.buildXml(js, DBname, pid, userId, email);
     res.status(200).send(res);
     return ;
 })
