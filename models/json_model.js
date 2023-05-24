@@ -20,10 +20,13 @@ class jsonConverter {
     }
 
     async to2D (fid) { 
-        var js = await tableFunc.openFile([fid]);
+        var js = await tableFunc.openFile([fid]); console.log('js = ' + js);
         if (js === null || js === '') {return {error: 'no such content, complete map first'}}
         let arr = new Array();
-        for(var k in js) {arr.push(js[k]);}
+        for(var k in js) {
+          console.log('k = ' + k , '---- cont = ' + js[k]);
+          arr.push(js[k]);
+        }
         return arr;       
     }
 
