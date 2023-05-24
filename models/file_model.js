@@ -120,7 +120,7 @@ const getCsv = async(id) => {
     const conn = await pool.getConnection()
     try{
         let qryStr = `SELECT * FROM file_db WHERE fileID = ?`
-        var results = await conn.query(qryStr, [id]); console.log('get CSv = ' + results[0]);
+        var results = await conn.query(qryStr, [id]);
         return results[0] 
     } catch (error){
         console.log(error)

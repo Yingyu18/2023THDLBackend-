@@ -39,7 +39,7 @@ class csvConverter {
             }            
             for (let i = sidx[k]; i < table.length; i++) {
                 results.push(new Array(extra).fill(''));
-                for (let j = 0; j < table[i].length; j++) {
+                for (let j = 0; j < table[i].length; j++) { console.log("i + j = " + i +'/' j+ "org ----------- is = " + results[lines][corres[j]] + ' ttttttt--------- is = ' + table[i][j]);
                     if (corres[j] < 0) {continue;}
                     else if (results[lines][corres[j]] == null || results[lines][corres[j]] == '') {
                         results[lines][corres[j]] = table[i][j];
