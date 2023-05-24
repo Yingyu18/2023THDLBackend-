@@ -80,7 +80,8 @@ class mapModel {
                 fhead.push(temp);
                 shead.push(row[0].map);
                 type = 1;
-            } else if (row[0].map.includes(',,') || row[0].map == '' || row[0].map.charAt(row[0].map.length - 1) == ',') {
+            } else if (row[0].map.includes(',,') || row[0].map == '' 
+            || row[0].map.charAt(row[0].map.length - 1) == ',' || row[0].map.charAt(0) == ',') {
                 fid.push(arr[i]);
                 temp = await tbfunc.getHead(arr[i])
                 fhead.push(temp);
