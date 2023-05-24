@@ -43,7 +43,7 @@ router.post('/buildDB', bodyParser.json(), authentication, async function(req, r
     const email = req.user.email;
     var DBname = req.body.DBname;
     var pid = req.body.Json_id;
-    var content = req.body.content;
+    var content = req.body.content; console.log('received content = ' + content);
     var js = await jModel.toJson(content);
     let saveREs = await tableFunc.simplesaveJson(js, pid);
     var res = await handler.buildXml(js, DBname, pid, userId, email);
