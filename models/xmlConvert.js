@@ -14,6 +14,7 @@ cleaner = new cleaner();
 class XMLConverter {
 
     toXML (js, corpus_name) {
+      console.log('js to build = ' + js);
         var len = Object.keys(js).length - 2;
         var cnt = 1;
         var xml = "<?xml version=\"1.0\"?><ThdlPrototypeExport>\n \
@@ -68,7 +69,8 @@ class XMLConverter {
             tags += "      <tag type=\"contentTagging\" name=\"Udef_"+ tagName + "\" default_category=\"Udef_" + tagName + "\" default_sub_category=\"-\"/>\n";
             cnt++;
             for (let j = 1; j <= len; j++) {
-              let alltags = js["file" + j][i].split(";");
+              console.log('retrr = ' + String("file" + j));
+              let alltags = js[String("file" + j)][i].split(";");
               for (let k = 0; k < alltags.length; k++) {
                 docutags[j-1] += "        <Udef_" + tagName + ">" + alltags[k] + "</Udef_" + tagName + ">\n" ;
               }
