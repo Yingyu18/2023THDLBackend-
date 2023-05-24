@@ -47,7 +47,7 @@ class cleaner {
             2 : ["NDAP", '臺灣省議會史料總庫'],
             3 : ["tlcda", '地方議會議事錄']
         }
-        if (types >= 4) {return table;}
+        if (type >= 4) {return table;}
         let curRow = idx-1;
         let start = -1;
         let end = -1;

@@ -234,8 +234,8 @@ class tableFunc {
         row = row[0].sourceCsvs;
         sql = "UPDATE file_DB SET sourceCsvs = ? where fileID = ?";
         let ttttmp = await conn.query(sql, [row, fid]);
-        sql = "UPDATE file_DB SET sourceCsvs = ? where fileID = ?";
-        ttttmp = await conn.query(sql, [row, fid]);
+        sql = "INSERT INTO sec_map (fileID, map_ID, sec_map) Values (?, ?, ?)";
+        ttttmp = await conn.query(sql, [fid, jid, ]);
 
 
       } else {
