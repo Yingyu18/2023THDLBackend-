@@ -16,7 +16,7 @@ class mapModel {
 
     saveMap = async (fid, jid, type, fin, res) => {
         console.log('im in~~~~');
-        var idx = await tbfunc.getRowId(fid); console.log ('save idx = ' + idx);
+        var idx = await tbfunc.getRowId([fid]); console.log ('save idx = ' + idx);
         var result = 'save success';
         let tmp;
         try {
@@ -60,11 +60,11 @@ class mapModel {
         let fhead = new Array();
         let shead = new Array();
         let fid = new Array(); 
-        var type;
+        var type = 0;
         let temp;
         sql = "SELECT map FROM file_DB WHERE fileID = ?";
         for (let i = 0; i < arr.length; i++) {
-            let row = await conn.query(sql, [arr[i]]);            
+            let row = await conn.query(sql, [arr[i]]); console.log(i + 'retrieve = ' +row+ 'type = ' + type+ ' map = '+ row[0].map);      
             if (row[0].map == null) {
                 fid.push(arr[i]);
                 temp = await tbfunc.getHead(arr[i])
@@ -95,6 +95,7 @@ class mapModel {
             }
           }
         conn.release();
+        console.log('type = ' + type);
         let result = {
             "file_ids": fid,
             "project_id": pid,
