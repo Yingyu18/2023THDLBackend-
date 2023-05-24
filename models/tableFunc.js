@@ -53,9 +53,10 @@ class tableFunc {
       let conn = await pool.getConnection();
       var sql = "SELECT sourceCsvs FROM file_DB WHERE fileID = ?";      
       let row = await conn.query(sql, [pid]);
-      row = row[0].sourceCsvs;
+      row = row[0].sourceCsvs; console.log('converting 2d csv ids = ' + row);
       sql = "SELECT content, source FROM file_DB where fileID = ?"
       for (let i = 0; i < row.length; i++) {
+        console.log('opening idx with ' + row[i]);
         temp = await conn.query(sql, [row[i]]);
         array[0].push(temp[0].content);
         array[1].push(temp[0].source);
@@ -231,7 +232,8 @@ class tableFunc {
         sql = "Select sourceCsvs from file_DB where fileID = ?";
         row = await conn.query(sql, [jid]);
         row = row[0].sourceCsvs;
-        sql = "Select sourceCsvs from file_DB where fileID = ?";
+        sql = "UPDATE file_DB SET sourceCsvs = ? where fileID = ?";
+        let ttttmp = await conn.query(sql, [row, fid]);
 
       } else {
         sql = "UPDATE file_DB SET content = ?, fileName = ?, lastModified = ? where fileID = ?";
