@@ -105,8 +105,16 @@ class cleaner {
         data = data.split('\n');  
         for (let i = 0; i < data.length; i++) {
             data[i] = data[i].split(',');
+        }console.log('no slice = ' + data);
+
+        console.log('slice = ' + data.slice(0, data.length-1));
+        if (data[data.length-1] == '') {
+            console.log('sliced!');
+            return data.slice(0, data.length-1);
         }
-        return data;
+        else {
+            return data;
+        } 
     }
 
     recover(str) {        
