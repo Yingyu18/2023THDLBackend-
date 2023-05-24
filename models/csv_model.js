@@ -53,7 +53,7 @@ class csvConverter {
         }
         for (let i = 2; i < results.length; i++) {
             if (results[i].length < results[0].length) {
-                results[i].push(new Array(results[0].length - results[i].length).fill(''));
+                results[i] = results[i].concat(new Array(results[0].length - results[i].length).fill(''));
             }
         }
         if (type == 2) {results = mergeToJson(results, jid)}
