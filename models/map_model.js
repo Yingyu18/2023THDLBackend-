@@ -15,6 +15,7 @@ class mapModel {
     '相關組織', '關鍵詞', '摘要/全文'];
 
     saveMap = async (fid, jid, type, fin, res) => {
+        console.log('im in~~~~');
         var idx = await tbfunc.getRowId(fid); console.log ('save idx = ' + idx);
         var result = 'save success';
         let tmp;
