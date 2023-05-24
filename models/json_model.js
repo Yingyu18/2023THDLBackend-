@@ -9,11 +9,14 @@ cleaner = new cleaner();
 class jsonConverter {
 
    async toJson (arr) { 
+    console.log('arr 0 = ' +  arr[0]);
+    console.log('arr 1 = ' +  arr[1]);
         let js = {
            "columns" : arr[0],
            "xmlTags" : arr[1]
         }
         for (let i = 2; i < arr.length; i++) {
+            console.log('arr ' + i-1 +' = ' +  arr[i]);
             js["file" + (i-1)] = arr[i];
         }
         return js;       
