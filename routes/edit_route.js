@@ -46,8 +46,8 @@ router.post('/buildDB', bodyParser.json(), authentication, async function(req, r
     var content = req.body.content; console.log('received content = ' + content);
     var js = await jModel.toJson(content);
     let saveREs = await tableFunc.simplesaveJson(js, pid);
-    var res = await handler.buildXml(js, DBname, pid, userId, email);
-    res.status(200).send(res);
+    var result = await handler.buildXml(js, DBname, pid, userId, email);
+    res.status(200).send(result);
     return ;
 })
 

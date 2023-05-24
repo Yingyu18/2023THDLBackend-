@@ -283,7 +283,7 @@ class tableFunc {
     try {
       let conn = await pool.getConnection();
      
-      sql = "UPDATE file_DB SET isBuilt = ? where fileID = ?";
+      let sql = "UPDATE file_DB SET isBuilt = ? where fileID = ?";
       let res = await conn.query(sql, [true, pid]);
       conn.release();
       return 'is_built_set';
