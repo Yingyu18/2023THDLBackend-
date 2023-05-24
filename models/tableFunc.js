@@ -240,14 +240,14 @@ class tableFunc {
       if (isnew == 1) {
         sql = "Select sourceCsvs from file_DB where fileID = ?";
         row = await conn.query(sql, [fid]);
-        row = row[0].sourceCsvs;
+        let orgIdx = row[0].sourceCsvs;
         let idk = await this.insertFile(uid, uname, fname, js, 'json')
         sql = "Select fileID from file_DB where fileName = ? and USER_ID = ?";
         row = await conn.query(sql, [fname, uid]);
         fid = row[0].fileID;        
         sql = "UPDATE file_DB SET sourceCsvs = ? where fileID = ?";
-        let ttttmp = await conn.query(sql, [row, fid]);        
-        ttttmp = await this.copySecMap(row, fid);
+        let ttttmp = await conn.query(sql, [orgIdx, fid]);        
+        ttttmp = await this.copySecMap(orgIdx, fid);
       } else {
         sql = "UPDATE file_DB SET content = ?, fileName = ?, lastModified = ? where fileID = ?";
         let asd = await conn.query(sql, [js, fname, new Date().getTime().toString(), fid]);
