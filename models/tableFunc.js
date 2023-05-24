@@ -143,7 +143,7 @@ class tableFunc {
 
   async getHead(fileID) {
     const pool = require("./connection_db");
-    var idx = this.getRowId([fileID]);
+    var idx = await this.getRowId([fileID]);
     idx = idx[0]; console.log('get head of fileID = ' + fileID +'with strow = ' + idx);
     try {
       let conn = await pool.getConnection();
