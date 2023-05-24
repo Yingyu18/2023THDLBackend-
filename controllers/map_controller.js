@@ -58,8 +58,8 @@ const savemap = async (req, res) => {
     var result = req.body.map_res;
     var fin = req.body.finish;
     var arr = await model.saveMap(fid, pid, type, fin, result);
-    if (arr.error) {
-        res.status(400).send({message: arr.error});
+    if (arr != 'save success') {
+        res.status(400).send({message: 'save fail'});
         return ;
     }
     else {

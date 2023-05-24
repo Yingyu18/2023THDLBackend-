@@ -104,7 +104,7 @@ class cleaner {
         for (let i = 0; i < data.length; i++) {
             data[i] = data[i].split(',');
         }
-        return data;    
+        return data.slice(0, data.length-2); 
     }
 
     recover(str) {        
