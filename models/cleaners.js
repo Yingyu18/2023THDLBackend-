@@ -40,7 +40,6 @@ class cleaner {
     }
     
     async arrangeFormat(type, table, idx) {
-        console.log(table.length);
         let map = {
             0: ["AHCMS" ,'國史館檔案史料文物查詢系統'],
             1 : ["AHTWH", '國史館臺灣文獻館典藏管理系統'],
@@ -51,6 +50,7 @@ class cleaner {
         let curRow = idx-1;
         let start = -1;
         let end = -1;
+        console.log('tb len = ' + table.length + ',  cur = ' + curRow + 'tb == ' + table);
         for (let j = 1; j < table[curRow].length; j++) {
            if (table[curRow][j] == '卷件開始日期' || table[curRow][j] == 'date_from' || table[curRow][j] == '日期描述' || table[curRow][j] == '日期起') {
                 start = j;                

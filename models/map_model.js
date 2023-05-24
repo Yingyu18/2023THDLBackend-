@@ -40,7 +40,7 @@ class mapModel {
                     tmp = await cModel.to2dArray(jid, idx, 1);
                     tmp = await jModel.toJson(tmp);
                     sql = "UPDATE file_DB SET content = ?, isMapped = ? WHERE fileID = ?";
-                    rs = await conn.query(sql, [tmp, true, jid]);
+                    rs = await conn.query(sql, [tmp, 1, jid]);
                 } 
             }  else {
                 console.log('type = ' + type + 'res = ' + res + 'tostring = ' + res.toString());
@@ -50,7 +50,7 @@ class mapModel {
                     tmp = await cModel.to2dArray(jid, idx, 2);
                     tmp = await jModel.toJson(tmp);
                     sql = "UPDATE file_DB SET content = ?, isMapped = ? WHERE fileID = ?";
-                    rs = await conn.query(sql, [tmp, true, jid]);
+                    rs = await conn.query(sql, [tmp, 1, jid]);
                 }
             } 
                            
