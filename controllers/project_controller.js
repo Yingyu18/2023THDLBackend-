@@ -2,7 +2,7 @@ const Project = require('../models/project_model');
 const File = require('../models/file_model');
 
 const uploadFile = async (req, res)=> {
-    console.log("test", req.body)
+    //console.log("test", req.body)
     if (!req.body.sourceCsvs || !req.body.name || !req.body.owner) {
         return res.status(400).send({message:"Bad request"})
     }

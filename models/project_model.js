@@ -32,7 +32,7 @@ const getFile = async(req) => {
     try{
         let qryStr = `SELECT * FROM file_db WHERE USER_ID = ? AND type = ?`
         var results = await conn.query(qryStr, [userId, "json"])
-        console.log("result", results)
+        //console.log("result", results)
         return results
     } catch (error){
         console.log(error)
@@ -46,7 +46,7 @@ const getSourceCsvs = async(projectId) =>{
      try{
         let qryStr = `SELECT * FROM source_csvs WHERE  project_id = ? `
         let results = await conn.query(qryStr, [projectId])
-        console.log(results)
+        //console.log(results)
         return results
      } catch (error){
         console.log({error:error})
