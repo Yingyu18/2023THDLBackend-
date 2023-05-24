@@ -4,8 +4,8 @@ var fs = require('fs');
 const uploadFile = async (req, res) =>{
     const {userId} = req.user
     var {name, uploader, type, size, lastModified, source} = req.body;
-    console.log(req.body)
     const content = req.file.buffer.toString('utf8');
+    //console.log(content)
     if(!name || !uploader){
         return res.status(400).send({message:"Bad request"})
     }

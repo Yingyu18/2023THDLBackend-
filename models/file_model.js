@@ -1,24 +1,42 @@
 const pool = require("./connection_db")
-
+const Cleaner = require("./cleaners");
+const cleaner = new Cleaner();
 
 const uploadFile = async(data) => {
     const conn = await pool.getConnection()
     try{
         let {filename, content, userId, uploader, size, lastModified, source} = data
-        //console.log(data)
+ 
             if(source === '國史館檔案史料文物'){ source = 0;}
             if(source === '地方議會議事錄總庫'){source = 1;}
             if(source === '國史館臺灣文獻館'){source = 2;}
             if(source === '臺灣省議會史料總庫'){source = 3;}
             if(source ==='自定義資料檔案'){source = 4;} 
-        
+        //set start row
         let start = 4; //其他
-        if(source === 1){start=5} //地方議會
-        else if(source===4){start=1} // 自定義
+        if(source === 1){ start=5 } //地方議會
+        else if(source === 4){ start=1 } // 自定義
 
+        //clean csv
+        var table = []
+        var rows = content.split('\n')
+        for(let i=0; i<rows.length; i++){
+            table[i] = rows[i].split(',')
+        }
+        if(source != 4){
+            table = cleaner.csvClean(table, start-1)
+        }
+        for(let i=0; i<table.length; i++){
+            table[i] = table[i].join('\,');
+        }
+        table = table.join('\n')
+        //console.log(table)
+
+        // insert Into database
         let qryStr = 'INSERT INTO file_db (fileName, USER_ID, USER_NAME, Start_Row, content, upload_time, size, source, lastModified) VALUES (?,?,?,?,?,?,?,?,?)'
-        const result = await conn.query(qryStr, [filename, userId, uploader, 1, content, new Date().getTime().toString(), size, source, lastModified])
+        const result = await conn.query(qryStr, [filename, userId, uploader, start, content, new Date().getTime().toString(), size, source, lastModified])
         return result
+
     } catch (error){
         console.log({error:error})
         return {error}
