@@ -216,6 +216,9 @@ class tableFunc {
       console.log(error);
     }
   }
+  async copySecMap(srcs, jid) {
+    
+  } 
 
   async saveJson(js, uid, uname, fid, fname, isnew) {
     const pool = require("./connection_db");
@@ -234,8 +237,8 @@ class tableFunc {
         row = row[0].sourceCsvs;
         sql = "UPDATE file_DB SET sourceCsvs = ? where fileID = ?";
         let ttttmp = await conn.query(sql, [row, fid]);
-        sql = "INSERT INTO sec_map (fileID, map_ID, sec_map) Values (?, ?, ?)";
-        ttttmp = await conn.query(sql, [fid, jid, ]);
+        
+        this.copySecMap(srcs, jid)
 
 
       } else {

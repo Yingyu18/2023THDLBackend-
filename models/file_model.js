@@ -26,7 +26,7 @@ const uploadFile = async(data) => {
         if(source != 4){
             table = cleaner.csvClean(table, start-1)
         }
-        if(source == 3){
+        if(source == 3 || source == 0){
             for(let i=3; i<table.length; i++){
                 for(let j=1; j<table[i].length; j++){
                     console.log("table[]: ", table[i])
