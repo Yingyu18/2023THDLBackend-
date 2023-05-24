@@ -19,7 +19,7 @@ class csvConverter {
         let temp = await tableFunc.openForProject(jid);  console.log('sidx = ' + sidx);
         let contents = temp[0]; 
         let types = temp[1];
-        let results = type == 1 ? this.core : await tableFunc.openJsonHead(jid, 2);        
+        let results = type == 1 ? this.core : await tableFunc.getJsonHead(jid, 2);        
         let extra = results[0].length;
         let lines = 2;
         for (let k = 0; k < contents.length; k++) {
@@ -28,13 +28,14 @@ class csvConverter {
             if (type == 1) {table = await cleaner.arrangeFormat(types[k], table, sidx[k]);}             
             let corres = new Array (table[sidx[k]-1].length);
             for (let i = 0; i < maps[k].length; i++) {
+                console.log('maps k+i = ' + maps[k][i]);
                 if (maps[k][i] == 'no') {corres[i] = -1;}
                 else if (results[0].indexOf(maps[k][i]) == -1) {
                     corres[i] = extra;
                     results[0].push(maps[k][i]);
                     results[1].push('metadata/'+maps[k][i]);
                     extra++;
-                } else {corres[i] = results.indexOf(maps[k][i]);}
+                } else {corres[i] = results[0].indexOf(maps[k][i]);}
             }            
             for (let i = sidx[k]; i < table.length; i++) {
                 results.push(new Array(extra).fill(''));

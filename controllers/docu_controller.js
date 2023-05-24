@@ -11,7 +11,7 @@ jModel = new jModel();
 
 const docuCheck = async (req, res) =>{ 
     var email = req.user.email;
-    var dbtitle = req.body.dbtitle;
+    var dbtitle = req.body.dbtitle;console.log('email = '+ email + ' title = ' + dbtitle);
     let result = await docuskyChecker(email, dbtitle);
     var mes = result ? 'docu DB builded successfully' : 'docu DB is still been builded';
     

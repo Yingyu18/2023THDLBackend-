@@ -51,8 +51,8 @@ class mapModel {
                     let maps = new Array();
                     let tpmap;
                     for (let i = 0; i < rs.length; i++) {
-                        tpmap = tbfunc.getMap(rs[i]).split(',');
-                        maps.push(tpmap);
+                        tpmap = await tbfunc.getMap(rs[i]);
+                        maps.push(String(tpmap).split(','));
                     }
                     tmp = await cModel.to2dArray(jid, idx, 1, maps);
                     tmp = await jModel.toJson(tmp);
@@ -71,8 +71,9 @@ class mapModel {
                     let maps = new Array();
                     let tpmap;
                     for (let i = 0; i < rs.length; i++) {
-                        tpmap = tbfunc.getMap(rs[i]).split(',');
-                        maps.push(tpmap);
+                        tpmap = await tbfunc.getSecMap(rs[i], jid);
+                        console.log('tpmap + = = =' + tpmap);
+                        maps.push(String(tpmap).split(','));
                     }
                     tmp = await cModel.to2dArray(jid, idx, 2, maps);
                     tmp = await jModel.toJson(tmp);
@@ -122,7 +123,7 @@ class mapModel {
                     temp = await tbfunc.getHead(arr[i])
                     fhead.push(temp);
                     shead.push(tmp);
-                } else if (tmp.includes(',,') || tmp === '') {
+                } else if (tmp.includes(',,') || tmp == '' || tmp.charAt(tmp.length - 1) == ',' || tmp.charAt(0) == ',') {
                     type = 2;
                     fid.push(arr[i]);
                     temp = await tbfunc.getHead(arr[i])

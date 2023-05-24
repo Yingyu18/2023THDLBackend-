@@ -75,8 +75,9 @@ const uploadFile = async (req, res)=> {
 }
 
 function isSecMapped(map){
-    console.log(map[0], map[map.length-1])
-    if(map == '' || map[0] == ',' ||  map[map.length-1] == ','){
+    //console.log(map[0], map[map.length-1])
+    if (map == null) {return 0;}
+    else if(map == '' || map[0] == ',' ||  map[map.length-1] == ','){
         return 0
     }
     for(let i=0; i<map.length-1; i++){

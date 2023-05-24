@@ -8,9 +8,9 @@ router.get('/', function(req, res, next) {
   res.send('respond with a resource');
 });
 
-/*const {
+const {
     authentication
-  } = require('../util/util')*/
+  } = require('../util/util')
 
 const {
     docuCheck,
@@ -19,8 +19,8 @@ const {
 
 
 
-router.post('/check', docuCheck);
-router.post('/back2Edit', back2Edit);
+router.post('/check', authentication, docuCheck);
+router.post('/back2Edit',authentication, back2Edit);
 
 
 module.exports = router;
