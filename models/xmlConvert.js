@@ -91,6 +91,7 @@ class XMLConverter {
         let sql = "Select map_ID from sec_map where fileID = ?";
         let res = await conn.query(sql, [pid]);
         if (res == null || res[0] == null){
+          console.log('firts dddbbbd');
           let user = await getUserDetail(uid);
           res = await tableFunc.insertFile(uid, uname, corpus_name, xml, 'xml');
           sql = "Select fileID from file_DB where fileName = ?";
