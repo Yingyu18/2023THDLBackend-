@@ -37,6 +37,10 @@ class mapModel {
                     rs = await conn.query(sql, [res.toString(), fid, jid]);
                 }
                 if (fin == 1) {
+                    sql = "select sourceCsvs from file_DB WHERE fileID = ?";
+                    rs = await conn.query(sql, [jid]);
+                    rs = rs[0].sourceCsvs.split(',');
+                    idx =  await tbfunc.getRowId(rs);
                     tmp = await cModel.to2dArray(jid, idx, 1);
                     tmp = await jModel.toJson(tmp);
                     sql = "UPDATE file_DB SET content = ?, isMapped = ? WHERE fileID = ?";
