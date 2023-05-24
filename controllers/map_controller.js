@@ -57,15 +57,10 @@ const savemap = async (req, res) => {
     var type = req.body.type;
     var result = req.body.map_res;
     var fin = req.body.finish;
-    var arr = await model.saveMap(fid, pid, type, fin, result);
-    if (arr != 'save success') {
-        res.status(400).send({message: 'save fail'});
-        return ;
-    }
-    else {
-        res.status(200).send('save success');
-        return ;
-    }
+    var arr = await model.saveMap(fid, pid, type, fin, result);    
+    res.status(200).send('save success');
+    return ;
+    
 }
 const getmap = async (req, res) => {    
     var uid = req.user.userID;

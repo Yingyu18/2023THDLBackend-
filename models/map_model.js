@@ -49,8 +49,8 @@ class mapModel {
                 if (fin == 1) {
                     tmp = await cModel.to2dArray(jid, idx, 2);
                     tmp = await jModel.toJson(tmp);
-                    sql = "UPDATE file_DB SET content = ? isMapped = ? WHERE fileID = ?";
-                    rs = await conn.query(sql, [tmp, 1, jid]);
+                    sql = "UPDATE file_DB SET content = ?, isMapped = ? WHERE fileID = ?";
+                    rs = await conn.query(sql, [tmp, true, jid]);
                 }
             } 
                            
