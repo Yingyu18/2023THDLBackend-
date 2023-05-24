@@ -88,8 +88,8 @@ class tableFunc {
       let row;
       var sql = "SELECT Start_Row FROM file_DB WHERE fileID = ?";
       for (let i = 0; i < fileIDs.length; i++) {
-        row = await conn.query(sql, [fileIDs[i]]);
-        array[i] = row[0].Start_Row;
+        row = await conn.query(sql, [fileIDs[i]]);  console.log('row = ' + row + '\nid from get row = ' + row[0].Start_Row);
+        array[i] = row[0].Start_Row; console.log('arr['+i+']= ' + row[0].Start_Row);
       }
       conn.release();
       return array;
