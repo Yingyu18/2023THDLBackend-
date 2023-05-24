@@ -65,7 +65,7 @@ class mapModel {
                     let maps = new Array();
                     let tpmap;
                     for (let i = 0; i < rs.length; i++) {
-                        tpmap = tbfunc.getMap(rs[i]).split(',');
+                        tpmap = tbfunc.getSecMap(rs[i]).split(',');
                         maps.push(tpmap);
                     }
                     tmp = await cModel.to2dArray(jid, idx, 2, maps);
