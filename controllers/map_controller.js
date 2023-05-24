@@ -74,7 +74,7 @@ const getmap = async (req, res) => {
 
 const retrieveMapped = async (req, res) => {    
     var pid = req.body.project_id;
-    var result = await tableFunc.getIsMap(pid);
+    var result = await tableFunc.getIsMap(pid); console.log(result);
     res.status(200).send(result);
 }
 module.exports = {
