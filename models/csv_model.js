@@ -9,23 +9,19 @@ cleaner = new cleaner();
 
 class csvConverter {
 
-    core = [['唯一編碼', '來源系統', '來源系統縮寫', '文件原系統頁面URL', '題名', '檔案類型',
-    '書卷名', '(類目階層)', '原始時間記錄', '西元年', '起始時間', '結束時間', '相關人員', '相關地點', 
-    '相關組織', '關鍵詞', '摘要/全文'], ['filename', 'doc_source', 'metadata/doc_source', 'metadata/doc_source.href', 'title', 'doctype',
-    'compilation_name', 'metatags/categoryABC', 'time_orig_str', 'year_for_grouping', 'timeseq_not_before', 'timeseq_not_after', 'metatags/PersonName',
-     'metatags/PlaceName', 'metatags/Organization', 'metatags/Keywords', 'doc_content']];
-
     async to2dArray (jid, sidx, type, maps) {
         
         let temp = await tableFunc.openForProject(jid);
         let contents = temp[0]; 
         let types = temp[1];
-        let results = type == 1 ? new this.core : await tableFunc.getJsonHead(jid, 2);      
+        let results = type == 1 ? [['唯一編碼', '來源系統', '來源系統縮寫', '文件原系統頁面URL', '題名', '檔案類型',
+        '書卷名', '(類目階層)', '原始時間記錄', '西元年', '起始時間', '結束時間', '相關人員', '相關地點', 
+        '相關組織', '關鍵詞', '摘要/全文'], ['filename', 'doc_source', 'metadata/doc_source', 'metadata/doc_source.href', 'title', 'doctype',
+        'compilation_name', 'metatags/categoryABC', 'time_orig_str', 'year_for_grouping', 'timeseq_not_before', 'timeseq_not_after', 'metatags/PersonName',
+         'metatags/PlaceName', 'metatags/Organization', 'metatags/Keywords', 'doc_content']] : await tableFunc.getJsonHead(jid, 2);      
         let extra = results[0].length;
         let lines = 2;
-        console.log('core = ' + this.core) ;
         for (let k = 0; k < contents.length; k++) {
-              console.log('reserserserseresrserserseesrr = = ' + results);
             let table = await cleaner.rawTable(contents[k]);
             if (type == 1) {table = await cleaner.arrangeFormat(types[k], table, sidx[k]);}             
             let corres = new Array (table[sidx[k]-1].length);
