@@ -14,7 +14,7 @@ const {
 
 
 router.post('/goToEdit', bodyParser.json(), authentication, async function(req, res) {
-    const userId = req.user.userId;
+    const userId = req.user.userId; console.log('auth done');
     var pid = req.body.project_id;
     var content = await handler.retrieve2D(pid);
     if (content.error) {
