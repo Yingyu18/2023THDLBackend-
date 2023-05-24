@@ -27,6 +27,15 @@ class mapModel {
                 sql = "UPDATE file_DB SET map = ? WHERE fileID = ?";
                 console.log('type = ' + type + 'res = ' + res + 'tostring = ' + res.toString());
                 rs = await conn.query(sql, [res.toString(), fid]);
+                sql = "select fileID From sec_map WHERE fileID = ? and map_ID = ?";
+                rs = await conn.query(sql, [fid, jid]);
+                if (rs == null) {
+                    sql = "INSERT INTO sec_map (fileID, map_ID, sec_map, create_time) Values (?, ?, ?, ?)";
+                    rs = await conn.query(sql, [fid, jid, res.toString(), new Date().getTime.toString()]);
+                } else {
+                    sql = "UPDATE sec_map SET sec_map = ? WHERE fileID = ? and map_ID = ?";
+                    rs = await conn.query(sql, [res, fid, jid]);
+                }
                 if (fin == 1) {
                     tmp = await cModel.to2dArray(jid, idx, 1);
                     tmp = await jModel.toJson(tmp);
