@@ -144,12 +144,12 @@ class tableFunc {
   async getHead(fileID) {
     const pool = require("./connection_db");
     var idx = this.getRowId([fileID]);
-    idx = idx[0];
+    idx = idx[0]; console.log('get head of fileID = ' + fileID +'with strow = ' + idx);
     try {
       let conn = await pool.getConnection();
       var sql = "SELECT content FROM file_DB WHERE fileID = ?";
       let row = await conn.query(sql, [fileID]);  
-      row = row[0].content.split('\n');
+      row = row[0].content.split('\n');console.log(row);
       conn.release();
       return row[idx-1];      
     } catch (error) {
