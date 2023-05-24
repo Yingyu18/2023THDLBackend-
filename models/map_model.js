@@ -22,7 +22,7 @@ class mapModel {
         try {
             let conn = await pool.getConnection();
             let sql;
-            let rs;        
+            let rs;     
             if (type == 1) { 
                 sql = "UPDATE file_DB SET map = ? WHERE fileID = ?";
                 console.log('type = ' + type + 'res = ' + res + 'tostring = ' + res.toString());
@@ -80,7 +80,7 @@ class mapModel {
                 fhead.push(temp);
                 shead.push(row[0].map);
                 type = 1;
-            } else if (row[0].map.includes(',,') || row[0].map == '') {
+            } else if (row[0].map.includes(',,') || row[0].map == '' || row[0].map.charAt(row[0].map.length - 1) == ',') {
                 fid.push(arr[i]);
                 temp = await tbfunc.getHead(arr[i])
                 fhead.push(temp);

@@ -228,8 +228,11 @@ class tableFunc {
         sql = "Select fileID from file_DB where fileName = ? and USER_ID = ?";
         row = await conn.query(sql, [fileName, uid]);
         fid = row[0].fileID;
-        sql = "Select sourceCsvs from file_DB where fileName = ? and USER_ID = ?";
-        row = await conn.query(sql, [fileName, uid]);
+        sql = "Select sourceCsvs from file_DB where fileID = ?";
+        row = await conn.query(sql, [jid]);
+        row = row[0].sourceCsvs;
+        sql = "Select sourceCsvs from file_DB where fileID = ?";
+
       } else {
         sql = "UPDATE file_DB SET content = ?, fileName = ?, lastModified = ? where fileID = ?";
         let asd = await conn.query(sql, [js, fname, new Date().getTime().toString(), fid]);
