@@ -14,11 +14,8 @@ class cleaner {
         return str.replace(reg, (match)=>(map[match]));
     }
 
-   async timeFormat(type, time) {
-        
+   async timeFormat(type, time) {        
         if (time == '' || time == null) {return '0000-00-00';}
-        time = String(time);
-        time = time.replaceAll('/', '-');
         if (time[6] == '-') {time = time.substring(0, 5) + '0' + time.substring(5);}
         if (time.lenght < 10 || time[9] == ' ') {time = time.substring(0, 8) + '0' + time.substring(8);}
         if (type == 3) {
@@ -91,8 +88,10 @@ class cleaner {
             while (curRow < table.length) {   
                 console.log('st = ' + table[curRow][start] + 'et = ' + table[curRow][end]);        
                 table[curRow][0] = table[curRow][start];
+                table[curRow][start] = table[curRow][start].replaceAll('/', '-');
                 table[curRow][start] = await this.timeFormat(type, table[curRow][start]);           
                 table[curRow][0] += '~' + table[curRow][end];
+                table[curRow][end] = table[curRow][end].replaceAll('/', '-');
                 table[curRow][end] = await this.timeFormat(type, table[curRow][end]);
                 curRow++;
             }
