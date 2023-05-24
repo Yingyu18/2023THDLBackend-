@@ -16,10 +16,10 @@ const saveJson = async function(req, res, next) {
     var uname = req.user.name;
     var fid = req.body.file_id;
     var fname = req.body.file_name;
+    var newSave = req.body.new_save;
     var arr = req.body.arr;
-    if (fid == null) {fid = -1;}
     var js = await jModel.toJson(arr);
-    let result = await tableFunc.saveJson(js, uid, uname, fid, fname);    
+    let result = await tableFunc.saveJson(js, uid, uname, fid, fname, newSave);    
     res.status(200).send(result);
 };
 

@@ -1,3 +1,5 @@
+const { default: isEmail } = require("validator/lib/isemail");
+
 class tableFunc {
   async insertFile(uid, uname, fileName, content, type) {
     const pool = require("./connection_db");
@@ -216,18 +218,20 @@ class tableFunc {
     }
   }
 
-  async saveJson(js, uid, uname, fid, fname) {
+  async saveJson(js, uid, uname, fid, fname, isnew) {
     const pool = require("./connection_db");
     try {
       let conn = await pool.getConnection();
       var sql;
       var row;
       var resBody = { file_id: "zzz", file_name: fname};
-      if (fid == -1) {
+      if (isnew == 1) {
         let idk = await this.insertFile(uid, uname, fname, js, 'json')
         sql = "Select fileID from file_DB where fileName = ? and USER_ID = ?";
         row = await conn.query(sql, [fileName, uid]);
         fid = row[0].fileID;
+        sql = "Select sourceCsvs from file_DB where fileName = ? and USER_ID = ?";
+        row = await conn.query(sql, [fileName, uid]);
       } else {
         sql = "UPDATE file_DB SET content = ?, fileName = ?, lastModified = ? where fileID = ?";
         let asd = await conn.query(sql, [js, fname, new Date().getTime().toString(), fid]);
