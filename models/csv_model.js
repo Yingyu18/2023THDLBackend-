@@ -28,6 +28,7 @@ class csvConverter {
             if (type == 1) {table = await cleaner.arrangeFormat(types[k], table, sidx[k]);}             
             let corres = new Array (table[sidx[k]-1].length);
             for (let i = 0; i < maps[k].length; i++) {
+                console.log('maps k+i = ' + maps[k][i]);
                 if (maps[k][i] == 'no') {corres[i] = -1;}
                 else if (results[0].indexOf(maps[k][i]) == -1) {
                     corres[i] = extra;
@@ -36,7 +37,7 @@ class csvConverter {
                     extra++;
                 } else {corres[i] = results.indexOf(maps[k][i]);}
             }            
-            for (let i = sidx[k]; i < table.length; i++) {
+            for (let i = sidx[k]; i < table.length+1; i++) {
                 results.push(new Array(extra).fill(''));
                 for (let j = 0; j < table[i].length; j++) {
                     if (corres[j] < 0) {continue;}

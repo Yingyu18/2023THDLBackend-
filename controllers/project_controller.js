@@ -72,7 +72,7 @@ const getProject = async (req, res) => {
     }
     const data = [];
     for (let i = 0; i < projects.length; i++) {
-        console.log(projects[i])
+        //console.log(projects[i])
         let { fileID, upload_time, fileName, lastModified, isMapped, isBuilt, description, sourceCsvs} = projects[i]
         const owner = projects[i].USER_NAME
         const updated = lastModified
