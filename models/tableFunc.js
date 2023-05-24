@@ -241,11 +241,11 @@ class tableFunc {
         row = await conn.query(sql, [fname, uid]);
         fid = row[0].fileID;
         sql = "Select sourceCsvs from file_DB where fileID = ?";
-        row = await conn.query(sql, [jid]);
+        row = await conn.query(sql, [fid]);
         row = row[0].sourceCsvs;
         sql = "UPDATE file_DB SET sourceCsvs = ? where fileID = ?";
         let ttttmp = await conn.query(sql, [row, fid]);        
-        ttttmp = await this.copySecMap(row, jid);
+        ttttmp = await this.copySecMap(row, fid);
       } else {
         sql = "UPDATE file_DB SET content = ?, fileName = ?, lastModified = ? where fileID = ?";
         let asd = await conn.query(sql, [js, fname, new Date().getTime().toString(), fid]);
