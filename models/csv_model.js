@@ -16,7 +16,7 @@ class csvConverter {
      'metatags/PlaceName', 'metatags/Organization', 'metatags/Keywords', 'doc_content']];
 
     async to2dArray (jid, sidx, type) {
-        let temp = await tableFunc.openForProject(jid); 
+        let temp = await tableFunc.openForProject(jid);  console.log('sidx = ' + sidx);
         let contents = temp[0]; 
         let types = temp[1];
         let results = type == 1 ? this.core : await tableFunc.openJsonHead(jid, 2);        
