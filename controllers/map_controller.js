@@ -9,7 +9,8 @@ model = new model();
 
 const projectMapping = async (req, res) =>{
     var pid = req.body.project_id;
-    if (jModel.needMapCheck(pid) == 1) {
+    let ck = await jModel.needMapCheck(pid)
+    if (ck == 1) {
         res.status(400).send({"error": 'mapping were already completed.'});
         return;
     }
@@ -23,16 +24,18 @@ const fileMapping = async (req, res) => {
     var pid = req.body.project_id;
     var type = req.body.type;
     var m_head;
-
+    let ck;
     if (type == 1) {
-        if (cModel.firstMapCheck(fid)){
+        ck = await cModel.firstMapCheck(fid);
+        if (ck){
             res.status(400).send({"error": 'mapping were already completed.'});
             return ;
         }
         else {m_head = cModel.core[0];}
     }
     else {
-        if (cModel.secondMapCheck(fid, pid)){
+        ck = await cModel.secondMapCheck(fid);
+        if (ck){
             res.status(400).send({"error": 'mapping were already completed.'});
             return ;
         }

@@ -73,7 +73,7 @@ class mapModel {
                 shead.push(row[0].map);
                 type = 1;
             } else if (type != 1) {
-                let tmp = tbfunc.getSecMap(arr[i], pid);
+                let tmp = await tbfunc.getSecMap(arr[i], pid);
                 if (tmp == null) {
                     type = 2;
                     fid.push(arr[i]);
@@ -98,7 +98,7 @@ class mapModel {
             "map_head": [],
             "type" : type
           }
-        result["map_head"] = type == 1 ? this.core : tbfunc.getJsonHead(pid, 1); 
+        result["map_head"] = type == 1 ? this.core : await tbfunc.getJsonHead(pid, 1); 
         console.log(result);
         return result;
     } catch (error) {

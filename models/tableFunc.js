@@ -159,7 +159,7 @@ class tableFunc {
 
   async getJsonHead(fileID, cnt) {
     const pool = require("./connection_db");
-    var idx = this.getRowId([fileID]);
+    var idx = await this.getRowId([fileID]);
     idx = idx[0];
     var temp;
     try {
@@ -224,13 +224,13 @@ class tableFunc {
       var row;
       var resBody = { file_id: "zzz", file_name: fname};
       if (fid == -1) {
-        this.insertFile(uid, uname, fname, js, 'json')
+        let idk = await this.insertFile(uid, uname, fname, js, 'json')
         sql = "Select fileID from file_DB where fileName = ? and USER_ID = ?";
         row = await conn.query(sql, [fileName, uid]);
         fid = row[0].fileID;
       } else {
         sql = "UPDATE file_DB SET content = ?, fileName = ?, lastModified = ? where fileID = ?";
-        await conn.query(sql, [js, fname, new Date().getTime().toString(), fid]);
+        let asd = await conn.query(sql, [js, fname, new Date().getTime().toString(), fid]);
       }
       resBody["file_id"] = fid;
       conn.release();
