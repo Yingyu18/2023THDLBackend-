@@ -94,11 +94,11 @@ class XMLConverter {
           return res[0].map_ID;
         } else {
           let user = await getUserDetail(uid);
-          res = await tableFunc.insertFile(uid, user.username, corpus_name, xml, 'xml');
+          res = await tableFunc.insertFile(uid, user.name, corpus_name, xml, 'xml');
           sql = "Select fileID from file_DB where fileName = ?";
           let fid = await conn.query(sql, [corpus_name]);
-          sql = "Insert Into sec_map SET fileID = ?, map_ID = ?, sec_map = ?, create_time = ? values (?, ?, ?, ?)";  
-          result = await conn.query(sql, [pid, fid[0].fileID, '', Date.now()]);
+          sql = "Insert Into sec_map SET fileID = ?, map_ID = ?, sec_map = ? values (?, ?, ?)";  
+          result = await conn.query(sql, [pid, fid[0].fileID, '']);
           return fid[0].fileID;
         }
         

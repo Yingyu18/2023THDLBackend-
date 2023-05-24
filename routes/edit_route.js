@@ -38,7 +38,7 @@ router.post('/appendNew',bodyParser.json(), authentication, async function(req, 
 
 router.post('/buildDB', bodyParser.json(), authentication, async function(req, res) {
     const userId = req.user.userId;
-    const email = req.body.emal;
+    const email = req.user.email;
     var DBname = req.body.DBname;
     var pid = req.body.Json_id;
     var content = req.body.content;
