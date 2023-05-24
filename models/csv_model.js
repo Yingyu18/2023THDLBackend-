@@ -23,7 +23,8 @@ class csvConverter {
         let extra = results[0].length;
         let lines = 2;
         contents.forEach(function(ele, index, ids) { 
-            let table = cleaner.rawTable(contents[index]);
+            console.log('contents = ' + contents[index]);
+            let table = cleaner.rawTable(contents[index]);console.log('table = ' + table);
             if (type == 1) {table = cleaner.arrangeFormat(types[index], table, sidx[index]);}             
             let corres = new Array (table[sidx[index]-1].length);
             for (let i = 0; i < table[sidx[index]-1].length; i++) {
