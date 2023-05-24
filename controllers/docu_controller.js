@@ -23,7 +23,7 @@ const docuCheck = async (req, res) =>{
 
 const back2Edit = async (req, res) =>{ 
   var uid = req.user.userID;
-  var xml_id = req.body.DocuXML_id; 
+  var xml_id = req.body.DocuXML_id; console.log('xid = ' + xml_id);
   var jid = await tableFunc.open2DbyXML(xml_id);
   var arr = await jModel.to2D(jid)
   res.status(200).send(arr);    
