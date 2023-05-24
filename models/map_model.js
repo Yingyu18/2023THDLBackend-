@@ -16,7 +16,8 @@ class mapModel {
 
     saveMap = async (fid, jid, type, fin, res) => {
         var idx = await tbfunc.getRowId(fid);
-        var res = 'save success';
+        var result = 'save success';
+        let tmp;
         try {
             let conn = await pool.getConnection();
             let sql;
@@ -25,23 +26,23 @@ class mapModel {
                 sql = "UPDATE file_DB SET map = ? WHERE fileID = ?";
                 rs = await conn.query(sql, [res.toString(), fid]);
                 if (fin == 1) {
-                    res = await cModel.to2dArray(jid, idx, 1);
-                    res = await jModel.toJson(res);
+                    tmp = await cModel.to2dArray(jid, idx, 1);
+                    tmp = await jModel.toJson(tmp);
                     sql = "UPDATE file_DB SET content = ? isMapped = ? WHERE fileID = ?";
-                    rs = await conn.query(sql, [res, true, jid]);
+                    rs = await conn.query(sql, [tmp, true, jid]);
                 } else {
                     sql = "UPDATE sec_map SET sec_map = ? WHERE fileID = ? and map_ID = ?";
-                    rs = await conn.query(sql, [res, fid, jid]);
+                    rs = await conn.query(sql, [res.toString(), fid, jid]);
                     if (fin == 1) {
-                        res = await cModel.to2dArray(jid, idx, 2);
-                        res = await jModel.toJson(res);
+                        tmp = await cModel.to2dArray(jid, idx, 2);
+                        tmp = await jModel.toJson(tmp);
                         sql = "UPDATE file_DB SET content = ? isMapped = ? WHERE fileID = ?";
-                        rs = await conn.query(sql, [res, true, jid]);
+                        rs = await conn.query(sql, [tmp, true, jid]);
                     }
                 } 
             }                
         conn.release();
-        return res;
+        return result;
       } catch (error) {
         console.log(error);
       }
