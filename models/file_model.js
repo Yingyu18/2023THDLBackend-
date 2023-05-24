@@ -35,13 +35,10 @@ const uploadFile = async(data) => {
                 }
             }
         }
-        console.log("after clean: ", table)
         for(let i=0; i<table.length; i++){
             table[i] = table[i].join(',');
         }
-        console.log("after merge word ", table)
         table = table.join('\n')
-        console.log("after merge row",table)
 
         // insert Into database
         let qryStr = 'INSERT INTO file_db (fileName, USER_ID, USER_NAME, Start_Row, content, upload_time, size, source, lastModified) VALUES (?,?,?,?,?,?,?,?,?)'
@@ -90,7 +87,7 @@ const getContent = async(fileId) => {
     }
 }
 
-const getCsv = async(req) => {
+const getCsvs = async(req) => {
     let userId = req.user.userId;
     console.log(req.query)
     const conn = await pool.getConnection()
@@ -106,9 +103,39 @@ const getCsv = async(req) => {
     }
 }
 
+const getCsv = async(id) => {
+    const conn = await pool.getConnection()
+    try{
+        let qryStr = `SELECT * FROM file_db WHERE fileID = ?`
+        var results = await conn.query(qryStr, [id])
+        return results[0]
+    } catch (error){
+        console.log(error)
+        return {error}
+    } finally {
+        await conn.release();
+    }
+}
+const insertSecMap = async(data) => {
+    const conn = await pool.getConnection()
+    const {csvID, projectID, map} = data
+    try{
+        let qryStr = `INSERT INTO sec_map (fileID, map_ID, sec_map, create_time) VALUES (?,?,?,?)`
+        var results = await conn.query(qryStr, [csvID, projectID, map, new Date()])
+        return results
+    } catch (error){
+        console.log(error)
+        return {error}
+    } finally {
+        await conn.release();
+    }
+}
+
 module.exports = {
     uploadFile,
     deleteFile,
     getContent,
-    getCsv
+    getCsvs,
+    getCsv,
+    insertSecMap
 }

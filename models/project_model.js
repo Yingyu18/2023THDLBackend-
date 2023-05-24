@@ -10,6 +10,7 @@ const uploadFile = async(req) => {
          //console.log(`${sourceCsvs}`)
         let result = await conn.query(qryStr, ["", "json", 1, new Date(), new Date(), name, is_mapped, owner, userId, is_built, `${sourceCsvs}`, description])
         const project_id = result.insertId;
+
         // insert into sourceCsvs
         for(let i=0; i<sourceCsvs.length; i++){
             qryStr = `INSERT INTO source_csvs (project_id, csv_name) VALUES (?,?)`
