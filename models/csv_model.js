@@ -23,6 +23,7 @@ class csvConverter {
         let results = type == 1 ? this.core : await tableFunc.getJsonHead(jid, 2);      
         let extra = results[0].length;
         let lines = 2;
+        console.log('core = ' + this.core) ;
         for (let k = 0; k < contents.length; k++) {
               console.log('reserserserseresrserserseesrr = = ' + results);
             let table = await cleaner.rawTable(contents[k]);
