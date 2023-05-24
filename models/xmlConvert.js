@@ -90,7 +90,7 @@ class XMLConverter {
         let conn = await pool.getConnection();
         let sql = "Select map_ID from sec_map where fileID = ?";
         let res = await conn.query(sql, [pid]);
-        if (res == null){
+        if (res == null || res[0] == null){
           let user = await getUserDetail(uid);
           res = await tableFunc.insertFile(uid, user.name, corpus_name, xml, 'xml');
           sql = "Select fileID from file_DB where fileName = ?";
