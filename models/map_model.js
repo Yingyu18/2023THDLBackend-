@@ -24,23 +24,25 @@ class mapModel {
             let rs;        
             if (type == 1) { 
                 sql = "UPDATE file_DB SET map = ? WHERE fileID = ?";
+                console.log(res.toString());
                 rs = await conn.query(sql, [res.toString(), fid]);
                 if (fin == 1) {
                     tmp = await cModel.to2dArray(jid, idx, 1);
                     tmp = await jModel.toJson(tmp);
                     sql = "UPDATE file_DB SET content = ? isMapped = ? WHERE fileID = ?";
                     rs = await conn.query(sql, [tmp, true, jid]);
-                } else {
-                    sql = "UPDATE sec_map SET sec_map = ? WHERE fileID = ? and map_ID = ?";
-                    rs = await conn.query(sql, [res.toString(), fid, jid]);
-                    if (fin == 1) {
-                        tmp = await cModel.to2dArray(jid, idx, 2);
-                        tmp = await jModel.toJson(tmp);
-                        sql = "UPDATE file_DB SET content = ? isMapped = ? WHERE fileID = ?";
-                        rs = await conn.query(sql, [tmp, true, jid]);
-                    }
                 } 
-            }                
+            }  else {
+                sql = "UPDATE sec_map SET sec_map = ? WHERE fileID = ? and map_ID = ?";
+                rs = await conn.query(sql, [res.toString(), fid, jid]);
+                if (fin == 1) {
+                    tmp = await cModel.to2dArray(jid, idx, 2);
+                    tmp = await jModel.toJson(tmp);
+                    sql = "UPDATE file_DB SET content = ? isMapped = ? WHERE fileID = ?";
+                    rs = await conn.query(sql, [tmp, true, jid]);
+                }
+            } 
+                           
         conn.release();
         return result;
       } catch (error) {
