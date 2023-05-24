@@ -105,7 +105,8 @@ class cleaner {
         for (let i = 0; i < data.length; i++) {
             data[i] = data[i].split(',');
         }
-        return data.slice(0, data.length-2); 
+        if (data[data.length-1] == '') {return data.slice(0, data.length-2);}
+        else {return data;} 
     }
 
     recover(str) {        
