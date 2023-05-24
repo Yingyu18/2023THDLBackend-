@@ -40,6 +40,8 @@ const uploadFile = async(data) => {
     } catch (error){
         console.log({error:error})
         return {error}
+    } finally {
+        await conn.release();
     }
 };
 
@@ -57,6 +59,8 @@ const deleteFile = async(filesId) => {
     } catch (error){
         console.log(error)
         return {error}
+    } finally {
+        await conn.release();
     }
 };
 
@@ -70,6 +74,8 @@ const getContent = async(fileId) => {
     } catch (error){
         console.log(error)
         return {error}
+    } finally {
+        await conn.release();
     }
 }
 
@@ -84,6 +90,8 @@ const getCsv = async(req) => {
     } catch (error){
         console.log(error)
         return {error}
+    } finally {
+        await conn.release();
     }
 }
 

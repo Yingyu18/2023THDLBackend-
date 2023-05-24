@@ -58,7 +58,6 @@ const updateProject = async(req) => {
     const conn = await pool.getConnection()
     const projectId = req.params.id
     try{
-        console.log("test")
         const {name, is_mapped, owner, is_built, content, sourceCsvs, description} = req.body
         if(name){
             const result = await conn.query('UPDATE file_db SET fileName=? WHERE fileID=?',[name, projectId])
@@ -82,7 +81,6 @@ const updateProject = async(req) => {
             const result = await conn.query('UPDATE file_db SET description=? WHERE fileID=?',[description, projectId])
         }
         const results = await conn.query(`SELECT * FROM file_db WHERE fileID = ?`, [projectId]);
-        console.log("test", results)
         return results[0];
     } catch (error){
         console.log({error:error})
