@@ -4,9 +4,6 @@ class tableFunc {
     console.log("insert file for user: " + uid);
     try {
       let conn = await pool.getConnection();
-      if (ft == "son") {
-        ft = "j" + ft;
-      }
       var sql =
         "INSERT INTO file_db (fileName, USER_ID, USER_NAME, Start_Row, content, upload_time, type, lastModified) VALUES (?,?,?,?,?,?,?,?)";
       var time = new Date().getTime().toString();
@@ -241,7 +238,7 @@ class tableFunc {
       if (isnew == 1) {
         let idk = await this.insertFile(uid, uname, fname, js, 'json')
         sql = "Select fileID from file_DB where fileName = ? and USER_ID = ?";
-        row = await conn.query(sql, [fileName, uid]);
+        row = await conn.query(sql, [fname, uid]);
         fid = row[0].fileID;
         sql = "Select sourceCsvs from file_DB where fileID = ?";
         row = await conn.query(sql, [jid]);
