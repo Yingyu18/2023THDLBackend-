@@ -29,7 +29,7 @@ class mapModel {
                 rs = await conn.query(sql, [res.toString(), fid]);
                 sql = "select fileID From sec_map WHERE fileID = ? and map_ID = ?";
                 rs = await conn.query(sql, [fid, jid]);
-                if (rs[0].fileID == null) {
+                if (rs[0] == null) {
                     sql = "INSERT INTO sec_map (fileID, map_ID, sec_map, create_time) Values (?, ?, ?, ?)";
                     rs = await conn.query(sql, [fid, jid, res.toString(), new Date().getTime.toString()]);
                 } else {
