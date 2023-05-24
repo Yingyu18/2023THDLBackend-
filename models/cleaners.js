@@ -97,7 +97,7 @@ class cleaner {
                 table[curRow][end] = await this.timeFormat(type, table[curRow][end]);
                 curRow++;
             }
-        }
+        } console.log ('arranged table = ' + table);
         return table;      
     }
 
