@@ -16,10 +16,11 @@ class csvConverter {
      'metatags/PlaceName', 'metatags/Organization', 'metatags/Keywords', 'doc_content']];
 
     async to2dArray (jid, sidx, type, maps) {
+        
         let temp = await tableFunc.openForProject(jid);
         let contents = temp[0]; 
         let types = temp[1];
-        let results = type == 1 ? this.core : await tableFunc.getJsonHead(jid, 2);        
+        let results = type == 1 ? this.core : await tableFunc.getJsonHead(jid, 2);        console.log('reserserserseresrserserseesrr = = ' + results);
         let extra = results[0].length;
         let lines = 2;
         for (let k = 0; k < contents.length; k++) {
