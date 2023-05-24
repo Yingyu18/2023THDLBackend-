@@ -24,7 +24,7 @@ class mapModel {
             let rs;        
             if (type == 1) { 
                 sql = "UPDATE file_DB SET map = ? WHERE fileID = ?";
-                console.log(res.toString());
+                console.log('type = ' + type + 'res = ' + res + 'tostring = ' + res.toString());
                 rs = await conn.query(sql, [res.toString(), fid]);
                 if (fin == 1) {
                     tmp = await cModel.to2dArray(jid, idx, 1);
@@ -33,6 +33,7 @@ class mapModel {
                     rs = await conn.query(sql, [tmp, true, jid]);
                 } 
             }  else {
+                console.log('type = ' + type + 'res = ' + res + 'tostring = ' + res.toString());
                 sql = "UPDATE sec_map SET sec_map = ? WHERE fileID = ? and map_ID = ?";
                 rs = await conn.query(sql, [res.toString(), fid, jid]);
                 if (fin == 1) {
