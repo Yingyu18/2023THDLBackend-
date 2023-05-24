@@ -4,6 +4,7 @@ let tbfunc = require('./tableFunc');
 let cleaner = require('./cleaners');
 let cModel = require('./csv_model');
 let jModel = require('./json_model');
+const tableFunc = require('./tableFunc');
 tbfunc = new tbfunc();
 cleaner = new cleaner();
 cModel = new cModel();
@@ -41,7 +42,13 @@ class mapModel {
                     rs = await conn.query(sql, [jid]);
                     rs = rs[0].sourceCsvs.split(',');
                     idx =  await tbfunc.getRowId(rs);
-                    tmp = await cModel.to2dArray(jid, idx, 1);
+                    let maps = new Array();
+                    let tpmap;
+                    for (let i = 0; i < rs.length; i++) {
+                        tpmap = tbfunc.getMap(rs[i]).split(',');
+                        maps.push(tpmap);
+                    }
+                    tmp = await cModel.to2dArray(jid, idx, 1, maps);
                     tmp = await jModel.toJson(tmp);
                     sql = "UPDATE file_DB SET content = ?, isMapped = ? WHERE fileID = ?";
                     rs = await conn.query(sql, [tmp, 1, jid]);
@@ -51,7 +58,17 @@ class mapModel {
                 sql = "UPDATE sec_map SET sec_map = ? WHERE fileID = ? and map_ID = ?";
                 rs = await conn.query(sql, [res.toString(), fid, jid]);
                 if (fin == 1) {
-                    tmp = await cModel.to2dArray(jid, idx, 2);
+                    sql = "select sourceCsvs from file_DB WHERE fileID = ?";
+                    rs = await conn.query(sql, [jid]);
+                    rs = rs[0].sourceCsvs.split(',');
+                    idx =  await tbfunc.getRowId(rs);
+                    let maps = new Array();
+                    let tpmap;
+                    for (let i = 0; i < rs.length; i++) {
+                        tpmap = tbfunc.getMap(rs[i]).split(',');
+                        maps.push(tpmap);
+                    }
+                    tmp = await cModel.to2dArray(jid, idx, 2, maps);
                     tmp = await jModel.toJson(tmp);
                     sql = "UPDATE file_DB SET content = ?, isMapped = ? WHERE fileID = ?";
                     rs = await conn.query(sql, [tmp, 1, jid]);
