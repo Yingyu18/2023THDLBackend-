@@ -226,6 +226,7 @@ class tableFunc {
       mapResult = mapResult[0].sec_map;
       ctah = await conn.query(sql2, [srcs[i], jid, mapResult]);
     }
+    conn.release();
     return 'copy done';
   } 
 
@@ -237,13 +238,13 @@ class tableFunc {
       var row;
       var resBody = { file_id: "zzz", file_name: fname};
       if (isnew == 1) {
+        sql = "Select sourceCsvs from file_DB where fileID = ?";
+        row = await conn.query(sql, [fid]);
+        row = row[0].sourceCsvs;
         let idk = await this.insertFile(uid, uname, fname, js, 'json')
         sql = "Select fileID from file_DB where fileName = ? and USER_ID = ?";
         row = await conn.query(sql, [fname, uid]);
-        fid = row[0].fileID;
-        sql = "Select sourceCsvs from file_DB where fileID = ?";
-        row = await conn.query(sql, [fid]);
-        row = row[0].sourceCsvs; console.log('rwwwo = ' + row);
+        fid = row[0].fileID;        
         sql = "UPDATE file_DB SET sourceCsvs = ? where fileID = ?";
         let ttttmp = await conn.query(sql, [row, fid]);        
         ttttmp = await this.copySecMap(row, fid);
