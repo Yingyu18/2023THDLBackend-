@@ -20,7 +20,7 @@ class csvConverter {
         let temp = await tableFunc.openForProject(jid);
         let contents = temp[0]; 
         let types = temp[1];
-        let results = type == 1 ? this.core : await tableFunc.getJsonHead(jid, 2);      
+        let results = type == 1 ? new this.core : await tableFunc.getJsonHead(jid, 2);      
         let extra = results[0].length;
         let lines = 2;
         console.log('core = ' + this.core) ;
