@@ -14,7 +14,7 @@ class tableFunc {
         fileName,
         uid,
         uname,
-        -1,
+        1,
         content,
         time,
         type,        
@@ -88,8 +88,8 @@ class tableFunc {
       let row;
       var sql = "SELECT Start_Row FROM file_DB WHERE fileID = ?";
       for (let i = 0; i < fileIDs.length; i++) {
-        row = await conn.query(sql, [fileIDs[i]]);
-        array[i] = row[0].Start_Row;
+        row = await conn.query(sql, [fileIDs[i]]);  console.log('row = ' + row + '\nid from get row = ' + row[0].Start_Row);
+        array[i] = row[0].Start_Row; console.log('arr['+i+']= ' + row[0].Start_Row);
       }
       conn.release();
       return array;
@@ -143,13 +143,13 @@ class tableFunc {
 
   async getHead(fileID) {
     const pool = require("./connection_db");
-    var idx = this.getRowId([fileID]);
-    idx = idx[0];
+    var idx = await this.getRowId([fileID]);
+    idx = idx[0]; console.log('get head of fileID = ' + fileID +'with strow = ' + idx);
     try {
       let conn = await pool.getConnection();
       var sql = "SELECT content FROM file_DB WHERE fileID = ?";
       let row = await conn.query(sql, [fileID]);  
-      row = row[0].content.split('\n');
+      row = row[0].content.split('\n');console.log(row);
       conn.release();
       return row[idx-1];      
     } catch (error) {
@@ -229,8 +229,8 @@ class tableFunc {
         row = await conn.query(sql, [fileName, uid]);
         fid = row[0].fileID;
       } else {
-        sql = "UPDATE file_DB SET content = ?, fileName = ? where fileID = ?";
-        await conn.query(sql, [js, fname, fid]);
+        sql = "UPDATE file_DB SET content = ?, fileName = ?, lastModified = ? where fileID = ?";
+        await conn.query(sql, [js, fname, new Date().getTime().toString(), fid]);
       }
       resBody["file_id"] = fid;
       conn.release();

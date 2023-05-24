@@ -9,7 +9,7 @@ const pool = mariadb.createPool({
     password: config.mysql.password,
     database: config.mysql.database,
     connectionLimit: 5000,
-    acquireTimeout: 10000000
+    acquireTimeout: 300000
 
 });
 console.log('pool = ' + pool + '\n');
