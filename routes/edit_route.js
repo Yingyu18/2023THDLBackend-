@@ -41,12 +41,13 @@ router.post('/appendNew',bodyParser.json(), authentication, async function(req, 
 router.post('/buildDB', bodyParser.json(), authentication, async function(req, res) {
     const userId = req.user.userId;
     const email = req.user.email;
+    const username = req.user.name;
     var DBname = req.body.DBname;
     var pid = req.body.Json_id;
     var content = req.body.content; console.log('received content = ' + content);
     var js = await jModel.toJson(content);
     let saveREs = await tableFunc.simplesaveJson(js, pid);
-    var result = await handler.buildXml(js, DBname, pid, userId, email);
+    var result = await handler.buildXml(js, DBname, pid, userId, email, username);
     res.status(200).send(result);
     return ;
 })

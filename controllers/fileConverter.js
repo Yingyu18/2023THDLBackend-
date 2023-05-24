@@ -15,9 +15,9 @@ module.exports = class handler {
         return await jsonConvert.toJson(arr);
     }
 
-    async buildXml(js, corpus_name, pid, uid, email) {
+    async buildXml(js, corpus_name, pid, uid, email, uname) {
         var xml = await XMLConvert.toXML(js, corpus_name);
-        let res = await XMLConvert.saveXML(xml, pid, uid, corpus_name); 
+        let res = await XMLConvert.saveXML(xml, pid, uid, corpus_name, uname); 
         var bres = await docuskyBuilder(email, corpus_name, xml)
         if (bres) {let temp = await tableFunc.setBuilt(pid);}
         return {

@@ -85,17 +85,17 @@ class XMLConverter {
         return xml;       
     }
 
-    async saveXML(xml, pid, uid, corpus_name) {
+    async saveXML(xml, pid, uid, corpus_name, uname) {
       try {
         let conn = await pool.getConnection();
         let sql = "Select map_ID from sec_map where fileID = ?";
         let res = await conn.query(sql, [pid]);
         if (res == null || res[0] == null){
           let user = await getUserDetail(uid);
-          res = await tableFunc.insertFile(uid, user.name, corpus_name, xml, 'xml');
+          res = await tableFunc.insertFile(uid, uname, corpus_name, xml, 'xml');
           sql = "Select fileID from file_DB where fileName = ?";
           let fid = await conn.query(sql, [corpus_name]);
-          sql = "Insert Into sec_map SET fileID = ?, map_ID = ?, sec_map = ? values (?, ?, ?)";  
+          sql = "Insert Into sec_map  (fileID, map_ID , sec_map) values (?, ?, ?)";  
           result = await conn.query(sql, [pid, fid[0].fileID, '']);
           return fid[0].fileID;
         }
