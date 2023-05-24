@@ -25,17 +25,17 @@ class csvConverter {
         contents.forEach(function(ele, index, ids) { 
             let table = cleaner.rawTable(contents[index]);
             if (type == 1) {table = cleaner.arrangeFormat(types[index], table, sidx[index]);}             
-            let corres = new Array (table[idx[index]-1].length);
-            for (let i = 0; i < table[idx[index]-1].length; i++) {
-                if (table[idx[index]-1][i] == 'no') {corres[i] = -1;}
-                else if (results.indexOf(table[idx[index]-1][i]) == -1) {
+            let corres = new Array (table[sidx[index]-1].length);
+            for (let i = 0; i < table[sidx[index]-1].length; i++) {
+                if (table[sidx[index]-1][i] == 'no') {corres[i] = -1;}
+                else if (results.indexOf(table[sidx[index]-1][i]) == -1) {
                     corres[i] = extra;
-                    results[0].push(table[idx[index]-1][i]);
-                    results[1].push('metadata/'+table[idx[index]-1][i]);
+                    results[0].push(table[sidx[index]-1][i]);
+                    results[1].push('metadata/'+table[sidx[index]-1][i]);
                     extra++;
-                } else {corres[i] = results.indexOf(table[idx[index]-1][i]);}
+                } else {corres[i] = results.indexOf(table[sidx[index]-1][i]);}
             }            
-            for (let i = idx[index]-1; i < table.length; i++) {
+            for (let i = sidx[index]-1; i < table.length; i++) {
                 results.push(new Array(extra).fill(''));
                 for (let j = 0; j < table[i].length; j++) {
                     if (corres[j] < 0) {continue;}
