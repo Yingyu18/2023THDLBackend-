@@ -18,24 +18,26 @@ const uploadFile = async(data) => {
         else if(source === 4){ start=1 } // 自定義
         
         //clean csv
+        console.log(content)
         var table = []
         var rows = content.split('\n')
         for(let i=0; i<rows.length; i++){
             table[i] = rows[i].split(',')
         }
-        console.log("ori , : ",table)
+        //console.log("ori , : ",table)
         if(source != 4){
             table = cleaner.csvClean(table, start-1)
         }
-        console.log("after clean , : ",table)
+        //console.log("after clean , : ",table)
 
-        if(source == 3 || source == 2){
+        if(source == 3 || source == 2 ){
             for(let i=3; i<table.length; i++){
                 for(let j=1; j<table[i].length; j++){
                     table[i][j] = table[i][j].substring(1, table[i][j].length);
                 }
             }
         }
+        //console.log("after remove comma: " ,table)
         if(source == 1){
             table[4][0] = 'no'
             for(let i=4; i<table.length; i++){
@@ -45,11 +47,12 @@ const uploadFile = async(data) => {
         }
         //console.log(table)
         for(let i=0; i<table.length; i++){
+            console.log(table[i])
             table[i] = table[i].join(',');
         }
-        console.log("after merge , : ",table)
+        console.log(table[table.length-1])
         table = table.join('\n')
-
+        console.log("after merge , : ",table)
         // insert Into database
         let qryStr = 'INSERT INTO file_db (fileName, USER_ID, USER_NAME, Start_Row, content, upload_time, size, source, lastModified) VALUES (?,?,?,?,?,?,?,?,?)'
         const result = await conn.query(qryStr, [filename, userId, uploader, start, table, new Date().getTime().toString(), size, source, lastModified])

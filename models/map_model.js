@@ -15,6 +15,12 @@ class mapModel {
     '書卷名', '(類目階層)', '原始時間記錄', '西元年', '起始時間', '結束時間', '相關人員', '相關地點', 
     '相關組織', '關鍵詞', '摘要/全文'];
 
+    //create project 時 sourceCsv 都有map
+    //fid : last sourceCsv id
+    //jid : projectID
+    //type: 1 
+    //fin : 1
+    //res : last sourceCsv 的 map
     saveMap = async (fid, jid, type, fin, res) => {
         console.log('im in~~~~');
         var idx = await tbfunc.getRowId([fid]); console.log ('save idx = ' + idx);

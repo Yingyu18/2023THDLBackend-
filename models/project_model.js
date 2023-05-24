@@ -1,5 +1,6 @@
 const pool = require("./connection_db")
 
+
 const uploadFile = async(req) => {
     const conn = await pool.getConnection();
     try {
@@ -10,6 +11,11 @@ const uploadFile = async(req) => {
          //console.log(`${sourceCsvs}`)
         let result = await conn.query(qryStr, ["", "json", 1, new Date(), new Date(), name, is_mapped, owner, userId, is_built, `${sourceCsvs}`, description])
         const project_id = result.insertId;
+
+        //TODO: if all sourceCsvs have map, isMapped 設成 1
+        for(let i=0; i<sourceCsvs.length; i++){
+            result = await conn.query('SELECT * FROM file_db WHERE fileID=?', [parseInt(sourceCsvs[i])])
+        }
 
         // insert into sourceCsvs
         for(let i=0; i<sourceCsvs.length; i++){
@@ -60,25 +66,26 @@ const updateProject = async(req) => {
     const projectId = req.params.id
     try{
         const {name, is_mapped, owner, is_built, content, sourceCsvs, description} = req.body
-        if(name){
+        if(name != undefined){
             const result = await conn.query('UPDATE file_db SET fileName=? WHERE fileID=?',[name, projectId])
         }
-        if(is_mapped){
+        if(is_mapped != undefined){
             const result = await conn.query('UPDATE file_db SET isMapped=? WHERE fileID=?',[is_mapped, projectId])
         }
-        if(owner){
+        if(owner != undefined){
             const result = await conn.query('UPDATE file_db SET USER_NAME=? WHERE fileID=?',[owner, projectId])
         }
-        if(is_built){
+        if(is_built != undefined){
             const result = await conn.query('UPDATE file_db SET isBuilt=? WHERE fileID=?',[is_built, projectId])
         }
-        if(content){
+        if(content != undefined){
             const result = await conn.query('UPDATE file_db SET content=? WHERE fileID=?',[content, projectId])
         }
-        if(sourceCsvs){
+        if(sourceCsvs != undefined){
             const result = await conn.query('UPDATE file_db SET sourceCsvs=? WHERE fileID=?',[`${sourceCsvs}`, projectId])
+            result = await conn.query('UPDATE file_db SET isMapped=? WHERE fileID=?', [0, projectId])
         }
-        if(description){
+        if(description != undefined){
             const result = await conn.query('UPDATE file_db SET description=? WHERE fileID=?',[description, projectId])
         }
         const results = await conn.query(`SELECT * FROM file_db WHERE fileID = ?`, [projectId]);
