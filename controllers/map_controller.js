@@ -55,9 +55,9 @@ const savemap = async (req, res) => {
     var fid = req.body.file_id;
     var pid = req.body.json_id;
     var type = req.body.type;
-    var res = req.body.map_res;
+    var result = req.body.map_res;
     var fin = req.body.finish;
-    var arr = await model.saveMap(fid, pid, type, fin, res);
+    var arr = await model.saveMap(fid, pid, type, fin, result);
     if (arr.error) {
         res.status(400).send({message: arr.error});
         return ;

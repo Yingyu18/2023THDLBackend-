@@ -132,7 +132,7 @@ class tableFunc {
     const pool = require("./connection_db");
     try {
       let conn = await pool.getConnection();
-      var sql = "SELECT sec_map FROM sec_map WHERE fileID = ? and pid = ?";
+      var sql = "SELECT sec_map FROM sec_map WHERE fileID = ? and map_ID = ?";
       let row = await conn.query(sql, [fileID, pid]);     
       conn.release();
       return row[0].sec_map;

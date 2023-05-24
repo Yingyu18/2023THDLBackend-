@@ -30,7 +30,7 @@ class mapModel {
                     sql = "UPDATE file_DB SET content = ? isMapped = ? WHERE fileID = ?";
                     rs = await conn.query(sql, [res, true, jid]);
                 } else {
-                    sql = "UPDATE sec_map SET sec_map = ? WHERE fileID = ? and json_ID = ?";
+                    sql = "UPDATE sec_map SET sec_map = ? WHERE fileID = ? and map_ID = ?";
                     rs = await conn.query(sql, [res, fid, jid]);
                     if (fin == 1) {
                         res = await cModel.to2dArray(jid, idx, 2);
