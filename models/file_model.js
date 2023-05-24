@@ -16,25 +16,36 @@ const uploadFile = async(data) => {
         let start = 4; //其他
         if(source === 1){ start=5 } //地方議會
         else if(source === 4){ start=1 } // 自定義
-
         //clean csv
         var table = []
         var rows = content.split('\n')
         for(let i=0; i<rows.length; i++){
             table[i] = rows[i].split(',')
         }
+        console.log(table)
         if(source != 4){
             table = cleaner.csvClean(table, start-1)
         }
-        for(let i=0; i<table.length; i++){
-            table[i] = table[i].join('\,');
+        if(source == 3){
+            for(let i=3; i<table.length; i++){
+                for(let j=1; j<table[i].length; j++){
+                    console.log("table[]: ", table[i])
+                    table[i][j] = table[i][j].substring(1, table[i][j].length);
+                    console.log("table:",table[i][j])
+                }
+            }
         }
+        console.log("after clean: ", table)
+        for(let i=0; i<table.length; i++){
+            table[i] = table[i].join(',');
+        }
+        console.log("after merge word ", table)
         table = table.join('\n')
-        //console.log(table)
+        console.log("after merge row",table)
 
         // insert Into database
         let qryStr = 'INSERT INTO file_db (fileName, USER_ID, USER_NAME, Start_Row, content, upload_time, size, source, lastModified) VALUES (?,?,?,?,?,?,?,?,?)'
-        const result = await conn.query(qryStr, [filename, userId, uploader, start, content, new Date().getTime().toString(), size, source, lastModified])
+        const result = await conn.query(qryStr, [filename, userId, uploader, start, table, new Date().getTime().toString(), size, source, lastModified])
         return result
 
     } catch (error){
