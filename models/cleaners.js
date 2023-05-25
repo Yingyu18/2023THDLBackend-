@@ -54,11 +54,11 @@ class cleaner {
         curRow++;
         if (type == 3) {
             while (curRow < table.length) {           
-                table[curRow][0] = table[curRow][start]; console.log('org time = ' + table[curRow][start]);
-                var ttmp = table[curRow][start].substring(0, 10);console.log('stime = ' + ttmp);
-                var etmp = table[curRow][start].substring(13, 23);console.log('etime = ' + etmp);
-                table[curRow][start] = await this.timeFormat(ttmp);console.log('sstime = ' + table[curRow][start]);
-                table[curRow][end] =  await this.timeFormat(etmp);console.log('eetime = ' + table[curRow][end]);
+                table[curRow][0] = table[curRow][start]; 
+                var ttmp = table[curRow][start].substring(0, 10);
+                var etmp = table[curRow][start].substring(13, 23);
+                table[curRow][start] = ttmp;
+                table[curRow][end] = etmp;
                 curRow++;
             }
         }
