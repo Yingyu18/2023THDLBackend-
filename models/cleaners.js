@@ -57,9 +57,9 @@ class cleaner {
                 table[curRow][0] = table[curRow][start];
                 let ttmp = table[curRow][start].substring(0, 10);
                 let etmp = table[curRow][start].substring(13, 23);
-                table[curRow][start] = await this.timeFormat(ttmp);         
+                table[curRow][start] = await this.timeFormat(ttmp);        console.log('st = ' +table[curRow][start] ); 
                 table[curRow][end] =  await this.timeFormat(etmp);
-            }
+            } console.log('et = ' +table[curRow][end] ); 
         }
          else {
             while (curRow < table.length) {        
