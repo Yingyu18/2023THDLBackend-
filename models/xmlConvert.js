@@ -49,7 +49,7 @@ class XMLConverter {
               }
             } else if (js["xmlTags"][i]==="doc_content") {
               for (let j = 1; j <= len; j++) {
-                docuconts[j-1] += "        " + js["file" + j][i] + "\n      </doc_content>\n";
+                docuconts[j-1] += "        " + js["file" + j][i];
               }
             } else if (js["xmlTags"][i]==="timeseq_not_before" || js["xmlTags"][i]==="timeseq_not_after") {
               for (let j = 1; j <= len; j++) {
@@ -80,7 +80,7 @@ class XMLConverter {
         } 
         xml += "    </metadata_field_settings>\n" + featAnal + tags +"    </feature_analysis>\n" + "  </corpus>\n  \n  <documents>\n";
         for (let i = 0; i < len; i++) {
-          xml += docuheads[i] + docubodys[i] + docuudef[i] + "      </xml_metadata>\n" + docuconts[i] + docutags[i] + "      </MetaTags>\n    </document>\n";
+          xml += docuheads[i] + docubodys[i] + docuudef[i] + "      </xml_metadata>\n" + docuconts[i] + docutags[i] + "      </MetaTags>\n      </doc_content>\n    </document>\n";
         }
         xml += "  </documents>\n</ThdlPrototypeExport>";
         return xml;       
