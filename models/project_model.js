@@ -82,7 +82,7 @@ const updateProject = async(req) => {
             const result = await conn.query('UPDATE file_db SET content=? WHERE fileID=?',[content, projectId])
         }
         if(sourceCsvs != undefined){
-            const result = await conn.query('UPDATE file_db SET sourceCsvs=? WHERE fileID=?',[`${sourceCsvs}`, projectId])
+            let result = await conn.query('UPDATE file_db SET sourceCsvs=? WHERE fileID=?',[`${sourceCsvs}`, projectId])
             result = await conn.query('UPDATE file_db SET isMapped=? WHERE fileID=?', [0, projectId])
         }
         if(description != undefined){

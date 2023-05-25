@@ -122,16 +122,16 @@ const updateProject = async (req, res) => {
     if(req.body.sourceCsvs){
         const result = await Project.updateCsvs(req)
         if(result.error){
-            return res.status(500).send({message:"internal server error"})
+            return res.status(500).send({message:"update source_csvs error"})
         }
     }
     let result = await Project.updateProject(req)
     if(result.error){
-        return res.status(500).send({message:"internal server error"})
+        return res.status(500).send({message:"update file_db error"})
     }
     const csvs = await Project.getSourceCsvs(result.fileID)
     if(csvs.error){
-        return res.status(500).send({message:"internal server error"})
+        return res.status(500).send({message:"get csvs form source_csvs error"})
     }
     let sourceCsvs = []
     for(let i=0; i<csvs.length; i++){
