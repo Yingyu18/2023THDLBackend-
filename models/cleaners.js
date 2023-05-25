@@ -18,10 +18,6 @@ class cleaner {
         if (time == '' || time == null) {return '0000-00-00';}
         if (time[6] == '-') {time = time.substring(0, 5) + '0' + time.substring(5);}
         if (time.lenght < 10 || time[9] == ' ') {time = time.substring(0, 8) + '0' + time.substring(8);}
-        if (type == 3) {
-            if (time[19] == '-') {time = time.substring(0, 18) + '0' + time.substring(18);}
-            if (time.length != 23) {time = time.substring(0, 22) + '0' + time[22];}
-        }
         return time;
     }
 
@@ -59,9 +55,10 @@ class cleaner {
         if (type == 3) {
             while (curRow < table.length) {           
                 table[curRow][0] = table[curRow][start];
-                let ttmp = await this.timeFormat(type, table[curRow][start])
-                table[curRow][start] = ttmp.substring(0, 10);         
-                table[curRow][end] = ttmp.substring(13, 23);
+                let ttmp = table[curRow][start].substring(0, 10);
+                let etmp = table[curRow][start].substring(13, 23);
+                table[curRow][start] = await this.timeFormat(ttmp);         
+                table[curRow][end] =  await this.timeFormat(etmp);
             }
         }
          else {
