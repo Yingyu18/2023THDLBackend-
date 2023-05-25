@@ -54,11 +54,9 @@ class cleaner {
         curRow++;
         if (type == 3) {
             while (curRow < table.length) {           
-                table[curRow][0] = table[curRow][start]; 
-                var ttmp = table[curRow][start].substring(0, 10);
-                var etmp = table[curRow][start].substring(13, 23);
-                table[curRow][start] = ttmp;
-                table[curRow][end] = etmp;
+                table[curRow][0] = table[curRow][start];                
+                table[curRow][start] = table[curRow][0].substring(0, 10);
+                table[curRow][end] = table[curRow][0].substring(13, 23);
                 curRow++;
             }
         }
