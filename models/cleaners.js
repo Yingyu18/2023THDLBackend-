@@ -49,7 +49,7 @@ class cleaner {
         for (let j = 1; j < table[curRow].length; j++) {
            if (table[curRow][j] == '卷件開始日期' || table[curRow][j] == 'date_from' || table[curRow][j] == '日期描述' || table[curRow][j] == '日期起') {
                 start = j;                
-                if ((type == 1) || (start > 0 && end > 0)) {break;}
+                if ((type == 3) || (start > 0 && end > 0)) {break;}
            }
            if (table[curRow][j] == '卷件結束日期' || table[curRow][j] == 'date_stop' || table[curRow][j] == '日期迄') {
                 end = j;                
@@ -58,7 +58,7 @@ class cleaner {
         }
         curRow++;
         console.log('arrange type = ' + type);
-        if (type == 1) {
+        if (type == 3) {
             while (curRow < table.length) {           
                 table[curRow][0] = table[curRow][start]; console.log('tstart = ' + table[curRow][start]);
                 table[curRow][start] = await this.timeFormat(type, table[curRow][start].substring(0, 10));    console.log('tystart = ' + table[curRow][start]);       
