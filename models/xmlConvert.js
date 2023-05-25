@@ -30,7 +30,7 @@ class XMLConverter {
         var docuudef = new Array(len).fill("      <xml_metadata>\n");
         var docutags = new Array(len).fill("      <MetaTags>\n");
         var docuconts = new Array(len).fill("      <doc_content>\n");
-        for (let i = 0; i < js["columns"].length; i++) {
+        for (let i = 0; i < js["columns"].length; i++) { console.log('\n-------i = ' + i + ' cont = ' + js["xmlTags"][i]+'\n---------');
           if (!js["xmlTags"][i].includes("metatags")){
             if (js["xmlTags"][i].includes("metadata")) {
               let dataname = js["xmlTags"][i].substring(9);
