@@ -56,9 +56,10 @@ class cleaner {
         console.log('arrange type = ' + type);
         if (type == 3) {
             while (curRow < table.length) {           
-                table[curRow][0] = table[curRow][start]; console.log('tstart = ' + table[curRow][start]);
-                table[curRow][start] = await this.timeFormat(type, table[curRow][start].substring(0, 10));    console.log('tystart = ' + table[curRow][start]);       
-                table[curRow][end] = await this.timeFormat(type, table[curRow][start].substring(13, 23));console.log('testart = ' + table[curRow][end]);
+                table[curRow][0] = table[curRow][start];
+                let temptime = table[curRow][start];
+                table[curRow][start] = await this.timeFormat(type, temptime.substring(0, 10));          
+                table[curRow][end] = await this.timeFormat(type, temptime.substring(13, 23));
                 curRow++;
             }
         }
