@@ -31,7 +31,9 @@ const fileMapping = async (req, res) => {
             res.status(400).send({"error": 'mapping were already completed.'});
             return ;
         }
-        else {m_head = cModel.core[0];}
+        else {m_head = ['唯一編碼', '來源系統', '來源系統縮寫', '文件原系統頁面URL', '題名', '檔案類型',
+        '書卷名', '(類目階層)', '原始時間記錄', '西元年', '起始時間', '結束時間', '相關人員', '相關地點', 
+        '相關組織', '關鍵詞', '摘要/全文'];}
     }
     else {
         ck = await cModel.secondMapCheck(fid);

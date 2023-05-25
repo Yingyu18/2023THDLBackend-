@@ -83,7 +83,7 @@ const downloadFile = async (req, res) => {
 }
 
 const getCsv = async (req, res) => {
-    let csvs = await File.getCsvs(req);
+    let csvs = await File.getCsvs(req); console.log('123456 = ' + csvs);
     if(csvs.error){
         return res.status(500).send({message:"internal server error"})
     }

@@ -31,6 +31,7 @@ class XMLConverter {
         var docutags = new Array(len).fill("      <MetaTags>\n");
         var docuconts = new Array(len).fill("      <doc_content>\n");
         for (let i = 0; i < js["columns"].length; i++) {
+          if (js["xmlTags"][i] == null) {continue;}
           if (!js["xmlTags"][i].includes("metatags")){
             if (js["xmlTags"][i].includes("metadata")) {
               let dataname = js["xmlTags"][i].substring(9);
@@ -48,7 +49,7 @@ class XMLConverter {
               }
             } else if (js["xmlTags"][i]==="doc_content") {
               for (let j = 1; j <= len; j++) {
-                docuconts[j-1] += "        " + js["file" + j][i] + "\n      </doc_content>\n";
+                docuconts[j-1] += "        " + js["file" + j][i];
               }
             } else if (js["xmlTags"][i]==="timeseq_not_before" || js["xmlTags"][i]==="timeseq_not_after") {
               for (let j = 1; j <= len; j++) {
@@ -79,7 +80,7 @@ class XMLConverter {
         } 
         xml += "    </metadata_field_settings>\n" + featAnal + tags +"    </feature_analysis>\n" + "  </corpus>\n  \n  <documents>\n";
         for (let i = 0; i < len; i++) {
-          xml += docuheads[i] + docubodys[i] + docuudef[i] + "      </xml_metadata>\n" + docuconts[i] + docutags[i] + "      </MetaTags>\n    </document>\n";
+          xml += docuheads[i] + docubodys[i] + docuudef[i] + "      </xml_metadata>\n" + docuconts[i] + docutags[i] + "      </MetaTags>\n      </doc_content>\n    </document>\n";
         }
         xml += "  </documents>\n</ThdlPrototypeExport>";
         return xml;       
@@ -94,7 +95,7 @@ class XMLConverter {
           console.log('firts dddbbbd');
           let user = await getUserDetail(uid);
           res = await tableFunc.insertFile(uid, uname, corpus_name, xml, 'xml');
-          sql = "Select fileID from file_DB where fileName = ?";
+          sql = "Select fileID from file_DB where fileName = ? and type = \'xml\'";
           let fid = await conn.query(sql, [corpus_name]);
           sql = "Insert Into sec_map  (fileID, map_ID , sec_map) values (?, ?, ?)";  
           result = await conn.query(sql, [pid, fid[0].fileID, '']);
@@ -102,7 +103,7 @@ class XMLConverter {
         }
         else {
           sql = "UPDATE file_DB SET content = ? where fileID = ?" ;
-          res = await conn.query(sql, [xml, res[0].map_ID]);
+          let tuirywe = await conn.query(sql, [xml, res[0].map_ID]);
           return res[0].map_ID;
         } 
         

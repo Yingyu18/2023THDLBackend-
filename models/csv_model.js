@@ -9,26 +9,29 @@ cleaner = new cleaner();
 
 class csvConverter {
 
-    core = [['唯一編碼', '來源系統', '來源系統縮寫', '文件原系統頁面URL', '題名', '檔案類型',
-    '書卷名', '(類目階層)', '原始時間記錄', '西元年', '起始時間', '結束時間', '相關人員', '相關地點', 
-    '相關組織', '關鍵詞', '摘要/全文'], ['filename', 'doc_source', 'metadata/doc_source', 'metadata/doc_source.href', 'title', 'doctype',
-    'compilation_name', 'metatags/categoryABC', 'time_orig_str', 'year_for_grouping', 'timeseq_not_before', 'timeseq_not_after', 'metatags/PersonName',
-     'metatags/PlaceName', 'metatags/Organization', 'metatags/Keywords', 'doc_content']];
-
     async to2dArray (jid, sidx, type, maps) {
-        let temp = await tableFunc.openForProject(jid);  console.log('sidx = ' + sidx);
+        let Sysmap = {
+            0: ["AHCMS" ,'國史館檔案史料文物查詢系統'],
+            2 : ["AHTWH", '國史館臺灣文獻館典藏管理系統'],
+            3 : ["NDAP", '臺灣省議會史料總庫'],
+            1 : ["tlcda", '地方議會議事錄']
+        }
+
+        let temp = await tableFunc.openForProject(jid);
         let contents = temp[0]; 
         let types = temp[1];
-        let results = type == 1 ? this.core : await tableFunc.getJsonHead(jid, 2);        
+        let results = type == 1 ? [['唯一編碼', '來源系統', '來源系統縮寫', '文件原系統頁面URL', '題名', '檔案類型',
+        '書卷名', '(類目階層)', '原始時間記錄', '西元年', '起始時間', '結束時間', '相關人員', '相關地點', 
+        '相關組織', '關鍵詞', '摘要/全文'], ['filename', 'doc_source', 'metadata/doc_source', 'metadata/doc_source.href', 'title', 'doctype',
+        'compilation_name', 'metatags/categoryABC', 'time_orig_str', 'year_for_grouping', 'timeseq_not_before', 'timeseq_not_after', 'metatags/PersonName',
+         'metatags/PlaceName', 'metatags/Organization', 'metatags/Keywords', 'doc_content']] : await tableFunc.getJsonHead(jid, 2);      
         let extra = results[0].length;
         let lines = 2;
         for (let k = 0; k < contents.length; k++) {
-            console.log('contents = ' + contents[k]);
-            let table = await cleaner.rawTable(contents[k]);console.log('table = ' + table);
+            let table = await cleaner.rawTable(contents[k]);
             if (type == 1) {table = await cleaner.arrangeFormat(types[k], table, sidx[k]);}             
             let corres = new Array (table[sidx[k]-1].length);
             for (let i = 0; i < maps[k].length; i++) {
-                console.log('maps k+i = ' + maps[k][i]);
                 if (maps[k][i] == 'no') {corres[i] = -1;}
                 else if (results[0].indexOf(maps[k][i]) == -1) {
                     corres[i] = extra;
@@ -39,7 +42,26 @@ class csvConverter {
             }            
             for (let i = sidx[k]; i < table.length; i++) {
                 results.push(new Array(extra).fill(''));
-                for (let j = 0; j < table[i].length; j++) {
+                if (types[k] == 0) {
+                    results[lines][0] = 'AHCMS-';
+                    results[lines][1] = '國史館檔案史料文物查詢系統';
+                    results[lines][2] = 'AHCMS';
+                } else if (types[k] == 1) {
+                    results[lines][0] = 'tlcda-';
+                    results[lines][1] = '地方議會議事錄';
+                    results[lines][2] = 'tlcda';
+                } else if (types[k] == 2) {
+                    results[lines][0] = 'AHTWH-';
+                    results[lines][1] = '國史館臺灣文獻館典藏管理系統';
+                    results[lines][2] = 'AHTWH';
+                } else if (types[k] == 3) {
+                    results[lines][11] = table[lines][0].substring(13, 23);
+                    results[lines][0] = 'NDAP-';
+                    results[lines][1] = '臺灣省議會史料總庫';
+                    results[lines][2] = 'NDAP';
+                }
+
+                for (let j = 0; j < table[i].length; j++) { console.log("i + j = " + lines +'/'+ corres[j]+ "org ----------- is = " + results[lines][corres[j]] + ' ttttttt--------- is = ' + table[i][j]);
                     if (corres[j] < 0) {continue;}
                     else if (results[lines][corres[j]] == null || results[lines][corres[j]] == '') {
                         results[lines][corres[j]] = table[i][j];
@@ -53,7 +75,7 @@ class csvConverter {
         }
         for (let i = 2; i < results.length; i++) {
             if (results[i].length < results[0].length) {
-                results[i].push(new Array(results[0].length - results[i].length).fill(''));
+                results[i] = results[i].concat(new Array(results[0].length - results[i].length).fill(''));
             }
         }
         if (type == 2) {results = mergeToJson(results, jid)}
