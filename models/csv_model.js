@@ -55,6 +55,7 @@ class csvConverter {
                     results[lines][1] = '國史館臺灣文獻館典藏管理系統';
                     results[lines][2] = 'AHTWH';
                 } else if (types[k] == 3) {
+                    results[lines][11] = results[lines][0].substring(13, 23);
                     results[lines][0] = 'NDAP-';
                     results[lines][1] = '臺灣省議會史料總庫';
                     results[lines][2] = 'NDAP';
