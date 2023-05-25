@@ -10,7 +10,13 @@ cleaner = new cleaner();
 class csvConverter {
 
     async to2dArray (jid, sidx, type, maps) {
-        
+        let Sysmap = {
+            0: ["AHCMS" ,'國史館檔案史料文物查詢系統'],
+            2 : ["AHTWH", '國史館臺灣文獻館典藏管理系統'],
+            3 : ["NDAP", '臺灣省議會史料總庫'],
+            1 : ["tlcda", '地方議會議事錄']
+        }
+
         let temp = await tableFunc.openForProject(jid);
         let contents = temp[0]; 
         let types = temp[1];
@@ -36,6 +42,24 @@ class csvConverter {
             }            
             for (let i = sidx[k]; i < table.length; i++) {
                 results.push(new Array(extra).fill(''));
+                if (types[k] == 0) {
+                    results[lines][0] = 'AHCMS-';
+                    results[lines][1] = '國史館檔案史料文物查詢系統';
+                    results[lines][2] = 'AHCMS';
+                } else if (types[k] == 1) {
+                    results[lines][0] = 'tlcda-';
+                    results[lines][1] = '地方議會議事錄';
+                    results[lines][2] = 'tlcda';
+                } else if (types[k] == 2) {
+                    results[lines][0] = 'AHTWH-';
+                    results[lines][1] = '國史館臺灣文獻館典藏管理系統';
+                    results[lines][2] = 'AHTWH';
+                } else if (types[k] == 3) {
+                    results[lines][0] = 'NDAP-';
+                    results[lines][1] = '臺灣省議會史料總庫';
+                    results[lines][2] = 'NDAP';
+                }
+
                 for (let j = 0; j < table[i].length; j++) { console.log("i + j = " + lines +'/'+ corres[j]+ "org ----------- is = " + results[lines][corres[j]] + ' ttttttt--------- is = ' + table[i][j]);
                     if (corres[j] < 0) {continue;}
                     else if (results[lines][corres[j]] == null || results[lines][corres[j]] == '') {

@@ -41,12 +41,6 @@ class cleaner {
     }
     
     async arrangeFormat(type, table, idx) {
-        let map = {
-            0: ["AHCMS" ,'國史館檔案史料文物查詢系統'],
-            1 : ["AHTWH", '國史館臺灣文獻館典藏管理系統'],
-            2 : ["NDAP", '臺灣省議會史料總庫'],
-            3 : ["tlcda", '地方議會議事錄']
-        }
         if (type >= 4) {return table;}
         let curRow = idx-1;
         let start = -1;
@@ -61,21 +55,6 @@ class cleaner {
                 end = j;                
                 if (start > 0 && end > 0) {break;}
             }
-            if (table[curRow][j] == '唯一編碼') {
-                for (let i = curRow + 1; i < table.length; i++) {
-                    table[i][j] = map[types][0] + '-' + table[i][j];
-                }
-            }
-            if (table[curRow][j] == '來源系統') {
-                for (let i = curRow + 1; i < table.length; i++) {
-                    table[i][j] = map[types][1];
-                }
-            }
-            if (table[curRow][j] == '來源系統縮寫') {
-                for (let i = curRow + 1; i < table.length; i++) {
-                    table[i][j] = map[types][0];
-                }
-            }
         }
         curRow++;
         if (type == 1) {
@@ -87,8 +66,7 @@ class cleaner {
             }
         }
          else {
-            while (curRow < table.length) {   
-                console.log('st = ' + table[curRow][start] + 'et = ' + table[curRow][end]);        
+            while (curRow < table.length) {        
                 table[curRow][0] = table[curRow][start];
                 table[curRow][start] = String(table[curRow][start]).replaceAll('/', '-');
                 table[curRow][start] = await this.timeFormat(type, table[curRow][start]);           
