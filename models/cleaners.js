@@ -14,14 +14,10 @@ class cleaner {
         return str.replace(reg, (match)=>(map[match]));
     }
 
-   async timeFormat(type, time) {        
+   async timeFormat(type, time) {   
         if (time == '' || time == null) {return '0000-00-00';}
         if (time[6] == '-') {time = time.substring(0, 5) + '0' + time.substring(5);}
         if (time.lenght < 10 || time[9] == ' ') {time = time.substring(0, 8) + '0' + time.substring(8);}
-        if (type == 3) {
-            if (time[19] == '-') {time = time.substring(0, 18) + '0' + time.substring(18);}
-            if (time.length != 23) {time = time.substring(0, 22) + '0' + time[22];}
-        }
         return time;
     }
 
