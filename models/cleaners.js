@@ -54,9 +54,9 @@ class cleaner {
         curRow++;
         if (type == 3) {
             while (curRow < table.length) {           
-                table[curRow][0] = table[curRow][start];
-                let ttmp = table[curRow][start].substring(0, 10);
-                let etmp = table[curRow][start].substring(13, 23);
+                table[curRow][0] = table[curRow][start]; console.log('org time = ' + table[curRow][start]);
+                let ttmp = table[curRow][start].substring(0, 10);console.log('stime = ' + ttmp);
+                let etmp = table[curRow][start].substring(13, 23);console.log('etime = ' + etmp);
                 table[curRow][start] = await this.timeFormat(ttmp);
                 table[curRow][end] =  await this.timeFormat(etmp);
                 curRow++;
