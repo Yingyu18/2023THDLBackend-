@@ -14,10 +14,14 @@ class cleaner {
         return str.replace(reg, (match)=>(map[match]));
     }
 
-   async timeFormat(type, time) {   
+   async timeFormat(type, time) { 
         if (time == '' || time == null) {return '0000-00-00';}
         if (time[6] == '-') {time = time.substring(0, 5) + '0' + time.substring(5);}
         if (time.lenght < 10 || time[9] == ' ') {time = time.substring(0, 8) + '0' + time.substring(8);}
+        if (type == 3) {
+            if (time[19] == '-') {time = time.substring(0, 18) + '0' + time.substring(18);}
+            if (time.length != 23) {time = time.substring(0, 22) + '0' + time[22];}
+        }
         return time;
     }
 
@@ -41,7 +45,6 @@ class cleaner {
         let curRow = idx-1;
         let start = -1;
         let end = -1;
-        console.log('tb len = ' + table.length + ',  cur = ' + curRow + 'tb == ' + table);
         for (let j = 1; j < table[curRow].length; j++) {
            if (table[curRow][j] == '卷件開始日期' || table[curRow][j] == 'date_from' || table[curRow][j] == '日期描述' || table[curRow][j] == '日期起') {
                 start = j;                
@@ -53,14 +56,12 @@ class cleaner {
             }
         }
         curRow++;
-        console.log('arrange type = ' + type);
         if (type == 3) {
             while (curRow < table.length) {           
                 table[curRow][0] = table[curRow][start];
-                let temptime = table[curRow][start];
-                table[curRow][start] = await this.timeFormat(type, temptime.substring(0, 10));          
-                table[curRow][end] = await this.timeFormat(type, temptime.substring(13, 23));
-                curRow++;
+                let ttmp = await this.timeFormat(type, table[curRow][start])
+                table[curRow][start] = ttmp.substring(0, 10);         
+                table[curRow][end] = ttmp.substring(13, 23);
             }
         }
          else {
