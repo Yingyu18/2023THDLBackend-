@@ -9,15 +9,17 @@ const {
 
   const {
     uploadFile,
+    getProjects,
     getProject,
     updateProject,
     deleteProject
   } = require('../controllers/project_controller');
-const { } = require('../models/file_model');
+
 
 router.delete('/delete', authentication, deleteProject)
 router.post('/create', authentication, uploadFile)
-router.get('/getProjects', authentication, getProject)
+router.get('/getProjects', authentication, getProjects)
+router.get('/getProject/:id', authentication, getProject)
 router.patch('/updateProject/:id', authentication, updateProject)
 
 

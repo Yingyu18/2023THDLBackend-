@@ -20,8 +20,9 @@ var projectRouter = require('./routes/project_route')
 // Express Initialization
 const cors = require('cors');
 const app = express();
-// CORS allow all
 app.use(cors());
+// CORS allow all
+
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));

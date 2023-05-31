@@ -47,6 +47,22 @@ const getFile = async(req) => {
         await conn.release();
     }
 }
+const getProject = async(req) => {
+    let id = req.params.id
+    const conn = await pool.getConnection()
+    try{
+        let qryStr = `SELECT * FROM file_db WHERE fileID = ?`
+        var results = await conn.query(qryStr, [id])
+        //console.log("result", results)
+        return results[0]
+    } catch (error){
+        console.log(error)
+        return {error:error}
+    } finally {
+        await conn.release();
+    }
+}
+
 const getSourceCsvs = async(projectId) =>{
      const conn = await pool.getConnection()
      try{
@@ -136,5 +152,6 @@ module.exports = {
     getSourceCsvs,
     updateProject,
     updateCsvs,
-    deleteProject
+    deleteProject,
+    getProject
 }

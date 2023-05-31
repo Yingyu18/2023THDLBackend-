@@ -88,7 +88,7 @@ function isSecMapped(map){
     return 1
 }
 
-const getProject = async (req, res) => {
+const getProjects = async (req, res) => {
     const userId = req.user.userId
     let projects = await Project.getFile(req)
     if(projects.error){
@@ -115,7 +115,14 @@ const getProject = async (req, res) => {
     }
     let response = {"items": data}
     res.status(200).send(response)
+}
 
+const getProject = async (req, res) => {
+    let project = await Project.getProject(req)
+    if(project.error){
+        return res.status(500).send({message:"internal server error"})
+    }
+    res.status(200).send(project)
 }
 
 const updateProject = async (req, res) => {
@@ -162,6 +169,7 @@ const deleteProject = async (req, res) => {
 module.exports = {
     uploadFile,
     getProject,
+    getProjects,
     updateProject,
     deleteProject
 };
