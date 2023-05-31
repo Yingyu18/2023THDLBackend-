@@ -31,9 +31,9 @@ class mapModel {
             let sql;
             let rs;     
             if (type == 1) { 
-                sql = "UPDATE file_DB SET map = ? WHERE fileID = ?";
+                sql = "UPDATE file_DB SET map = ?, lastModified = ? WHERE fileID = ?";
                 console.log('type = ' + type + 'res = ' + res + 'tostring = ' + res.toString());
-                rs = await conn.query(sql, [res.toString(), fid]);
+                rs = await conn.query(sql, [res.toString(), new Date().getTime().toString(), fid]);
                 sql = "select fileID From sec_map WHERE fileID = ? and map_ID = ?";
                 rs = await conn.query(sql, [fid, jid]);
                 if (rs[0] == null) {
@@ -56,8 +56,8 @@ class mapModel {
                     }
                     tmp = await cModel.to2dArray(jid, idx, 1, maps);
                     tmp = await jModel.toJson(tmp);
-                    sql = "UPDATE file_DB SET content = ?, isMapped = ? WHERE fileID = ?";
-                    rs = await conn.query(sql, [tmp, 1, jid]);
+                    sql = "UPDATE file_DB SET content = ?, isMapped = ?, lastModified = ? WHERE fileID = ?";
+                    rs = await conn.query(sql, [tmp, 1, new Date().getTime().toString(), jid]);
                 } 
             }  else {
                 console.log('type = ' + type + 'res = ' + res + 'tostring = ' + res.toString());
@@ -77,8 +77,8 @@ class mapModel {
                     }
                     tmp = await cModel.to2dArray(jid, idx, 2, maps);
                     tmp = await jModel.toJson(tmp);
-                    sql = "UPDATE file_DB SET content = ?, isMapped = ? WHERE fileID = ?";
-                    rs = await conn.query(sql, [tmp, 1, jid]);
+                    sql = "UPDATE file_DB SET content = ?, isMapped = ?, lastModified = ? WHERE fileID = ?";
+                    rs = await conn.query(sql, [tmp, 1, new Date().getTime().toString(), jid]);
                 }
             } 
                            

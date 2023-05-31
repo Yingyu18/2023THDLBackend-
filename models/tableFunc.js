@@ -251,8 +251,8 @@ class tableFunc {
         sql = "Select fileID from file_DB where fileName = ? and USER_ID = ?";
         row = await conn.query(sql, [fname, uid]);
         fid = row[0].fileID;        
-        sql = "UPDATE file_DB SET sourceCsvs = ? where fileID = ?";
-        let ttttmp = await conn.query(sql, [orgIdx, fid]);        
+        sql = "UPDATE file_DB SET sourceCsvs = ?, lastModified = ? where fileID = ?";
+        let ttttmp = await conn.query(sql, [orgIdx, new Date().getTime().toString(), fid]);        
         ttttmp = await this.copySecMap(orgIdx, fid);
       } else {
         sql = "UPDATE file_DB SET content = ?, fileName = ?, lastModified = ? where fileID = ?";
@@ -283,8 +283,8 @@ class tableFunc {
     try {
       let conn = await pool.getConnection();
      
-      let sql = "UPDATE file_DB SET isBuilt = ? where fileID = ?";
-      let res = await conn.query(sql, [true, pid]);
+      let sql = "UPDATE file_DB SET isBuilt = ?, lastModified = ? where fileID = ?";
+      let res = await conn.query(sql, [true, new Date().getTime().toString(), pid]);
       conn.release();
       return 'is_built_set';
     } catch (error) {

@@ -102,8 +102,8 @@ class XMLConverter {
           return fid[0].fileID;
         }
         else {
-          sql = "UPDATE file_DB SET content = ? where fileID = ?" ;
-          let tuirywe = await conn.query(sql, [xml, res[0].map_ID]);
+          sql = "UPDATE file_DB SET content = ?, lastModified = ? where fileID = ?" ;
+          let tuirywe = await conn.query(sql, [xml, new Date().getTime().toString(), res[0].map_ID]);
           return res[0].map_ID;
         } 
         
