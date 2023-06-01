@@ -150,11 +150,16 @@ const updateProject = async (req, res) => {
             "updated": result.lastModified,
             "sourceCsvs": sourceCsvs,
             "name": result.fileName,
-            "isMapped": result.isMapped,
+            "isMapped": Boolean(result.isMapped),
             "owner": result.USER_NAME,
             "thumbnail": "",
-            "isBuilt": result.isBuild,
-            "description": req.body.description
+            "isBuilt": Boolean(result.isBuild),
+            "description": req.body.description,
+            "xml_id": result.core_xml__id,
+            "source": result.source,
+            "size": result.size,
+            "url": result.url,
+            "map": result.map
     })
 }
 const deleteProject = async (req, res) => {

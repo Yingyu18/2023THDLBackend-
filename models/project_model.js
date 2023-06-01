@@ -1,3 +1,4 @@
+const { map } = require("../app");
 const pool = require("./connection_db")
 
 
@@ -81,9 +82,33 @@ const updateProject = async(req) => {
     const conn = await pool.getConnection()
     const projectId = req.params.id
     try{
-        const {name, is_mapped, owner, is_built, content, sourceCsvs, description} = req.body
+        const {name, map, xml_id, source, size, url, is_mapped, owner, is_built, content, sourceCsvs, description} = req.body
         if(name != undefined){
             const result = await conn.query('UPDATE file_db SET fileName=? WHERE fileID=?',[name, projectId])
+        }
+        // //Start_Row
+        // if(start != undefined){
+        //     const result = await conn.query('UPDATE file_db SET Start_Row=? WHERE fileID=?',[start, projectId])
+        // }
+        //map
+        if(map != undefined){
+            const result = await conn.query('UPDATE file_db SET map=? WHERE fileID=?',[map, projectId])
+        }
+        //cores_xml_id
+        if(xml_id != undefined){
+            const result = await conn.query('UPDATE file_db SET cores_xml_id=? WHERE fileID=?',[xml_id, projectId])
+        }
+        //source
+        if(source != undefined){
+            const result = await conn.query('UPDATE file_db SET source=? WHERE fileID=?',[source, projectId])
+        }
+        //size 
+        if(size != undefined){
+            const result = await conn.query('UPDATE file_db SET size=? WHERE fileID=?',[size, projectId])
+        }
+        //url
+        if(url != undefined){
+            const result = await conn.query('UPDATE file_db SET url=? WHERE fileID=?',[url, projectId])
         }
         if(is_mapped != undefined){
             const result = await conn.query('UPDATE file_db SET isMapped=? WHERE fileID=?',[is_mapped, projectId])
