@@ -154,6 +154,35 @@ class tableFunc {
       console.log(error);
     }
   }
+  async getUniqueHead(fileID) {
+    const pool = require("./connection_db");
+    var idx = await this.getRowId([fileID]);
+    idx = idx[0]; console.log('get uniquehead of fileID = ' + fileID +'with strow = ' + idx);
+    try {
+      let conn = await pool.getConnection();
+      var sql = "SELECT content FROM file_DB WHERE fileID = ?";
+      let table = await conn.query(sql, [fileID]); 
+      conn.release();
+      let result = []; 
+      table = table[0].content.split('\n');console.log(table);
+      for (let i = 0; i < table.length; i++) {
+        table[i] = table[i].split(',');
+      }
+      for (let i = 0; i < table[idx-1].length; i++) {
+        let container = [];
+        for (let j = idx; j < table.length; j++) {
+          if (container.includes(table[j][i])) {break;}
+          else {
+            container.push(table[j][i]);
+            if (j == table.length - 1) {result.push(table[idx-1][i]);}
+          }
+        }
+      }
+      return result;      
+    } catch (error) {
+      console.log(error);
+    }
+  }
 
   async getJsonHead(fileID, cnt) {
     const pool = require("./connection_db");
@@ -222,15 +251,17 @@ class tableFunc {
   async copySecMap(srcs, jid) {
     const pool = require("./connection_db");
     let conn = await pool.getConnection();
-    let sql = "Select sec_map from sec_map where map_ID = ? and fileID = ?";
-    let sql2 = "INSERT INTO sec_map (fileID, map_ID, sec_map) Values (?, ?, ?)";
+    let sql = "Select sec_map, isMapped from sec_map where map_ID = ? and fileID = ?";
+    let sql2 = "INSERT INTO sec_map (fileID, map_ID, sec_map, isMapped) Values (?, ?, ?, ?)";
     let mapResult;
+    let finResult;
     let ctah;
     srcs = srcs.split(',');
     for (let i = 0; i < srcs.length; i++) {
       mapResult = await conn.query(sql, [jid, srcs[i]]);
+      finResult = mapResult[0].isMapped;
       mapResult = mapResult[0].sec_map;
-      ctah = await conn.query(sql2, [srcs[i], jid, mapResult]);
+      ctah = await conn.query(sql2, [srcs[i], jid, mapResult, finResult]);
     }
     conn.release();
     return 'copy done';
@@ -242,18 +273,21 @@ class tableFunc {
       let conn = await pool.getConnection();
       var sql;
       var row;
+      var time = new Date().getTime().toString();
       var resBody = { file_id: "zzz", file_name: fname};
       if (isnew == 1) {
-        sql = "Select sourceCsvs from file_DB where fileID = ?";
+        sql = "INSERT INTO file_DB (fileName, USER_ID, USER_NAME, Start_Row, map, " +
+        "content, cores_xml_id, upload_time, type, sourceCsvs, source, size, lastModified, isMapped, isBuilt, url)" +
+        "Select " + uname + ", USER_ID, USER_NAME, Start_Row, map, content, cores_xml_id, " +
+        time + ", type, sourceCsvs, source, size, " + time + ", isMapped, " + 0 + ", url from file_DB where fileID = ?";
+        row = await conn.query(sql, [fid]);
+        sql = "SELECT sourceCsvs from file_DB where fileID = ?";
         row = await conn.query(sql, [fid]);
         let orgIdx = row[0].sourceCsvs;
-        let idk = await this.insertFile(uid, uname, fname, js, 'json')
-        sql = "Select fileID from file_DB where fileName = ? and USER_ID = ?";
-        row = await conn.query(sql, [fname, uid]);
-        fid = row[0].fileID;        
-        sql = "UPDATE file_DB SET sourceCsvs = ?, lastModified = ? where fileID = ?";
-        let ttttmp = await conn.query(sql, [orgIdx, new Date().getTime().toString(), fid]);        
-        ttttmp = await this.copySecMap(orgIdx, fid);
+        sql = "Select fileID from file_DB where lastModified = ? and USER_ID = ?";
+        row = await conn.query(sql, [time, uid]);
+        let nfid = row[0].fileID;               
+        let ttttmp = await this.copySecMap(orgIdx, nfid);
       } else {
         sql = "UPDATE file_DB SET content = ?, fileName = ?, lastModified = ? where fileID = ?";
         let asd = await conn.query(sql, [js, fname, new Date().getTime().toString(), fid]);

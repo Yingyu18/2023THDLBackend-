@@ -2,6 +2,7 @@ var fs = require('fs');
 let cleaner = require('./cleaners');
 let tableFunc = require('./tableFunc');
 let jsConv = require('./json_model');
+const pool = require('./connection_db');
 
 jsConv = new jsConv();
 tableFunc = new tableFunc();
@@ -107,6 +108,23 @@ class csvConverter {
         if (map == null) {return false;}
         else if (map.includes(',,') || map === '') {return false;}
         else {return true;}
+    }
+
+    async allMappedCheck(idxs, type, pid) {
+        let conn = await pool.getConnection();
+        let sql = "SELECT isMapped from file_DB WHERE fileID = ?";
+        if (type == 2) {sql = "SELECT isMapped from sec_map WHERE fileID = ? and map_ID = ?"}
+        let rs; 
+        for (let i = 0; i < idxs.length; i++) {
+            if (type == 1) {rs = await conn.query(sql, [idxs[i]]);}
+            else {rs = await conn.query(sql, [idxs[i], pid]);}
+            if (rs[0].isMapped == null || rs[0].isMapped == 0) {
+                conn.release();
+                return false;
+            }
+        }
+        conn.release();
+        return true;
     }
 }
 

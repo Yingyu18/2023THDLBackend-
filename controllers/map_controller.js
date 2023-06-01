@@ -79,10 +79,17 @@ const retrieveMapped = async (req, res) => {
     var result = await tableFunc.getIsMap(pid); console.log(result);
     res.status(200).send({"is_mapped" : result});
 }
+const changeRow = async(req, res) => {
+    var fid = req.body.file_id;
+    var srow = req.body.start_row;
+    var result = await model.changeRow(fid, srow);
+    res.status(200).send({"file_head" : result});
+}
 module.exports = {
     projectMapping,
     fileMapping,
     savemap,
     getmap,
-    retrieveMapped
+    retrieveMapped,
+    changeRow
 };

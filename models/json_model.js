@@ -50,15 +50,19 @@ class jsonConverter {
     
     async insertNewCSV(fid, pid) {
         try {
-          let conn = await pool.getConnection();
-          var sql = "Select fileName from file_DB where fileID = ?";
-          let fname = await conn.query(sql, [fid]);   
-          sql = "Select sourceCsvs from file_DB where fileID = ?";
-          let src = await conn.query(sql, [pid]);   
+          let conn = await pool.getConnection(); 
+          var sql = "Select sourceCsvs, content from file_DB where fileID = ?";
+          let src = await conn.query(sql, [pid]);
+          let tmp = src[0].sourceCsvs.split(",");
+          tmp.push(fid);
+          tmp = tmp.join();
           sql = "UPDATE file_DB SET sourceCsvs = ?, lastModified = ? where fileID = ?";
-          let result = await conn.query(sql, [src.push(fid), new Date().getTime().toString(), pid]);  
-          sql = "Insert Into sec_map SET fileID = ?, map_ID = ?, sec_map = ? values (?, ?, ?)";  
-          result = await conn.query(sql, [fid, pid, '']);  
+          let result = await conn.query(sql, [tmp, new Date().getTime().toString(), pid]);  
+          sql = "Select isMapped from file_DB where fileID = ?";
+          tmp = await conn.query(sql, [fid]);
+          sql = "Insert Into sec_map SET fileID = ?, map_ID = ?, sec_map = ?, isMapped = ? values (?, ?, ?, ?)"; 
+          if (tmp[0].isMapped == 1 && src[0].content == null) {result = await conn.query(sql, [fid, pid, tableFunc.getHead(fid), 1]);}       
+          else {result = await conn.query(sql, [fid, pid, '請進行二次對應', 0]);}        
           conn.release();
           return 'success';  
         } catch (error) {
