@@ -106,8 +106,8 @@ class mapModel {
         var type = 0;
         let temp;
         sql = "SELECT isMapped FROM file_DB WHERE fileID = ?";
-        sql2 = "SELECT isMapped FROM sec_map WHERE fileID = ? and map_ID = ?";
-        sql3 = "SELECT sec_map FROM sec_map WHERE fileID = ? and map_ID = ?";
+        let sql2 = "SELECT isMapped FROM sec_map WHERE fileID = ? and map_ID = ?";
+        let sql3 = "SELECT sec_map FROM sec_map WHERE fileID = ? and map_ID = ?";
         let check3;
         for (let i = 0; i < arr.length; i++) {
             let row = await conn.query(sql, [arr[i]]); console.log(i + 'retrieve = ' +row+ 'type = ' + type+ ' map = '+ row[0].map);      
