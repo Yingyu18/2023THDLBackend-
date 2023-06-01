@@ -156,8 +156,8 @@ const insertSecMap = async(data) => {
     const conn = await pool.getConnection()
     const {csvID, projectID, map} = data
     try{
-        let qryStr = `INSERT INTO sec_map (fileID, map_ID, sec_map, create_time) VALUES (?,?,?,?)`
-        var results = await conn.query(qryStr, [csvID, projectID, map, new Date()])
+        let qryStr = `INSERT INTO sec_map (fileID, map_ID, sec_map, create_time, isMapped) VALUES (?,?,?,?,?)`
+        var results = await conn.query(qryStr, [csvID, projectID, map, new Date(), 1])
         return results
     } catch (error){
         console.log(error)
