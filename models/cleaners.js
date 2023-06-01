@@ -54,7 +54,10 @@ class cleaner {
         curRow++;
         if (type == 3) {
             while (curRow < table.length) {
-                if (table[curRow][start] == null) {continue;}
+                if (table[curRow][start] == null) {
+                    curRow++;
+                    continue;
+                }
                 let temp = table[curRow][start].substring(13, 23);
                 temp = await this.timeFormat(3, temp);        
                 table[curRow][0] = table[curRow][start];                
@@ -64,7 +67,10 @@ class cleaner {
         }
          else {
             while (curRow < table.length) {
-                if (table[curRow][start] == null) {continue;}       
+                if (table[curRow][start] == null) {
+                    curRow++;
+                    continue;
+                }       
                 table[curRow][0] = table[curRow][start];
                 table[curRow][start] = String(table[curRow][start]).replaceAll('/', '-');
                 table[curRow][start] = await this.timeFormat(type, table[curRow][start]);           
