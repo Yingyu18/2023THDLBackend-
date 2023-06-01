@@ -5,20 +5,42 @@ const cleaner = new Cleaner();
 const uploadFile = async(data) => {
     const conn = await pool.getConnection()
     try{
-        let {filename, content, userId, uploader, size, lastModified, source} = data
- 
-            if(source === '國史館檔案史料文物'){ source = 0;}
-            if(source === '地方議會議事錄總庫'){source = 1;}
-            if(source === '國史館臺灣文獻館'){source = 2;}
-            if(source === '臺灣省議會史料總庫'){source = 3;}
-            if(source ==='自定義資料檔案'){source = 4;} 
+        let {filename, content, userId, uploader, size, lastModified} = data
+        let sourceNo, source
+            // if(content[1] === '國史館檔案史料文物'){ source = 0;}
+            // if(source === '地方議會議事錄總庫'){source = 1;}
+            // if(source === '國史館臺灣文獻館'){source = 2;}
+            // if(source === '臺灣省議會史料總庫'){source = 3;}
+            // if(source ==='自定義資料檔案'){source = 4;} 
+            console.log("content[1]= ", content[1])
+            if(content[1] === '國'){ 
+                sourceNo = 0;
+                source = '國史館檔案史料文物'
+            }
+            else if(content[1] === '地'){
+                sourceNo = 1
+                source = '地方議會議事錄總庫'
+            }
+            else if(content[7] === '獻'){
+                sourceNo = 2;
+                source = '國史館臺灣文獻館'
+            }
+            else if(content[1] === '臺'){
+                sourceNo = 3;
+                source = '臺灣省議會史料總庫'
+            }
+            else {
+                sourceNo = 4;
+                source = '自定義資料檔案'
+            } 
+
         //set start row
         let start = 4; //其他
-        if(source === 1){ start=5 } //地方議會
-        else if(source === 4){ start=1 } // 自定義
+        if(sourceNo === 1){ start=5 } //地方議會
+        else if(sourceNo === 4){ start=1 } // 自定義
         
         //clean csv
-        console.log(content)
+        //console.log(content)
         var table = []
         var rows = content.split('\n')
         for(let i=0; i<rows.length; i++){
@@ -38,7 +60,7 @@ const uploadFile = async(data) => {
             }
         }
         //console.log("after remove comma: " ,table)
-        if(source == 1){
+        if(sourceNo == 1){
             table[4][0] = 'no'
             for(let i=4; i<table.length; i++){
                 table[i][25] = table[i][26]
@@ -47,15 +69,16 @@ const uploadFile = async(data) => {
         }
         //console.log(table)
         for(let i=0; i<table.length; i++){
-            console.log(table[i])
+            //console.log(table[i])
             table[i] = table[i].join(',');
         }
-        console.log(table[table.length-1])
+        //console.log(table[table.length-1])
         table = table.join('\n')
-        console.log("after merge , : ",table)
+        //console.log("after merge , : ",table)
         // insert Into database
-        let qryStr = 'INSERT INTO file_db (fileName, USER_ID, USER_NAME, Start_Row, content, upload_time, size, source, lastModified, isMapped) VALUES (?,?,?,?,?,?,?,?,?)'
-        const result = await conn.query(qryStr, [filename, userId, uploader, start, table, new Date().getTime().toString(), size, source, lastModified, 0])
+        let qryStr = 'INSERT INTO file_db (fileName, USER_ID, USER_NAME, Start_Row, content, upload_time, size, source, lastModified, isMapped) VALUES (?,?,?,?,?,?,?,?,?,?)'
+        const result = await conn.query(qryStr, [filename, userId, uploader, start, table, new Date().getTime().toString(), size, sourceNo, lastModified, 0])
+        result.source = source
         return result
 
     } catch (error){

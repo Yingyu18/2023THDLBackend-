@@ -1,10 +1,10 @@
 const File = require('../models/file_model');
 var fs = require('fs');
-const { send } = require('process');
 
 const uploadFile = async (req, res) =>{
+    console.log("test")
     const {userId} = req.user
-    var {name, uploader, type, size, lastModified, source} = req.body;
+    var {name, uploader, type, size, lastModified} = req.body;
     const content = req.file.buffer.toString('utf8');
     //console.log(content)
     if(!name || !uploader){
@@ -19,7 +19,6 @@ const uploadFile = async (req, res) =>{
         type: type,
         size: size,
         lastModified: lastModified,
-        source: source,
         content: content
     }
     //stroe contents into database
@@ -27,6 +26,7 @@ const uploadFile = async (req, res) =>{
     if(result.error){
         return res.status(500).send({message: "internal server error"})
     }
+    console.log(result)
     console.log("insert file ID: ", result.insertId)
     res.status(200).json({ 
         id: result.insertId.toString(),
@@ -37,7 +37,7 @@ const uploadFile = async (req, res) =>{
         type: type,
         size: size,
         lastModified: lastModified,
-        source: source,
+        source: result.source,
         url: ''
      });
 }
