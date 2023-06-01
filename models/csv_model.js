@@ -120,6 +120,7 @@ class csvConverter {
         if (type == 2) {sql = "SELECT isMapped from sec_map WHERE fileID = ? and map_ID = ?"}
         let rs; 
         for (let i = 0; i < idxs.length; i++) {
+            console.log('checking file idx ' + idxs[i]);
             if (type == 1) {rs = await conn.query(sql, [idxs[i]]);}
             else {rs = await conn.query(sql, [idxs[i], pid]);}
             if (rs[0].isMapped == null || rs[0].isMapped == 0) {
