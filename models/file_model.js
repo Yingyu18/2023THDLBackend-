@@ -169,10 +169,17 @@ const insertSecMap = async(data) => {
 const updateFile = async(req) => {
     const conn = await pool.getConnection()
     const {id} = req.params
+    const {userId} = req.user
     const {name,start} = req.body
     try{
-        let qryStr = `UPDATE file_db SET fileName = ?, Start_Row=? WHERE fileID=? `
-        var results = await conn.query(qryStr, [name, start, parseInt(id)]);
+        if(name!=undefined){
+            let qryStr = `UPDATE file_db SET updated=?, fileName = ? WHERE fileID=? AND USER_ID=?`
+            var results = await conn.query(qryStr, [new Date().getTime().toString(), name, parseInt(id), userId]);
+        }
+        if(start != undefined){
+            let qryStr = `UPDATE file_db SET updated=?, Start_Row = ? WHERE fileID=? AND USER_ID=?`
+            var results = await conn.query(qryStr, [new Date().getTime().toString(), start, parseInt(id), userId]);
+        }
         return results
     } catch (error){
         console.log(error)

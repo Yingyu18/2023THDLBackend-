@@ -111,7 +111,10 @@ const updateFile = async (req, res) => {
     if(result.error){
         return res.status(500).send({message:"internal server error"})
     }
-    res.status(200).send({message:`update file name to ${name} success`})
+    res.status(200).send({
+        message:`update file name to ${name} success`,
+        updated: new Date().getTime().toString()
+})
 
 }
 
