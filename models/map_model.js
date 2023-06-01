@@ -4,7 +4,6 @@ let tbfunc = require('./tableFunc');
 let cleaner = require('./cleaners');
 let cModel = require('./csv_model');
 let jModel = require('./json_model');
-const tableFunc = require('./tableFunc');
 tbfunc = new tbfunc();
 cleaner = new cleaner();
 cModel = new cModel();
