@@ -56,16 +56,20 @@ class csvConverter {
                     results[lines][1] = '國史館臺灣文獻館典藏管理系統';
                     results[lines][2] = 'AHTWH';
                 } else if (types[k] == 3) {
-                    results[lines][11] = table[lines][0].substring(13, 23);
                     results[lines][0] = 'NDAP-';
                     results[lines][1] = '臺灣省議會史料總庫';
                     results[lines][2] = 'NDAP';
                 }
 
                 for (let j = 0; j < table[i].length; j++) { console.log("i + j = " + lines +'/'+ corres[j]+ "org ----------- is = " + results[lines][corres[j]] + ' ttttttt--------- is = ' + table[i][j]);
-                    if (corres[j] < 0) {continue;}
+                    if (corres[j] < 0 || table[i][j] == null) {continue;}
                     else if (results[lines][corres[j]] == null || results[lines][corres[j]] == '') {
                         results[lines][corres[j]] = table[i][j];
+                    } else if (types[k] == 3 && corres[j] == 10) {
+                        results[lines][10] = table[i][j].substring(0, 10);
+                        results[lines][11] = table[i][j].substring(10, 20);
+                    } else if (corres[j] == 0) {
+                        results[lines][corres[j]] += table[i][j];
                     } else {
                         results[lines][corres[j]] += ';' + table[i][j];               
                     }
