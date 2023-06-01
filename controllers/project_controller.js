@@ -27,7 +27,8 @@ const uploadFile = async (req, res)=> {
         }
         //if complete second map, update sec_map
         lastMap = result.map
-        if(isSecMapped(result.map)){
+        // if(isSecMapped(result.map)){
+        if(result.isMapped==1){
             let data = {
                 csvID: id,
                 projectID:projectID,
