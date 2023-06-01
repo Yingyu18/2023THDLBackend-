@@ -22,14 +22,15 @@ const uploadFile = async (req, res) =>{
         content: content
     }
     //stroe contents into database
-    const result = await File.uploadFile(data);
+    let result = await File.uploadFile(data);
     if(result.error){
         return res.status(500).send({message: "internal server error"})
     }
     console.log(result)
     console.log("insert file ID: ", result.insertId)
+    result  = await File.getCsv(result.insertId)
     res.status(200).json({ 
-        id: result.insertId.toString(),
+        id: result.fileID.toString(),
         created: new Date(),
         filedata: name,
         name: name,
@@ -38,7 +39,7 @@ const uploadFile = async (req, res) =>{
         size: size,
         lastModified: lastModified,
         source: result.source,
-        url: ''
+        url: result.url
      });
 }
 
