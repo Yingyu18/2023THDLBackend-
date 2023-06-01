@@ -1,4 +1,3 @@
-const { map } = require("../app");
 const pool = require("./connection_db")
 
 
