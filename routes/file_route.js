@@ -20,7 +20,8 @@ const {
     deleteFile,
     downloadFile,
     getFile,
-    getCsv
+    getCsv,
+    updateFile
   } = require('../controllers/file_controller');
 
 router.get('/', function(req, res, next) {
@@ -34,6 +35,7 @@ router.post('/create', authentication, upload.single('file'), uploadFile)
 //delete file
 router.post('/delete', authentication, deleteFile);
 router.delete('/delete/:id', authentication, deleteFile)
+router.patch('/updateCsv/:id', authentication, updateFile)
 //download file
 router.post('/download/:format(csv|json|xml)', authentication, downloadFile)
 

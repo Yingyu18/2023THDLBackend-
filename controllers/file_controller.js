@@ -1,5 +1,6 @@
 const File = require('../models/file_model');
 var fs = require('fs');
+const { send } = require('process');
 
 const uploadFile = async (req, res) =>{
     const {userId} = req.user
@@ -103,9 +104,20 @@ const getCsv = async (req, res) => {
     res.status(200).send(response)
 }
 
+const updateFile = async (req, res) => {
+    let {name} = req.body
+    let result = await File.updateFile(req)
+    if(result.error){
+        return res.status(500).send({message:"internal server error"})
+    }
+    res.status(200).send({message:`update file name to ${name} success`})
+
+}
+
 module.exports = {
     uploadFile,
     deleteFile,
     downloadFile,
-    getCsv
+    getCsv,
+    updateFile
 };

@@ -143,6 +143,21 @@ const insertSecMap = async(data) => {
         await conn.release();
     }
 }
+const updateFile = async(req) => {
+    const conn = await pool.getConnection()
+    const {id} = req.params
+    const {name,start} = req.body
+    try{
+        let qryStr = `UPDATE file_db SET fileName = ?, Start_Row=? WHERE fileID=? `
+        var results = await conn.query(qryStr, [name, start, parseInt(id)]);
+        return results
+    } catch (error){
+        console.log(error)
+        return {error}
+    } finally {
+        await conn.release();
+    }
+}
 
 module.exports = {
     uploadFile,
@@ -150,5 +165,6 @@ module.exports = {
     getContent,
     getCsvs,
     getCsv,
-    insertSecMap
+    insertSecMap,
+    updateFile
 }
