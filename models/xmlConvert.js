@@ -37,27 +37,33 @@ class XMLConverter {
               let dataname = js["xmlTags"][i].substring(9);
               xml +="      <"+ dataname + " show_spotlight=\"Y\">" + js["columns"][i] + "</" + dataname + ">\n";
               for (let j = 1; j <= len; j++) {
+                if (js["file" + j][i] == null) {continue;}
                 docuudef[j-1] += "        <" + dataname + ">" + js["file" + j][i] + "</" + dataname + ">\n" ;
               }
             } else if (js["xmlTags"][i]==="filename"){ 
+              if (js["file" + j][i] == null) {continue;}
               for (let j = 1; j <= len; j++) {
                 docuheads[j-1] += "    <document filename=\"" + js["file" + j][i] + "\">\n      <corpus>" + corpus_name + "</corpus>\n";
               }
             } else if (js["xmlTags"][i]==="title") {
+              if (js["file" + j][i] == null) {continue;}
               for (let j = 1; j <= len; j++) {
                 docuheads[j-1] += "      <title>" + js["file" + j][i] + "</title>\n";
               }
             } else if (js["xmlTags"][i]==="doc_content") {
+              if (js["file" + j][i] == null) {continue;}
               for (let j = 1; j <= len; j++) {
                 docuconts[j-1] += "        " + js["file" + j][i];
               }
             } else if (js["xmlTags"][i]==="timeseq_not_before" || js["xmlTags"][i]==="timeseq_not_after") {
+              if (js["file" + j][i] == null) {continue;}
               for (let j = 1; j <= len; j++) {
                 docubodys[j-1] += "      <" + js["xmlTags"][i] + ">" + js["file" + j][i].replaceAll("-", "") + "</" + js["xmlTags"][i] + ">\n";
               }
             } else {
               xml +="      <"+js["xmlTags"][i] + " show_spotlight=\"Y\">" + js["columns"][i] + "</" + js["xmlTags"][i] + ">\n";
               for (let j = 1; j <= len; j++) {
+                if (js["file" + j][i] == null) {continue;}
                 docubodys[j-1] += "      <" + js["xmlTags"][i] + ">" + js["file" + j][i] + "</" + js["xmlTags"][i] + ">\n";
               }
             }
@@ -70,6 +76,7 @@ class XMLConverter {
             tags += "      <tag type=\"contentTagging\" name=\"Udef_"+ tagName + "\" default_category=\"Udef_" + tagName + "\" default_sub_category=\"-\"/>\n";
             cnt++;
             for (let j = 1; j <= len; j++) {
+              if (js["file" + j][i] == null) {continue;}
               console.log('retrr = ' + String("file" + j));
               let alltags = js[String("file" + j)][i].split(";");
               for (let k = 0; k < alltags.length; k++) {
