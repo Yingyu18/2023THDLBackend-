@@ -47,12 +47,12 @@ const uploadFile = async(data) => {
             table[i] = rows[i].split(',')
         }
         //console.log("ori , : ",table)
-        if(source != 4){
+        if(sourceNo != 4){
             table = cleaner.csvClean(table, start-1)
         }
         //console.log("after clean , : ",table)
 
-        if(source == 3 || source == 2 ){
+        if(sourceNo == 3 || sourceNo == 2 ){
             for(let i=3; i<table.length; i++){
                 for(let j=1; j<table[i].length; j++){
                     table[i][j] = table[i][j].substring(1, table[i][j].length);
