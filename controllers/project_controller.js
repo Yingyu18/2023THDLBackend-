@@ -159,7 +159,7 @@ const updateProject = async (req, res) => {
             "source": result.source,
             "size": result.size,
             "url": result.url,
-            "map": result.map
+            "map": result.map,
     })
 }
 const deleteProject = async (req, res) => {
