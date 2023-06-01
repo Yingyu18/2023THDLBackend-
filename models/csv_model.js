@@ -124,12 +124,13 @@ class csvConverter {
             if (type == 1) {rs = await conn.query(sql, [idxs[i]]);}
             else {rs = await conn.query(sql, [idxs[i], pid]);}
             if (rs[0].isMapped == null || rs[0].isMapped == 0) {
-                console.log('WTH?????????????')
+                console.log('WTH?????????????');
                 conn.release();
                 return false;
             }
         }
         conn.release();
+        console.log('trruuuuuuuuuuuuue!');
         return true;
     }
 }
