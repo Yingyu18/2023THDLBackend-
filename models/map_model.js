@@ -47,6 +47,7 @@ class mapModel {
                     rs = await conn.query(sql, [jid]);
                     rs = rs[0].sourceCsvs.split(',');
                     if (tbfunc.allMappedCheck(rs, 1, jid) == true) {
+                        console.log('converting 2d array for 1 mapping');
                         idx =  await tbfunc.getRowId(rs);
                         let maps = new Array();
                         let tpmap;
