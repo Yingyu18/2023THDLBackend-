@@ -127,7 +127,7 @@ class mapModel {
                 temp = await tbfunc.getMap(arr[i]);
                 shead.push(temp);
                 temp = await tbfunc.getUniqueHead(arr[i]);
-                uhead.push(temp);
+                uhead.push(temp.join());
                 type = 1;
             } else if (type != 1) {
                 let sec_row = await conn.query(sql2, [arr[i], pid]);                
