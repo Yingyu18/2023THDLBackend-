@@ -25,8 +25,8 @@ class cleaner {
 //content.split('\n').split(',')
 
     csvClean(table, idx) {
-        var Equal = table[idx][0].substring(0, 1) == '=' ? 1 : 0;
-        var DBLquotes = table[idx][0].substring(0, 1) == '"' ||  table[idx][0].substring(1, 2) == '"' ? 1 : 0;
+        var Equal = table[idx][1].substring(0, 1) == '=' ? 1 : 0;
+        var DBLquotes = table[idx][1].substring(0, 1) == '"' ||  table[idx][0].substring(1, 2) == '"' ? 1 : 0;
         for (let i = idx; i < table.length; i++) {  
            // console.log("table cleaning:", table[i])    
             for (let j = 0; j < table[i].length; j++) {
