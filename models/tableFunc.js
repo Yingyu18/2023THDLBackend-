@@ -279,10 +279,10 @@ class tableFunc {
         sql = "SELECT * from file_DB Where fileID = ?";
         let allInfo = await conn.query(sql, [fid]);
         sql = "INSERT INTO file_DB (fileName, USER_ID, USER_NAME, Start_Row, map, " +
-        "content, cores_xml_id, upload_time, type, sourceCsvs, source, size, lastModified, isMapped, isBuilt, url)" +
-        "VALUES (?, ?, ?, ?, ?, ?, ? ,?, ? ,? ,? ,? ,? ,?, ?, ?)";
+        "content, cores_xml_id, upload_time, type, sourceCsvs, source, size, lastModified, isMapped, isBuilt, url, description, updated)" +
+        "VALUES (?, ?, ?, ?, ?, ?, ? ,?, ? ,? ,? ,? ,? ,?, ?, ?, ?, ?)";
         row = await conn.query(sql, [fname, uid, uname, allInfo[0].Start_Row, allInfo[0].map, allInfo[0].content, allInfo[0].cores_xml_id, time, allInfo[0].type,
-          allInfo[0].sourceCsvs, allInfo[0].source, allInfo[0].size, time, allInfo[0].isMapped, allInfo[0].isBuilt, allInfo[0].url]);
+          allInfo[0].sourceCsvs, allInfo[0].source, allInfo[0].size, time, allInfo[0].isMapped, allInfo[0].isBuilt, allInfo[0].url, allInfo[0].description, allInfo[0].updated]);
         sql = "SELECT sourceCsvs from file_DB where fileID = ?";
         row = await conn.query(sql, [fid]);
         let orgIdx = row[0].sourceCsvs;
