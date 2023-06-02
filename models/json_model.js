@@ -47,7 +47,7 @@ class jsonConverter {
         try {
           let conn = await pool.getConnection(); 
           var sql = "Select sourceCsvs, content from file_DB where fileID = ?";
-          let src = await conn.query(sql, [pid]); console.log('cont = -' + src[0].content +'-');
+          let src = await conn.query(sql, [pid]);
           let tmp = src[0].sourceCsvs.split(",");
           tmp.push(fid);
           tmp = tmp.join();
