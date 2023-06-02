@@ -103,7 +103,7 @@ class csvConverter {
                 js[i].push(new Array(js[0].length - js[i].length).fill(''));
             }
         }
-        for (let i = 2; i < cont.length; i++) {js.push(cont[i]);}
+        for (let i = js.length; i < cont.length - js.length; i++) {js.push(cont[i]);}
         return js;
     }
     
