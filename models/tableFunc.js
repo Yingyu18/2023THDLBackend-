@@ -288,7 +288,11 @@ class tableFunc {
         let orgIdx = row[0].sourceCsvs;
         sql = "Select fileID from file_DB where lastModified = ? and USER_ID = ?";
         row = await conn.query(sql, [time, uid]);
-        let nfid = row[0].fileID;      console.log('nfid = ' + nfid);         
+        let nfid = row[0].fileID
+        let qryStr = `INSERT INTO source_csvs (project_id, csv_name) VALUES (?,?)`
+        for (let i = 0; i < orgIdx.length; i++) {
+          let qryRes = await conn.query(qryStr, [fid, orgIdx[i]]);
+        }     
         let ttttmp = await this.copySecMap(orgIdx, nfid, fid);
       } else {
         sql = "UPDATE file_DB SET content = ?, fileName = ?, lastModified = ? where fileID = ?";
