@@ -58,10 +58,10 @@ class cleaner {
                     curRow++;
                     continue;
                 }
+                let org = table[curRow][start];
                 let temp = table[curRow][start].substring(13, 23);
-                temp = await this.timeFormat(3, temp);        
-                table[curRow][0] = table[curRow][start];                
-                table[curRow][start] = await this.timeFormat(table[curRow][start].substring(0, 10)) + '&' + temp;
+                temp = await this.timeFormat(3, temp);                       
+                table[curRow][start] = await this.timeFormat(table[curRow][start].substring(0, 10)) + '&' + temp + '&' + org;
                 curRow++;
             }
         }
@@ -71,12 +71,8 @@ class cleaner {
                     curRow++;
                     continue;
                 }       
-                table[curRow][0] = table[curRow][start];
-                table[curRow][start] = String(table[curRow][start]).replaceAll('/', '-');
-                table[curRow][start] = await this.timeFormat(type, table[curRow][start]);           
-                table[curRow][0] += '~' + table[curRow][end];
-                table[curRow][end] = String(table[curRow][end]).replaceAll('/', '-');
-                table[curRow][end] = await this.timeFormat(type, table[curRow][end]);
+                table[curRow][start] = table[curRow][start] + '~' + table[curRow][end];
+                table[curRow][end] = await this.timeFormat(String(table[curRow][start]).replaceAll('/', '-')) + '&' + await this.timeFormat(String(table[curRow][end]).replaceAll('/', '-'));
                 curRow++;
             }
         }

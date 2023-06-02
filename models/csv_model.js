@@ -67,8 +67,14 @@ class csvConverter {
                     else if (results[lines][corres[j]] == null || results[lines][corres[j]] == '') {
                         results[lines][corres[j]] = table[i][j];
                     } else if (types[k] == 3 && corres[j] == 10) {
+                        results[lines][8] = table[i][j].substring(22);
                         results[lines][10] = table[i][j].substring(0, 10);
-                        results[lines][11] = table[i][j].substring(10, 20);
+                        results[lines][11] = table[i][j].substring(11, 21);
+                    } else if (corres[j] == 10) {
+                        results[lines][8] = table[i][j];
+                    } else if (corres[j] == 11) {
+                        results[lines][10] = table[i][j].substring(0, 10);
+                        results[lines][11] = table[i][j].substring(11);
                     } else if (corres[j] == 0) {
                         results[lines][corres[j]] += table[i][j];
                     } else {
