@@ -30,7 +30,7 @@ class csvConverter {
         let lines = 2;
         for (let k = 0; k < contents.length; k++) {
             let table = await cleaner.rawTable(contents[k]);
-            if (type == 1) {table = await cleaner.arrangeFormat(types[k], table, sidx[k]);}             
+            table = await cleaner.arrangeFormat(types[k], table, sidx[k]);             
             let corres = new Array (table[sidx[k]-1].length);
             for (let i = 0; i < maps[k].length; i++) {
                 if (maps[k][i] == 'no') {corres[i] = -1;}
