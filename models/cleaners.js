@@ -70,9 +70,15 @@ class cleaner {
                 if (table[curRow][start] == null) {
                     curRow++;
                     continue;
-                }       
-                table[curRow][start] = table[curRow][start] + '~' + table[curRow][end];
-                table[curRow][end] = await this.timeFormat(String(table[curRow][start].substring(0, 10)).replaceAll('/', '-')) + '&' + await this.timeFormat(String(table[curRow][end].substring(11, 21)).replaceAll('/', '-'));
+                } 
+                let start =  table[curRow][start];
+                let end = table[curRow][end]; 
+                table[curRow][start] = start + '~' + end;
+                start = start.replaceAll('/', '-'); console.log('re st = ' + start);
+                end = end.replaceAll('/', '-');console.log('re en = ' + end);
+                start = await this.timeFormat(start);console.log('tf st = ' + start);
+                end = await this.timeFormat(end);console.log('tf en = ' + end);
+                table[curRow][end] = start + '&' + end;
                 curRow++;
             }
         }
