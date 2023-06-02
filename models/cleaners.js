@@ -71,14 +71,14 @@ class cleaner {
                     curRow++;
                     continue;
                 } 
-                let start =  table[curRow][start];
-                let end = table[curRow][end]; 
-                table[curRow][start] = start + '~' + end;
-                start = start.replaceAll('/', '-'); console.log('re st = ' + start);
-                end = end.replaceAll('/', '-');console.log('re en = ' + end);
-                start = await this.timeFormat(start);console.log('tf st = ' + start);
-                end = await this.timeFormat(end);console.log('tf en = ' + end);
-                table[curRow][end] = start + '&' + end;
+                let st =  table[curRow][start];
+                let ed = table[curRow][end]; 
+                table[curRow][start] = st + '~' + ed;
+                st = st.replaceAll('/', '-'); console.log('re st = ' + st);
+                ed = ed.replaceAll('/', '-');console.log('re en = ' + ed);
+                st = await this.timeFormat(st);console.log('tf st = ' + st);
+                ed = await this.timeFormat(ed);console.log('tf en = ' + ed);
+                table[curRow][end] = st + '&' + ed;
                 curRow++;
             }
         }
