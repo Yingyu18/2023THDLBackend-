@@ -161,10 +161,10 @@ class tableFunc {
     try {
       let conn = await pool.getConnection();
       var sql = "SELECT content FROM file_DB WHERE fileID = ?";
-      let table = await conn.query(sql, [fileID]); 
+      let table = await conn.query(sql, [fileID]); console.log('opened = ' + table);
       conn.release();
       let result = []; 
-      table = table[0].content.split('\n');console.log(table);
+      table = table[0].content.split('\n');
       for (let i = 0; i < table.length; i++) {
         table[i] = table[i].split(',');
       }

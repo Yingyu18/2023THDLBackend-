@@ -51,14 +51,6 @@ const uploadFile = async(data) => {
             table = cleaner.csvClean(table, start-1)
         }
         //console.log("after clean , : ",table)
-
-        if(sourceNo == 3 || sourceNo == 2 ){
-            for(let i=3; i<table.length; i++){
-                for(let j=1; j<table[i].length; j++){
-                    table[i][j] = table[i][j].substring(1, table[i][j].length);
-                }
-            }
-        }
         //console.log("after remove comma: " ,table)
         if(sourceNo == 1){
             table[4][0] = 'no'
