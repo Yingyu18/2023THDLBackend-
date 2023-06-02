@@ -71,9 +71,9 @@ class csvConverter {
                         results[lines][10] = table[i][j].substring(0, 10);
                         results[lines][11] = table[i][j].substring(11, 21);
                     } else if (corres[j] == 10) {
-                        results[lines][8] = table[i][j];
+                        results[lines][8] = table[i][j]; console.log('line ' + lines + ' 起始時間 = ' + table[i][j]);
                     } else if (corres[j] == 11) {
-                        results[lines][10] = table[i][j].substring(0, 10);
+                        results[lines][10] = table[i][j].substring(0, 10); console.log('line ' + lines + ' 結束時間 = ' + table[i][j]);
                         results[lines][11] = table[i][j].substring(11);
                     } else if (corres[j] == 0) {
                         results[lines][corres[j]] += table[i][j];

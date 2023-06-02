@@ -14,7 +14,7 @@ class cleaner {
         return str.replace(reg, (match)=>(map[match]));
     }
 
-   async timeFormat(type, time) { 
+   async timeFormat(time) { 
         if (time == '' || time == null) {return '0000-00-00';}
         if (time[6] == '-') {time = time.substring(0, 5) + '0' + time.substring(5);}
         if (time.lenght < 10 || time[9] == ' ') {time = time.substring(0, 8) + '0' + time.substring(8);}
@@ -60,7 +60,7 @@ class cleaner {
                 }
                 let org = table[curRow][start];
                 let temp = table[curRow][start].substring(13, 23);
-                temp = await this.timeFormat(3, temp);                       
+                temp = await this.timeFormat(temp);                       
                 table[curRow][start] = await this.timeFormat(table[curRow][start].substring(0, 10)) + '&' + temp + '&' + org;
                 curRow++;
             }
@@ -75,7 +75,7 @@ class cleaner {
                 let ed = table[curRow][end]; 
                 table[curRow][start] = st + '~' + ed;
                 st = st.replaceAll('/', '-'); console.log('re st = ' + st);
-                ed = ed.replaceAll('/', '-');console.log('re en = ' + ed);
+                ed = ed.replaceAll('/', '-'); console.log('re en = ' + ed);
                 st = await this.timeFormat(st);console.log('tf st = ' + st);
                 ed = await this.timeFormat(ed);console.log('tf en = ' + ed);
                 table[curRow][end] = st + '&' + ed;
