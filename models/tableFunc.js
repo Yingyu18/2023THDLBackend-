@@ -288,7 +288,7 @@ class tableFunc {
         let orgIdx = row[0].sourceCsvs;
         sql = "Select fileID from file_DB where lastModified = ? and USER_ID = ?";
         row = await conn.query(sql, [time, uid]);
-        let nfid = row[0].fileID;               
+        let nfid = row[0].fileID;      console.log('nfid = ' + nfid);         
         let ttttmp = await this.copySecMap(orgIdx, nfid);
       } else {
         sql = "UPDATE file_DB SET content = ?, fileName = ?, lastModified = ? where fileID = ?";
