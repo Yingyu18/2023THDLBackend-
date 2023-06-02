@@ -27,8 +27,8 @@ module.exports = class handler {
         
     }
     async retrieve2D(pid) {
-        const result = await jsonConvert.to2D(pid); console.log('result Json = ' + result);
-        let ck = await jsonConvert.needMapCheck(pid);console.log('isMapped = ' + ck);
+        const result = await jsonConvert.to2D(pid);
+        let ck = await jsonConvert.needMapCheck(pid);
         if (result.error) {return result.error;}
         if (ck) {return result;}
         else {return {error: "plz finish mapping ur CSVs before editing."}}

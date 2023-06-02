@@ -12,7 +12,6 @@ const pool = mariadb.createPool({
     acquireTimeout: 300000
 
 });
-console.log('pool = ' + pool + '\n');
 
 // const docuskyPool = mariadb.createPool({
 //     host: config.mysql.host,

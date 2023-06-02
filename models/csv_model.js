@@ -63,16 +63,16 @@ class csvConverter {
                     results[lines][2] = 'NDAP';
                 }
 
-                for (let j = 0; j < table[i].length; j++) { console.log("i + j = " + lines +'/'+ corres[j]+ "org ----------- is = " + results[lines][corres[j]] + ' ttttttt--------- is = ' + table[i][j]);
+                for (let j = 0; j < table[i].length; j++) {
                     if (corres[j] < 0 || table[i][j] == null) {continue;}
                     else if (types[k] == 3 && corres[j] == 10) {
                         results[lines][8] = table[i][j].substring(22);
                         results[lines][10] = table[i][j].substring(0, 10);
                         results[lines][11] = table[i][j].substring(11, 21);
                     } else if (corres[j] == 10) {
-                        results[lines][8] = table[i][j]; console.log('line ' + lines + ' 起始時間 = ' + table[i][j]);
+                        results[lines][8] = table[i][j];
                     } else if (corres[j] == 11) {
-                        results[lines][10] = table[i][j].substring(0, 10); console.log('line ' + lines + ' 結束時間 = ' + table[i][j]);
+                        results[lines][10] = table[i][j].substring(0, 10);
                         results[lines][11] = table[i][j].substring(11);
                     } else if (corres[j] == 0) {
                         results[lines][corres[j]] += table[i][j];
@@ -104,9 +104,7 @@ class csvConverter {
                 js[i].concat(new Array(js[0].length - js[i].length).fill(''));
             }
         }
-        console.log('JSLEN = ' + len + '-----CONT len = ' + cont.length);
-        for (let i = 0 ; i < cont.length; i++) {console.log('-----CONt' + i +'---------= ' + cont[i]);} 
-        for (let i = js.length; i < cont.length - js.length; i++) {js.push(cont[i]);}
+        for (let i = js.length; i < cont.length; i++) {js.push(cont[i]);}
         return js;
     }
     
@@ -129,17 +127,14 @@ class csvConverter {
         if (type == 2) {sql = "SELECT isMapped from sec_map WHERE fileID = ? and map_ID = ?"}
         let rs; 
         for (let i = 0; i < idxs.length; i++) {
-            console.log('checking file idx ' + idxs[i]);
             if (type == 1) {rs = await conn.query(sql, [idxs[i]]);}
             else {rs = await conn.query(sql, [idxs[i], pid]);}
             if (rs[0].isMapped == null || rs[0].isMapped == 0) {
-                console.log('WTH?????????????');
                 conn.release();
                 return false;
             }
         }
         conn.release();
-        console.log('trruuuuuuuuuuuuue!');
         return true;
     }
 }

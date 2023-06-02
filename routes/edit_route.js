@@ -16,7 +16,6 @@ const {
   } = require('../util/util')
 
 router.post('/goToEdit', bodyParser.json(), authentication, async function(req, res) {
-    console.log('auth done');
     var pid = req.body.project_id;
     var content = await handler.retrieve2D(pid);
     if (content.error) {
@@ -44,7 +43,7 @@ router.post('/buildDB', bodyParser.json(), authentication, async function(req, r
     const username = req.user.name;
     var DBname = req.body.DBname;
     var pid = req.body.Json_id;
-    var content = req.body.content; console.log('received content = ' + content);
+    var content = req.body.content;
     var js = await jModel.toJson(content);
     let saveREs = await tableFunc.simplesaveJson(js, pid);
     var result = await handler.buildXml(js, DBname, pid, userId, email, username);

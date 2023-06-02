@@ -16,9 +16,8 @@ class mapModel {
     //type: 1 
     //fin : 1
     //res : last sourceCsv 的 map
-    saveMap = async (fid, jid, type, fin, res) => {
-        console.log('im in~~~~');
-        var idx = await tbfunc.getRowId([fid]); console.log ('save idx = ' + idx);
+    saveMap = async (fid, jid, type, fin, res) => {        
+        var idx = await tbfunc.getRowId([fid]); 
         var result = 'save success';
         let tmp;
         try {
@@ -27,7 +26,6 @@ class mapModel {
             let rs;     
             if (type == 1) { 
                 sql = "UPDATE file_DB SET map = ?, lastModified = ? WHERE fileID = ?";
-                console.log('type = ' + type + 'res = ' + res + 'tostring = ' + res.toString());
                 rs = await conn.query(sql, [res.toString(), new Date().getTime().toString(), fid]);
                 sql = "select fileID From sec_map WHERE fileID = ? and map_ID = ?";
                 rs = await conn.query(sql, [fid, jid]);
@@ -47,7 +45,6 @@ class mapModel {
                     rs = await conn.query(sql, [jid]);
                     rs = rs[0].sourceCsvs.split(',');
                     if (await cModel.allMappedCheck(rs, 1, jid)) {
-                        console.log('converting 2d array for 1 mapping');
                         idx =  await tbfunc.getRowId(rs);
                         let maps = new Array();
                         let tpmap;
@@ -62,7 +59,6 @@ class mapModel {
                     }
                 } 
             }  else {
-                console.log('type = ' + type + 'res = ' + res + 'tostring = ' + res.toString());
                 sql = "UPDATE sec_map SET sec_map = ? WHERE fileID = ? and map_ID = ?";
                 rs = await conn.query(sql, [res.toString(), fid, jid]);
                 if (fin == 1) {
@@ -77,7 +73,6 @@ class mapModel {
                         let tpmap;
                         for (let i = 0; i < rs.length; i++) {
                             tpmap = await tbfunc.getSecMap(rs[i], jid);
-                            console.log('tpmap + = = =' + tpmap);
                             maps.push(String(tpmap).split(','));
                         }
                         tmp = await cModel.to2dArray(jid, idx, 2, maps);
@@ -111,10 +106,10 @@ class mapModel {
         let sql3 = "SELECT sec_map FROM sec_map WHERE fileID = ? and map_ID = ?";
         let check3;
         for (let i = 0; i < arr.length; i++) {
-            let row = await conn.query(sql, [arr[i]]); console.log(i + 'retrieve = ' +row+ 'type = ' + type+ ' map = '+ row[0].map);
+            let row = await conn.query(sql, [arr[i]]);
             check3 = await conn.query(sql3, [arr[i], pid]);
             if (type != 1 || (check3[0] != null && check3[0].sec_map == '請進行二次對應')) {
-                let sec_row = await conn.query(sql2, [arr[i], pid]); console.log('sql2 fid = ' + arr[i] + '  pid = ' + pid);           
+                let sec_row = await conn.query(sql2, [arr[i], pid]);        
                 if (sec_row[0] == null) {
                     let insmap = await tbfunc.getMap(arr[i]);
                     let inssql = "INSERT INTO sec_map (fileID, map_ID, sec_map, isMapped) Values (?, ?, ?, ?)";
@@ -148,7 +143,7 @@ class mapModel {
             }
           }
         conn.release();
-        console.log('type = ' + type);
+        
         let result = {
             "file_ids": fid,
             "project_id": pid,
@@ -161,7 +156,7 @@ class mapModel {
         result["map_head"] = type == 1 ? ['唯一編碼', '來源系統', '來源系統縮寫', '文件原系統頁面URL', '題名', '檔案類型',
         '書卷名', '(類目階層)', '原始時間記錄', '西元年', '起始時間', '結束時間', '相關人員', '相關地點', 
         '相關組織', '關鍵詞', '摘要/全文'] : await tbfunc.getJsonHead(pid, 1); 
-        console.log(result);
+        
         return result;
     } catch (error) {
        console.log(error);

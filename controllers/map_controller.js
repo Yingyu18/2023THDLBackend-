@@ -14,7 +14,7 @@ const projectMapping = async (req, res) =>{
         res.status(400).send({"error": 'mapping were already completed.'});
         return;
     }
-    var result = await model.csvFilter(pid); console.log('resssssssult = ' + result);
+    var result = await model.csvFilter(pid);
     res.status(200).json(result).send();   
     return ; 
 }
@@ -76,7 +76,7 @@ const getmap = async (req, res) => {
 
 const retrieveMapped = async (req, res) => {    
     var pid = req.body.project_id;
-    var result = await tableFunc.getIsMap(pid); console.log(result);
+    var result = await tableFunc.getIsMap(pid);
     res.status(200).send({"is_mapped" : result});
 }
 const changeRow = async(req, res) => {

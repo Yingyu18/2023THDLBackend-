@@ -1,7 +1,6 @@
 class tableFunc {
   async insertFile(uid, uname, fileName, content, type) {
-    const pool = require("./connection_db");
-    console.log("insert file for user: " + uid);
+    const pool = require("./connection_db");    
     try {
       let conn = await pool.getConnection();
       var sql =
@@ -17,7 +16,6 @@ class tableFunc {
         type,        
         time,        
       ]);
-      console.log("insert success");
       conn.release();
     } catch (error) {
       console.log(error);
@@ -50,10 +48,9 @@ class tableFunc {
       let conn = await pool.getConnection();
       var sql = "SELECT sourceCsvs FROM file_DB WHERE fileID = ?";      
       let row = await conn.query(sql, [pid]);
-      row = row[0].sourceCsvs.split(','); console.log('converting 2d csv ids = ' + row);
+      row = row[0].sourceCsvs.split(',');
       sql = "SELECT content, source FROM file_DB where fileID = ?"
       for (let i = 0; i < row.length; i++) {
-        console.log('opening idx with ' + row[i]);
         temp = await conn.query(sql, [row[i]]);
         array[0].push(temp[0].content);
         array[1].push(temp[0].source);
@@ -86,8 +83,8 @@ class tableFunc {
       let row;
       var sql = "SELECT Start_Row FROM file_DB WHERE fileID = ?";
       for (let i = 0; i < fileIDs.length; i++) {
-        row = await conn.query(sql, [fileIDs[i]]);  console.log('row = ' + row + '\nid from get row = ' + row[0].Start_Row);
-        array[i] = row[0].Start_Row; console.log('arr['+i+']= ' + row[0].Start_Row);
+        row = await conn.query(sql, [fileIDs[i]]);  
+        array[i] = row[0].Start_Row;
       }
       conn.release();
       return array;
@@ -142,12 +139,12 @@ class tableFunc {
   async getHead(fileID) {
     const pool = require("./connection_db");
     var idx = await this.getRowId([fileID]);
-    idx = idx[0]; console.log('get head of fileID = ' + fileID +'with strow = ' + idx);
+    idx = idx[0];
     try {
       let conn = await pool.getConnection();
       var sql = "SELECT content FROM file_DB WHERE fileID = ?";
       let row = await conn.query(sql, [fileID]);  
-      row = row[0].content.split('\n');console.log(row);
+      row = row[0].content.split('\n');
       conn.release();
       return row[idx-1];      
     } catch (error) {
@@ -157,11 +154,11 @@ class tableFunc {
   async getUniqueHead(fileID) {
     const pool = require("./connection_db");
     var idx = await this.getRowId([fileID]);
-    idx = idx[0]; console.log('get uniquehead of fileID = ' + fileID +'with strow = ' + idx);
+    idx = idx[0];
     try {
       let conn = await pool.getConnection();
       var sql = "SELECT content FROM file_DB WHERE fileID = ?";
-      let table = await conn.query(sql, [fileID]); console.log('opened = ' + table);
+      let table = await conn.query(sql, [fileID]);
       conn.release();
       let result = []; 
       table = table[0].content.split('\n');
@@ -194,7 +191,6 @@ class tableFunc {
       let conn = await pool.getConnection();
       var sql = "SELECT content FROM file_DB WHERE fileID = ?";
       temp = await conn.query(sql, [fileID]);  
-      console.log('temp ====' + temp[0].content);
       let row = JSON.parse(temp[0].content);
       conn.release();
       if (cnt == 2) {
@@ -242,7 +238,6 @@ class tableFunc {
       let conn = await pool.getConnection();
       var sql = "DELETE FROM file_DB WHERE fileID = ?";
       await conn.query(sql, [fileID]);
-      console.log("delete success");
       conn.release();
     } catch (error) {
       console.log(error);

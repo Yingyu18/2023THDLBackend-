@@ -29,7 +29,6 @@ class cleaner {
         var Equal = table[idx][1].substring(0, 1) == '=' ? 1 : 0;
         var DBLquotes = table[idx][1].substring(0, 1) == '"' ||  table[idx][1].substring(1, 2) == '"' ? 1 : 0;
         for (let i = idx; i < table.length; i++) {  
-           // console.log("table cleaning:", table[i])    
             for (let j = 0; j < table[i].length; j++) {
                 table[i][j] = table[i][j].substring(Equal+DBLquotes, table[i][j].length - DBLquotes);
             }
@@ -75,10 +74,10 @@ class cleaner {
                 let st =  table[curRow][start];
                 let ed = table[curRow][end]; 
                 table[curRow][start] = st + '~' + ed;
-                st = st.replaceAll('/', '-'); console.log('re st = ' + st);
-                ed = ed.replaceAll('/', '-'); console.log('re en = ' + ed);
-                st = await this.timeFormat(st);console.log('tf st = ' + st);
-                ed = await this.timeFormat(ed);console.log('tf en = ' + ed);
+                st = st.replaceAll('/', '-'); 
+                ed = ed.replaceAll('/', '-'); 
+                st = await this.timeFormat(st);
+                ed = await this.timeFormat(ed);
                 table[curRow][end] = st + '&' + ed;
                 curRow++;
             }
