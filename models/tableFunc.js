@@ -248,7 +248,7 @@ class tableFunc {
       console.log(error);
     }
   }
-  async copySecMap(srcs, jid) {
+  async copySecMap(srcs, jid, orgid) {
     const pool = require("./connection_db");
     let conn = await pool.getConnection();
     let sql = "Select sec_map, isMapped from sec_map where map_ID = ? and fileID = ?";
@@ -258,7 +258,7 @@ class tableFunc {
     let ctah;
     srcs = srcs.split(',');
     for (let i = 0; i < srcs.length; i++) {
-      mapResult = await conn.query(sql, [jid, srcs[i]]);
+      mapResult = await conn.query(sql, [orgid, srcs[i]]);
       finResult = mapResult[0].isMapped;
       mapResult = mapResult[0].sec_map;
       ctah = await conn.query(sql2, [srcs[i], jid, mapResult, finResult]);
@@ -289,7 +289,7 @@ class tableFunc {
         sql = "Select fileID from file_DB where lastModified = ? and USER_ID = ?";
         row = await conn.query(sql, [time, uid]);
         let nfid = row[0].fileID;      console.log('nfid = ' + nfid);         
-        let ttttmp = await this.copySecMap(orgIdx, nfid);
+        let ttttmp = await this.copySecMap(orgIdx, nfid, fid);
       } else {
         sql = "UPDATE file_DB SET content = ?, fileName = ?, lastModified = ? where fileID = ?";
         let asd = await conn.query(sql, [js, fname, new Date().getTime().toString(), fid]);
