@@ -111,25 +111,9 @@ class mapModel {
         let sql3 = "SELECT sec_map FROM sec_map WHERE fileID = ? and map_ID = ?";
         let check3;
         for (let i = 0; i < arr.length; i++) {
-            let row = await conn.query(sql, [arr[i]]); console.log(i + 'retrieve = ' +row+ 'type = ' + type+ ' map = '+ row[0].map);      
-            if (row[0].isMapped == null || row[0].isMapped == 0) {
-                check3 = await conn.query(sql3, [arr[i], pid]);
-                if (check3[0] != null && check3[0].sec_map == '請進行二次對應') {continue;}
-                if (type == 2) {
-                    fhead = new Array();
-                    shead = new Array();
-                    fid = new Array();
-                    uhead = new Array();
-                }
-                fid.push(arr[i]);
-                temp = await tbfunc.getHead(arr[i])
-                fhead.push(temp);
-                temp = await tbfunc.getMap(arr[i]);
-                shead.push(temp);
-                temp = await tbfunc.getUniqueHead(arr[i]);
-                uhead.push(temp.join());
-                type = 1;
-            } else if (type != 1) {
+            let row = await conn.query(sql, [arr[i]]); console.log(i + 'retrieve = ' +row+ 'type = ' + type+ ' map = '+ row[0].map);
+            check3 = await conn.query(sql3, [arr[i], pid]);
+            if (type != 1 || (check3[0] != null && check3[0].sec_map == '請進行二次對應')) {
                 let sec_row = await conn.query(sql2, [arr[i], pid]); console.log('sql2 fid = ' + arr[i] + '  pid = ' + pid);           
                 if (sec_row[0] == null) {
                     let insmap = await tbfunc.getMap(arr[i]);
@@ -146,6 +130,21 @@ class mapModel {
                     temp = await tbfunc.getUniqueHead(arr[i]);
                     uhead.push(temp.join());
                 }
+            }  else if (row[0].isMapped == null || row[0].isMapped == 0) {
+                if (type == 2) {
+                    fhead = new Array();
+                    shead = new Array();
+                    fid = new Array();
+                    uhead = new Array();
+                }
+                fid.push(arr[i]);
+                temp = await tbfunc.getHead(arr[i])
+                fhead.push(temp);
+                temp = await tbfunc.getMap(arr[i]);
+                shead.push(temp);
+                temp = await tbfunc.getUniqueHead(arr[i]);
+                uhead.push(temp.join());
+                type = 1;
             }
           }
         conn.release();
