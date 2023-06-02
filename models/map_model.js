@@ -104,7 +104,7 @@ class mapModel {
         sql = "SELECT isMapped FROM file_DB WHERE fileID = ?";
         let sql2 = "SELECT isMapped FROM sec_map WHERE fileID = ? and map_ID = ?";
         let sql3 = "SELECT sec_map FROM sec_map WHERE fileID = ? and map_ID = ?";
-        let contsql = "SELECT content FROM file_DB WHERE fileID ?";
+        let contsql = "SELECT content FROM file_DB WHERE fileID = ?";
         let ctrow = await conn.query(contsql, [pid]);
         ctrow = ctrow[0].content;
         let check3;
