@@ -74,9 +74,11 @@ class jsonConverter {
         try {
           let conn = await pool.getConnection();
           var sql = "UPDATE file_DB SET isMapped = ?, lastModified = ? where fileID = ?";
-          let result = await conn.query(sql, [0, new Date().getTime().toString(), pid]);      
+          let result = await conn.query(sql, [0, new Date().getTime().toString(), pid]);  
+          sql = "SELECT * FROM file_DB WHERE fileID = ?";
+          result = await conn.query(sql, [pid]);
           conn.release();
-          return 'csv append success';  
+          return result;  
         } catch (error) {
           console.log(error);
         } 

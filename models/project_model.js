@@ -67,6 +67,10 @@ const getSourceCsvs = async(projectId) =>{
      const conn = await pool.getConnection()
      try{
         let qryStr = `SELECT * FROM source_csvs WHERE  project_id = ? `
+        //"SELECT sourceCsvs FROM file_DB WHERE fileID = ?" ?
+        //For i = 1 to n; SELECT fileName FROM file_DB WHERE fileID = id[i]?
+        //  .push(fileName[i]);
+        // return All.fileName;
         let results = await conn.query(qryStr, [projectId])
         //console.log(results)
         return results
@@ -155,7 +159,7 @@ const updateCsvs = async (req) => {
         for(let i=0; i<sourceCsvs.length; i++){
             const result = await conn.query(`INSERT INTO source_csvs (project_id, csv_name) VALUES (?,?)`, [projectId, sourceCsvs[i]])
         }
-        // TODO : return data
+        // TODO : return data 
         return 1
     }  catch (error){
         return{error}
