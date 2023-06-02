@@ -61,8 +61,8 @@ class jsonConverter {
           sql = "Select isMapped from file_DB where fileID = ?";
           tmp = await conn.query(sql, [fid]);
           sql = "Insert Into sec_map SET fileID = ?, map_ID = ?, sec_map = ?, isMapped = ? values (?, ?, ?, ?)"; 
-          if (tmp[0].isMapped == 1 && src[0].content == null) {result = await conn.query(sql, [fid, pid, tableFunc.getHead(fid), 1]);}       
-          else {result = await conn.query(sql, [fid, pid, '請進行二次對應', 0]);}        
+          if (tmp[0].isMapped == 1 && src[0].content == null) {result = await conn.query(sql, [fid, pid, tableFunc.getHead(fid), 1]); console.log('不對喔');}       
+          else {result = await conn.query(sql, [fid, pid, '請進行二次對應', 0]);console.log('要對喔');}        
           conn.release();
           return 'success';  
         } catch (error) {
