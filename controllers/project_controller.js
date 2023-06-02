@@ -136,24 +136,23 @@ const updateProject = async (req, res) => {
         const fid =  sourceCsvs[sourceCsvs.length-1];
         result = await jModel.insertNewCSV(fid, pid);
         result = await jModel.resetMapStatus(pid);
+        result = await Project.updateCsvs(req)
         if(result.error){
             return res.status(500).send({message:"update source_csvs error"})
         }
     }
-    else {
-        result = await Project.updateProject(req)
-        if(result.error){
-            return res.status(500).send({message:"update file_db error"})
-        }
+    result = await Project.updateProject(req)
+    if(result.error){
+        return res.status(500).send({message:"update file_db error"})
     }
-    const csvs = await Project.getSourceCsvs(result.fileID);
+    
+    const csvs = await Project.getSourceCsvs(req.body.sourceCsvs);
     if(csvs.error){
         return res.status(500).send({message:"get csvs form source_csvs error"})
     }
-    // let sourceCsvs = csvs; ?
     let sourceCsvs = []
     for(let i=0; i<csvs.length; i++){
-        sourceCsvs[i] = csvs[i].csv_name
+        sourceCsvs[i] = csvs[i].csv_name;
     }
     res.status(200).send({
             "fileID": result.fileID,

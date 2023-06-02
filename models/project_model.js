@@ -67,10 +67,6 @@ const getSourceCsvs = async(projectId) =>{
      const conn = await pool.getConnection()
      try{
         let qryStr = `SELECT * FROM source_csvs WHERE  project_id = ? `
-        //"SELECT sourceCsvs FROM file_DB WHERE fileID = ?" ?
-        //For i = 1 to n; SELECT fileName FROM file_DB WHERE fileID = id[i]?
-        //  .push(fileName[i]);
-        // return All.fileName;
         let results = await conn.query(qryStr, [projectId])
         //console.log(results)
         return results

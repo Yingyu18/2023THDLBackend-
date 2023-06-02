@@ -78,7 +78,7 @@ class jsonConverter {
           sql = "SELECT * FROM file_DB WHERE fileID = ?";
           result = await conn.query(sql, [pid]);
           conn.release();
-          return result;  
+          return result[0];  
         } catch (error) {
           console.log(error);
         } 
