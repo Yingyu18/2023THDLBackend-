@@ -105,7 +105,8 @@ class csvConverter {
             }
         }
         console.log('JSLEN = ' + len + '-----CONT len = ' + cont.length);
-        for (let i = js.length; i < cont.length - js.length; i++) {js.push(cont[i]);  console.log('-----CONt' + i +'---------= ' + cont[i]);}
+        for (let i = 0 ; i < cont.length; i++) {console.log('-----CONt' + i +'---------= ' + cont[i]);} 
+        for (let i = js.length; i < cont.length - js.length; i++) {js.push(cont[i]);}
         return js;
     }
     
