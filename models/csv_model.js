@@ -89,7 +89,7 @@ class csvConverter {
                 results[i] = results[i].concat(new Array(results[0].length - results[i].length).fill(''));
             }
         }
-        if (type == 2) {results = mergeToJson(results, jid)}
+        if (type == 2) {results = await this.mergeToJson(results, jid)}
         return results;
     }
 
