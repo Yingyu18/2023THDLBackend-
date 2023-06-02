@@ -32,6 +32,7 @@ class csvConverter {
             let table = await cleaner.rawTable(contents[k]);
             table = await cleaner.arrangeFormat(types[k], table, sidx[k]);             
             let corres = new Array (table[sidx[k]-1].length);
+            
             for (let i = 0; i < maps[k].length; i++) {
                 if (maps[k][i] == 'no') {corres[i] = -1;}
                 else if (maps[k][i] == '' || results[0].indexOf(maps[k][i]) == -1) {
@@ -41,7 +42,7 @@ class csvConverter {
                     results[1].push('metadata/請替自訂欄位設定英文字');
                     extra++;
                 } else {corres[i] = results[0].indexOf(maps[k][i]);}
-            }            
+            }  
             for (let i = sidx[k]; i < table.length; i++) {
                 results.push(new Array(extra).fill(''));
                 if (types[k] == 0) {
@@ -100,9 +101,10 @@ class csvConverter {
         js[1] = cont[1];
         for (let i = 2; i < len; i++) {
             if (js[i].length < js[0].length) {
-                js[i].push(new Array(js[0].length - js[i].length).fill(''));
+                js[i].concat(new Array(js[0].length - js[i].length).fill(''));
             }
         }
+        console.log('JSLEN = ' + len + '-----CONT len = ' + cont.length);
         for (let i = js.length; i < cont.length - js.length; i++) {js.push(cont[i]);}
         return js;
     }
