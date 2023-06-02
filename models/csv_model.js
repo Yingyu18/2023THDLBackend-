@@ -81,7 +81,6 @@ class csvConverter {
                         results[lines][corres[j]] += ';' + table[i][j];               
                     }
                 }
-                if (type == 1) {results[lines][8] = table[i][0];}
                 lines++;
             } 
         }

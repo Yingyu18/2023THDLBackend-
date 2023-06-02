@@ -72,7 +72,7 @@ class cleaner {
                     continue;
                 }       
                 table[curRow][start] = table[curRow][start] + '~' + table[curRow][end];
-                table[curRow][end] = await this.timeFormat(String(table[curRow][start]).replaceAll('/', '-')) + '&' + await this.timeFormat(String(table[curRow][end]).replaceAll('/', '-'));
+                table[curRow][end] = await this.timeFormat(String(table[curRow][start].substring(0, 10)).replaceAll('/', '-')) + '&' + await this.timeFormat(String(table[curRow][end].substring(11, 21)).replaceAll('/', '-'));
                 curRow++;
             }
         }
