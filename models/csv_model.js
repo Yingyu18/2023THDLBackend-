@@ -64,9 +64,7 @@ class csvConverter {
 
                 for (let j = 0; j < table[i].length; j++) { console.log("i + j = " + lines +'/'+ corres[j]+ "org ----------- is = " + results[lines][corres[j]] + ' ttttttt--------- is = ' + table[i][j]);
                     if (corres[j] < 0 || table[i][j] == null) {continue;}
-                    else if (results[lines][corres[j]] == null || results[lines][corres[j]] == '') {
-                        results[lines][corres[j]] = table[i][j];
-                    } else if (types[k] == 3 && corres[j] == 10) {
+                    else if (types[k] == 3 && corres[j] == 10) {
                         results[lines][8] = table[i][j].substring(22);
                         results[lines][10] = table[i][j].substring(0, 10);
                         results[lines][11] = table[i][j].substring(11, 21);
@@ -77,6 +75,8 @@ class csvConverter {
                         results[lines][11] = table[i][j].substring(11);
                     } else if (corres[j] == 0) {
                         results[lines][corres[j]] += table[i][j];
+                    } else if (results[lines][corres[j]] == null || results[lines][corres[j]] == '') {
+                        results[lines][corres[j]] = table[i][j];
                     } else {
                         results[lines][corres[j]] += ';' + table[i][j];               
                     }
