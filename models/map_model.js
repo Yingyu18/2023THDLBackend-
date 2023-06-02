@@ -130,7 +130,7 @@ class mapModel {
                 uhead.push(temp.join());
                 type = 1;
             } else if (type != 1) {
-                let sec_row = await conn.query(sql2, [arr[i], pid]);            
+                let sec_row = await conn.query(sql2, [arr[i], pid]); console.log('sql2 fid = ' + arr[i] + '  pid = ' + pid);           
                 if (sec_row[0] == null) {
                     let insmap = await tbfunc.getMap(arr[i]);
                     let inssql = "INSERT INTO sec_map (fileID, map_ID, sec_map, isMapped) Values (?, ?, ?, ?)";
