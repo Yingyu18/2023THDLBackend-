@@ -47,7 +47,7 @@ class jsonConverter {
         try {
           let conn = await pool.getConnection(); 
           var sql = "Select sourceCsvs, content from file_DB where fileID = ?";
-          let src = await conn.query(sql, [pid]);
+          let src = await conn.query(sql, [pid]); console.log('cont = -' + src[0].content +'-');
           let tmp = src[0].sourceCsvs.split(",");
           tmp.push(fid);
           tmp = tmp.join();
@@ -56,7 +56,7 @@ class jsonConverter {
           sql = "Select isMapped from file_DB where fileID = ?";
           tmp = await conn.query(sql, [fid]);
           sql = "Insert Into sec_map (fileID, map_ID, sec_map, isMapped) values (?, ?, ?, ?)"; 
-          if (tmp[0].isMapped == 1 && src[0].content == null) {result = await conn.query(sql, [fid, pid, tableFunc.getHead(fid), 1]);}       
+          if (tmp[0].isMapped == 1 && (src[0].content == null || src[0].content == '')) {result = await conn.query(sql, [fid, pid, tableFunc.getHead(fid), 1]);}       
           else {result = await conn.query(sql, [fid, pid, '請進行二次對應', 0]);}        
           conn.release();
           return 'success';  
