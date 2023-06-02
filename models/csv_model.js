@@ -94,7 +94,7 @@ class csvConverter {
     }
 
     async mergeToJson (cont, jid) {
-        var js = await jsConv.to2d([jid]);
+        var js = await jsConv.to2D([jid]);
         var len = js.length;
         js[0] = cont[0];
         js[1] = cont[1];
