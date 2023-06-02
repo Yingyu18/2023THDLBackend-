@@ -13,17 +13,17 @@ const uploadFile = async(data) => {
             // if(source === '臺灣省議會史料總庫'){source = 3;}
             // if(source ==='自定義資料檔案'){source = 4;} 
             console.log("content[1]= ", content[1])
-            if(content[1] === '國'){ 
+            if(content[7] === '獻'){
+                sourceNo = 2;
+                source = '國史館臺灣文獻館'
+            }
+            else if(content[1] === '國'){ 
                 sourceNo = 0;
                 source = '國史館檔案史料文物'
             }
             else if(content[1] === '地'){
                 sourceNo = 1
                 source = '地方議會議事錄總庫'
-            }
-            else if(content[7] === '獻'){
-                sourceNo = 2;
-                source = '國史館臺灣文獻館'
             }
             else if(content[1] === '臺'){
                 sourceNo = 3;
