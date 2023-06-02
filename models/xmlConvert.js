@@ -41,23 +41,23 @@ class XMLConverter {
                 docuudef[j-1] += "        <" + dataname + ">" + js["file" + j][i] + "</" + dataname + ">\n" ;
               }
             } else if (js["xmlTags"][i]==="filename"){ 
-              if (js["file" + j][i] == null) {continue;}
               for (let j = 1; j <= len; j++) {
+                if (js["file" + j][i] == null) {continue;}
                 docuheads[j-1] += "    <document filename=\"" + js["file" + j][i] + "\">\n      <corpus>" + corpus_name + "</corpus>\n";
               }
             } else if (js["xmlTags"][i]==="title") {
-              if (js["file" + j][i] == null) {continue;}
               for (let j = 1; j <= len; j++) {
+                if (js["file" + j][i] == null) {continue;}
                 docuheads[j-1] += "      <title>" + js["file" + j][i] + "</title>\n";
               }
             } else if (js["xmlTags"][i]==="doc_content") {
-              if (js["file" + j][i] == null) {continue;}
               for (let j = 1; j <= len; j++) {
+                if (js["file" + j][i] == null) {continue;}
                 docuconts[j-1] += "        " + js["file" + j][i];
               }
             } else if (js["xmlTags"][i]==="timeseq_not_before" || js["xmlTags"][i]==="timeseq_not_after") {
-              if (js["file" + j][i] == null) {continue;}
               for (let j = 1; j <= len; j++) {
+                if (js["file" + j][i] == null) {continue;}
                 docubodys[j-1] += "      <" + js["xmlTags"][i] + ">" + js["file" + j][i].replaceAll("-", "") + "</" + js["xmlTags"][i] + ">\n";
               }
             } else {
