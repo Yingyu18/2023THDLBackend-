@@ -104,11 +104,14 @@ class mapModel {
         sql = "SELECT isMapped FROM file_DB WHERE fileID = ?";
         let sql2 = "SELECT isMapped FROM sec_map WHERE fileID = ? and map_ID = ?";
         let sql3 = "SELECT sec_map FROM sec_map WHERE fileID = ? and map_ID = ?";
+        let contsql = "SELECT content FROM file_DB WHERE fileID ?";
+        let ctrow = await conn.query(contsql, [pid]);
+        ctrow = ctrow[0].content;
         let check3;
         for (let i = 0; i < arr.length; i++) {
             let row = await conn.query(sql, [arr[i]]);
             check3 = await conn.query(sql3, [arr[i], pid]);
-            if (!(check3[0] != null && check3[0].sec_map == '請進行二次對應') && (row[0].isMapped == null || row[0].isMapped == 0)) {
+            if (!(check3[0] != null && check3[0].sec_map == '請進行二次對應' &&  ctrow != null && ctrow != '') && (row[0].isMapped == null || row[0].isMapped == 0)) {
                 if (type == 2) {
                     fhead = new Array();
                     shead = new Array();
