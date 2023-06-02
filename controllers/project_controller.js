@@ -146,7 +146,7 @@ const updateProject = async (req, res) => {
         return res.status(500).send({message:"update file_db error"})
     }
     
-    const csvs = await Project.getSourceCsvs(req.body.sourceCsvs);
+    const csvs = await Project.getSourceCsvs(req.params.id);
     if(csvs.error){
         return res.status(500).send({message:"get csvs form source_csvs error"})
     }
