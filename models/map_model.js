@@ -144,7 +144,7 @@ class mapModel {
                     fhead.push(temp);
                     shead.push(tmp);
                     temp = await tbfunc.getUniqueHead(arr[i]);
-                    uhead.push(temp);
+                    uhead.push(temp.join());
                 }
             }
           }
