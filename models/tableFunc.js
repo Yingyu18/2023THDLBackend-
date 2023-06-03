@@ -285,8 +285,9 @@ class tableFunc {
         row = await conn.query(sql, [time, uid]);
         let nfid = row[0].fileID
         let qryStr = `INSERT INTO source_csvs (project_id, csv_name) VALUES (?,?)`
-        for (let i = 0; i < orgIdx.length; i++) {
-          let qryRes = await conn.query(qryStr, [fid, orgIdx[i]]);
+        let insIdx = orgIdx.split(',');
+        for (let i = 0; i < insIdx.length; i++) {
+          let qryRes = await conn.query(qryStr, [nfid, insIdx[i]]);
         }     
         let ttttmp = await this.copySecMap(orgIdx, nfid, fid);
       } else {
