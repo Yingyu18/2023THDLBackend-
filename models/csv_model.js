@@ -39,7 +39,7 @@ class csvConverter {
                     corres[i] = extra;
                     if (maps[k][i] == '') {results[0].push(table[sidx[k]-1][i]);}
                     else {results[0].push(maps[k][i]);}
-                    results[1].push('metadata/請替自訂欄位設定英文字');
+                    results[1].push('metadata/customColumn' + String(extra - results[0].length));
                     extra++;
                 } else {corres[i] = results[0].indexOf(maps[k][i]);}
             }  
