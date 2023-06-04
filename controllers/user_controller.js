@@ -167,7 +167,7 @@ const login = async (req, res) => {
                 username: user.USER_NAME,
                 email: user.EMAIL,
                 verified: true,
-                avatar: `${IMAGE_URL}/${user.USER_ID}`,
+                avatar: user.avatar,
                 country: user.COUNTRY,
                 institution: user.INSTITUTION,
                 title: user.TITLE,
@@ -194,7 +194,7 @@ const authRefresh = async (req, res) => {
             "username": req.user.name,
             "verified": "true",
             "email": req.user.email,
-            "avatar": `${IMAGE_URL}/${req.user.userId}`,
+            "avatar": user.avatar,
             "country": user.COUNTRY,
             "institution": user.INSTITUTION,
             "researchTopics": user.RESEARCH_TOPIC,
@@ -272,7 +272,6 @@ const getUserInfo = async (req, res) => {
             "institution": user.INSTITUTION,
             "title": user.TITLE,
             "researchTopics":user.RESEARCH_TOPIC
-            
         }
     })
 };
@@ -289,7 +288,7 @@ const updateUserInfo = async (req, res) => {
             "institution": user.INSTITUTION,
             "title": user.TITLE,
             "researchTopics":user.RESEARCH_TOPIC,
-            "avatar":`${IMAGE_URL}/${req.user.userId}`,
+            "avatar": user.avatar,
             "verified": user.STATUS
         })
     }

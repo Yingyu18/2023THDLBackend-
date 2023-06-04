@@ -1,4 +1,5 @@
 var express = require('express');
+var fs = require('fs')
 const app = require('../app');
 var router = express.Router();
 /* GET users listing. */
@@ -24,9 +25,10 @@ const {
 
 const multer = require('multer');
 const storage = multer.diskStorage({
-  destination: 'avatar/',
+  destination: `avatar/`,
+    //cb(null, `avatar/${req.user.userId}`)
   filename: (req, file, cb) => {
-    const uniqueFileName = req.user.userId;
+    const uniqueFileName = Math.floor(Math.random() * 10000).toString();
     cb(null, uniqueFileName);
   },
 });

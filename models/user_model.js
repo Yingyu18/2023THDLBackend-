@@ -5,6 +5,7 @@ const pool = require('./connection_db');
 const jwt = require('jsonwebtoken');
 const salt = parseInt(process.env.BCRYPT_SALT);
 const {TOKEN_EXPIRE, TOKEN_SECRET} = process.env; // 30 days by seconds
+const IMAGE_URL = "http://140.112.30.230:3002/images"
 
 const signUp = async (data) => {
     let {username, email, password, country, institution, title, researchTopic} = data;
@@ -149,8 +150,12 @@ const getUserDetail = async (identity) => {
 
 const updateUserInfo = async (req) => {
     try {
-        const {username, password, country, institution, title, researchTopic} = req.body;
+        const {username, password, country, institution, title, researchTopic, avatar} = req.body;
+        console.log("body: ",req.file.filename)
         const {email} = req.user;
+        if(req.file.fieldname==='avatar'){
+            const result = await pool.query(`UPDATE user_profile SET avatar = '${IMAGE_URL}/${req.file.filename}' WHERE EMAIL = '${email}'`);
+        }
         if (username){
             const result = await pool.query(`UPDATE user_profile SET USER_NAME = '${username}' WHERE EMAIL = '${email}'`);
         }
