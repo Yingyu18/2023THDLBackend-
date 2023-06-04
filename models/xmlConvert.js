@@ -14,7 +14,6 @@ cleaner = new cleaner();
 class XMLConverter {
 
     toXML (js, corpus_name) {
-      console.log('js to build = ' + js);
         var len = Object.keys(js).length - 2;
         var cnt = 1;
         var xml = "<?xml version=\"1.0\"?><ThdlPrototypeExport>\n \
@@ -41,23 +40,23 @@ class XMLConverter {
                 docuudef[j-1] += "        <" + dataname + ">" + js["file" + j][i] + "</" + dataname + ">\n" ;
               }
             } else if (js["xmlTags"][i]==="filename"){ 
-              if (js["file" + j][i] == null) {continue;}
               for (let j = 1; j <= len; j++) {
+                if (js["file" + j][i] == null) {continue;}
                 docuheads[j-1] += "    <document filename=\"" + js["file" + j][i] + "\">\n      <corpus>" + corpus_name + "</corpus>\n";
               }
             } else if (js["xmlTags"][i]==="title") {
-              if (js["file" + j][i] == null) {continue;}
               for (let j = 1; j <= len; j++) {
+                if (js["file" + j][i] == null) {continue;}
                 docuheads[j-1] += "      <title>" + js["file" + j][i] + "</title>\n";
               }
             } else if (js["xmlTags"][i]==="doc_content") {
-              if (js["file" + j][i] == null) {continue;}
               for (let j = 1; j <= len; j++) {
+                if (js["file" + j][i] == null) {continue;}
                 docuconts[j-1] += "        " + js["file" + j][i];
               }
             } else if (js["xmlTags"][i]==="timeseq_not_before" || js["xmlTags"][i]==="timeseq_not_after") {
-              if (js["file" + j][i] == null) {continue;}
               for (let j = 1; j <= len; j++) {
+                if (js["file" + j][i] == null) {continue;}
                 docubodys[j-1] += "      <" + js["xmlTags"][i] + ">" + js["file" + j][i].replaceAll("-", "") + "</" + js["xmlTags"][i] + ">\n";
               }
             } else {
@@ -77,7 +76,6 @@ class XMLConverter {
             cnt++;
             for (let j = 1; j <= len; j++) {
               if (js["file" + j][i] == null) {continue;}
-              console.log('retrr = ' + String("file" + j));
               let alltags = js[String("file" + j)][i].split(";");
               for (let k = 0; k < alltags.length; k++) {
                 docutags[j-1] += "        <Udef_" + tagName + ">" + alltags[k] + "</Udef_" + tagName + ">\n" ;
@@ -99,7 +97,6 @@ class XMLConverter {
         let sql = "Select map_ID from sec_map where fileID = ?";
         let res = await conn.query(sql, [pid]);
         if (res == null || res[0] == null){
-          console.log('firts dddbbbd');
           let user = await getUserDetail(uid);
           res = await tableFunc.insertFile(uid, uname, corpus_name, xml, 'xml');
           sql = "Select fileID from file_DB where fileName = ? and type = \'xml\'";

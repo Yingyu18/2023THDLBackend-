@@ -1,7 +1,9 @@
 const Project = require('../models/project_model');
 const File = require('../models/file_model');
 const MapModel = require("../models/map_model");
+const JModel = require("../models/json_model");
 const mapModel = new MapModel();
+const jModel = new JModel();
 
 const uploadFile = async (req, res)=> {
     //console.log("test", req.body)
@@ -127,23 +129,30 @@ const getProject = async (req, res) => {
 }
 
 const updateProject = async (req, res) => {
-    if(req.body.sourceCsvs){
-        const result = await Project.updateCsvs(req)
+    let result;
+    if(req.body.sourceCsvs){ 
+        const pid = req.params.id;
+        const {sourceCsvs} = req.body;
+        const fid =  sourceCsvs[sourceCsvs.length-1];
+        result = await jModel.insertNewCSV(fid, pid);
+        result = await jModel.resetMapStatus(pid);
+        result = await Project.updateCsvs(req)
         if(result.error){
             return res.status(500).send({message:"update source_csvs error"})
         }
     }
-    let result = await Project.updateProject(req)
+    result = await Project.updateProject(req)
     if(result.error){
         return res.status(500).send({message:"update file_db error"})
     }
-    const csvs = await Project.getSourceCsvs(result.fileID)
+    
+    const csvs = await Project.getSourceCsvs(req.params.id);
     if(csvs.error){
         return res.status(500).send({message:"get csvs form source_csvs error"})
     }
     let sourceCsvs = []
     for(let i=0; i<csvs.length; i++){
-        sourceCsvs[i] = csvs[i].csv_name
+        sourceCsvs[i] = csvs[i].csv_name;
     }
     res.status(200).send({
             "fileID": result.fileID,

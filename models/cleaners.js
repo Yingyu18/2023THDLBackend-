@@ -14,8 +14,9 @@ class cleaner {
         return str.replace(reg, (match)=>(map[match]));
     }
 
-   async timeFormat(type, time) { 
+   async timeFormat(time) { 
         if (time == '' || time == null) {return '0000-00-00';}
+        if (time.lenght < 5) {time += '-00-00';}
         if (time[6] == '-') {time = time.substring(0, 5) + '0' + time.substring(5);}
         if (time.lenght < 10 || time[9] == ' ') {time = time.substring(0, 8) + '0' + time.substring(8);}
         return time;
@@ -25,10 +26,9 @@ class cleaner {
 //content.split('\n').split(',')
 
     csvClean(table, idx) {
-        var Equal = table[idx][0].substring(0, 1) == '=' ? 1 : 0;
-        var DBLquotes = table[idx][0].substring(0, 1) == '"' ||  table[idx][0].substring(1, 2) == '"' ? 1 : 0;
+        var Equal = table[idx][1].substring(0, 1) == '=' ? 1 : 0;
+        var DBLquotes = table[idx][1].substring(0, 1) == '"' ||  table[idx][1].substring(1, 2) == '"' ? 1 : 0;
         for (let i = idx; i < table.length; i++) {  
-           // console.log("table cleaning:", table[i])    
             for (let j = 0; j < table[i].length; j++) {
                 table[i][j] = table[i][j].substring(Equal+DBLquotes, table[i][j].length - DBLquotes);
             }
@@ -58,10 +58,10 @@ class cleaner {
                     curRow++;
                     continue;
                 }
+                let org = table[curRow][start];
                 let temp = table[curRow][start].substring(13, 23);
-                temp = await this.timeFormat(3, temp);        
-                table[curRow][0] = table[curRow][start];                
-                table[curRow][start] = await this.timeFormat(table[curRow][start].substring(0, 10)) + '&' + temp;
+                temp = await this.timeFormat(temp);                       
+                table[curRow][start] = await this.timeFormat(table[curRow][start].substring(0, 10)) + '&' + temp + '&' + org;
                 curRow++;
             }
         }
@@ -70,13 +70,15 @@ class cleaner {
                 if (table[curRow][start] == null) {
                     curRow++;
                     continue;
-                }       
-                table[curRow][0] = table[curRow][start];
-                table[curRow][start] = String(table[curRow][start]).replaceAll('/', '-');
-                table[curRow][start] = await this.timeFormat(type, table[curRow][start]);           
-                table[curRow][0] += '~' + table[curRow][end];
-                table[curRow][end] = String(table[curRow][end]).replaceAll('/', '-');
-                table[curRow][end] = await this.timeFormat(type, table[curRow][end]);
+                } 
+                let st =  table[curRow][start];
+                let ed = table[curRow][end]; 
+                table[curRow][start] = st + '~' + ed;
+                st = st.replaceAll('/', '-'); 
+                ed = ed.replaceAll('/', '-'); 
+                st = await this.timeFormat(st);
+                ed = await this.timeFormat(ed);
+                table[curRow][end] = st + '&' + ed;
                 curRow++;
             }
         }

@@ -30,17 +30,19 @@ class csvConverter {
         let lines = 2;
         for (let k = 0; k < contents.length; k++) {
             let table = await cleaner.rawTable(contents[k]);
-            if (type == 1) {table = await cleaner.arrangeFormat(types[k], table, sidx[k]);}             
+            table = await cleaner.arrangeFormat(types[k], table, sidx[k]);             
             let corres = new Array (table[sidx[k]-1].length);
+            
             for (let i = 0; i < maps[k].length; i++) {
                 if (maps[k][i] == 'no') {corres[i] = -1;}
-                else if (results[0].indexOf(maps[k][i]) == -1) {
+                else if (maps[k][i] == '' || results[0].indexOf(maps[k][i]) == -1) {
                     corres[i] = extra;
-                    results[0].push(maps[k][i]);
-                    results[1].push('metadata/'+maps[k][i]);
+                    if (maps[k][i] == '') {results[0].push(table[sidx[k]-1][i]);}
+                    else {results[0].push(maps[k][i]);}
+                    results[1].push('metadata/請替自訂欄位設定英文字');
                     extra++;
                 } else {corres[i] = results[0].indexOf(maps[k][i]);}
-            }            
+            }  
             for (let i = sidx[k]; i < table.length; i++) {
                 results.push(new Array(extra).fill(''));
                 if (types[k] == 0) {
@@ -61,20 +63,25 @@ class csvConverter {
                     results[lines][2] = 'NDAP';
                 }
 
-                for (let j = 0; j < table[i].length; j++) { console.log("i + j = " + lines +'/'+ corres[j]+ "org ----------- is = " + results[lines][corres[j]] + ' ttttttt--------- is = ' + table[i][j]);
+                for (let j = 0; j < table[i].length; j++) {
                     if (corres[j] < 0 || table[i][j] == null) {continue;}
-                    else if (results[lines][corres[j]] == null || results[lines][corres[j]] == '') {
-                        results[lines][corres[j]] = table[i][j];
-                    } else if (types[k] == 3 && corres[j] == 10) {
+                    else if (types[k] == 3 && corres[j] == 10) {
+                        results[lines][8] = table[i][j].substring(22);
                         results[lines][10] = table[i][j].substring(0, 10);
-                        results[lines][11] = table[i][j].substring(10, 20);
+                        results[lines][11] = table[i][j].substring(11, 21);
+                    } else if (corres[j] == 10) {
+                        results[lines][8] = table[i][j];
+                    } else if (corres[j] == 11) {
+                        results[lines][10] = table[i][j].substring(0, 10);
+                        results[lines][11] = table[i][j].substring(11);
                     } else if (corres[j] == 0) {
                         results[lines][corres[j]] += table[i][j];
+                    } else if (results[lines][corres[j]] == null || results[lines][corres[j]] == '') {
+                        results[lines][corres[j]] = table[i][j];
                     } else {
                         results[lines][corres[j]] += ';' + table[i][j];               
                     }
                 }
-                if (type == 1) {results[lines][8] = table[i][0];}
                 lines++;
             } 
         }
@@ -83,21 +90,21 @@ class csvConverter {
                 results[i] = results[i].concat(new Array(results[0].length - results[i].length).fill(''));
             }
         }
-        if (type == 2) {results = mergeToJson(results, jid)}
+        if (type == 2) {results = await this.mergeToJson(results, jid)}
         return results;
     }
 
     async mergeToJson (cont, jid) {
-        var js = await jsConv.to2d([jid]);
+        var js = await jsConv.to2D([jid]);
         var len = js.length;
         js[0] = cont[0];
         js[1] = cont[1];
         for (let i = 2; i < len; i++) {
             if (js[i].length < js[0].length) {
-                js[i].push(new Array(js[0].length - js[i].length).fill(''));
+                js[i].concat(new Array(js[0].length - js[i].length).fill(''));
             }
         }
-        for (let i = 2; i < cont.length; i++) {js.push(cont[i]);}
+        for (let i = js.length; i < cont.length; i++) {js.push(cont[i]);}
         return js;
     }
     
@@ -120,17 +127,14 @@ class csvConverter {
         if (type == 2) {sql = "SELECT isMapped from sec_map WHERE fileID = ? and map_ID = ?"}
         let rs; 
         for (let i = 0; i < idxs.length; i++) {
-            console.log('checking file idx ' + idxs[i]);
             if (type == 1) {rs = await conn.query(sql, [idxs[i]]);}
             else {rs = await conn.query(sql, [idxs[i], pid]);}
             if (rs[0].isMapped == null || rs[0].isMapped == 0) {
-                console.log('WTH?????????????');
                 conn.release();
                 return false;
             }
         }
         conn.release();
-        console.log('trruuuuuuuuuuuuue!');
         return true;
     }
 }

@@ -13,17 +13,17 @@ const uploadFile = async(data) => {
             // if(source === '臺灣省議會史料總庫'){source = 3;}
             // if(source ==='自定義資料檔案'){source = 4;} 
             console.log("content[1]= ", content[1])
-            if(content[1] === '國'){ 
+            if(content[7] === '獻'){
+                sourceNo = 2;
+                source = '國史館臺灣文獻館'
+            }
+            else if(content[1] === '國'){ 
                 sourceNo = 0;
                 source = '國史館檔案史料文物'
             }
             else if(content[1] === '地'){
                 sourceNo = 1
                 source = '地方議會議事錄總庫'
-            }
-            else if(content[7] === '獻'){
-                sourceNo = 2;
-                source = '國史館臺灣文獻館'
             }
             else if(content[1] === '臺'){
                 sourceNo = 3;
@@ -51,14 +51,6 @@ const uploadFile = async(data) => {
             table = cleaner.csvClean(table, start-1)
         }
         //console.log("after clean , : ",table)
-
-        if(sourceNo == 3 || sourceNo == 2 ){
-            for(let i=3; i<table.length; i++){
-                for(let j=1; j<table[i].length; j++){
-                    table[i][j] = table[i][j].substring(1, table[i][j].length);
-                }
-            }
-        }
         //console.log("after remove comma: " ,table)
         if(sourceNo == 1){
             table[4][0] = 'no'
@@ -68,8 +60,11 @@ const uploadFile = async(data) => {
             }
         }
         //console.log(table)
+        var needShift = table[start-1][0] == 'no'? 1 : 0;
+        needShift = table[start-1][0] == 'o'? 1 : 0;
         for(let i=0; i<table.length; i++){
             //console.log(table[i])
+            if (needShift == 1 && i >= start - 1) {table[i].shift();}
             table[i] = table[i].join(',');
         }
         //console.log(table[table.length-1])
