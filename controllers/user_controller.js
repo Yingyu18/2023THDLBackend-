@@ -108,7 +108,11 @@ const forgetPassword = async (req, res) =>{
             from: process.env.GMAIL_ACCOUNT,
             to: email,
             subject: '台灣史料數位人文平台 點擊連結重設密碼',
-            html: `<p>您好，</p></p><p>點擊下列連結，重設您的密碼。：</p><p><a class="btn" href="${ACTION_URL}" target="_blank" rel="noopener">重設密碼</a></p><p>謝謝您，<br/>台灣史料數位人文平台 團隊敬上</p>`
+            html: `<p>您好，</p></p><p>點擊下列連結，重設您的密碼。：</p><p><a class="btn" href="${ACTION_URL}" target="_blank" rel="noopener">重設密碼</a></p><p><i>如果您並未要求重設密碼，您可以忽略此郵件。</i></p>
+            <p>
+              感謝您，<br/>
+              {APP_NAME} 團隊敬上
+            </p>`
         };
         //使用傳輸器發送郵件
         transporter.sendMail(mailOptions, function(error, info){
@@ -285,7 +289,8 @@ const updateUserInfo = async (req, res) => {
             "country": user.COUNTRY,
             "institution": user.INSTITUTION,
             "title": user.TITLE,
-            "researchTopics":user.RESEARCH_TOPIC
+            "researchTopics":user.RESEARCH_TOPIC,
+            "url":`http://140.112.30.230/images/${req.user.userId}`
         })
     }
 };

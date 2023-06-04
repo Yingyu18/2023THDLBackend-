@@ -43,6 +43,7 @@ app.use('/api/projects', projectRouter);
 app.use('/api/edit', editRouter);
 app.use('/api/map', mapRouter);
 app.use('/api/docu', docuRouter);
+app.use('/images', express.static('avatar'));
 
 //app.use('/edit/convertTo', convertRouter);
 app.get('/healthcheck', (req, res)=>{

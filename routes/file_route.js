@@ -1,15 +1,11 @@
 var express = require('express');
-const { route } = require('.');
-const app = require('../app');
-const multer = require('multer');
 var router = express.Router();
+const multer = require('multer');
 const upload = multer();
 const bodyParser = require('body-parser')
 const {
   saveJson,
 } = require('../file/save');
-
-
 
 const {
     authentication
@@ -29,13 +25,12 @@ router.get('/', function(req, res, next) {
 });
 
 //create file
-router.post('/upload/:format(csv|json|xml)', authentication, upload.single('file'), uploadFile); 
 router.post('/create', authentication, upload.single('file'), uploadFile)
+router.patch('/updateCsv/:id', authentication, updateFile)
 
 //delete file
-router.post('/delete', authentication, deleteFile);
 router.delete('/delete/:id', authentication, deleteFile)
-router.patch('/updateCsv/:id', authentication, updateFile)
+
 //download file
 router.post('/download/:format(csv|json|xml)', authentication, downloadFile)
 
