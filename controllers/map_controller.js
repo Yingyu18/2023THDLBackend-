@@ -83,7 +83,8 @@ const changeRow = async(req, res) => {
     var fid = req.body.file_id;
     var srow = req.body.start_row;
     var result = await model.changeRow(fid, srow);
-    res.status(200).send(result);
+    if (result.error) {res.status(400).send(result);} 
+    else {res.status(200).send(result);}
 }
 module.exports = {
     projectMapping,

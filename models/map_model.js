@@ -174,7 +174,11 @@ class mapModel {
   
   async changeRow (fid, srow) {
     let conn = await pool.getConnection();
-    var sql = "UPDATE file_DB SET Start_Row = ?, lastModified = ? WHERE fileID = ?";
+    var sql = "SELECT content from file_DB WHERE fileID = ?";
+    let tb = await conn.query(sql, [fid]);
+    tb = tb[0].content.split('\n');
+    if (srow > tb.length) {return {"error" : '列數超出檔案本身長度！'};}
+    sql = "UPDATE file_DB SET Start_Row = ?, lastModified = ? WHERE fileID = ?";
     var result = {
         "file_head": "zzz",
         "unique_head": "ccc"
