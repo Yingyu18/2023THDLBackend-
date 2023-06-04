@@ -113,6 +113,12 @@ const updateFile = async (req, res) => {
         return res.status(500).send({message:"internal server error"})
     }
     result = await File.getCsv(id)
+    let source = result.source
+    if(source === '0'){source = '國史館檔案史料文物'}
+    else if(source === '1'){source = '地方議會議事錄總庫';}
+    else if(source === '2'){source = '國史館臺灣文獻館';}
+    else if(source === '3'){source = '臺灣省議會史料總庫';}
+    else if(source === '4'){source = '自定義資料檔案';} 
     res.status(200).send({
         "fileID": id,
         "upload_time": result.upload_time,
@@ -121,7 +127,7 @@ const updateFile = async (req, res) => {
         "type": "csv",
         "size": result.size,
         "lastModified": result.lastModified,
-        "source": result.source,
+        "source": source,
         "url": result.url,
         message:`update file name to ${name} success`,
         updated: new Date().getTime().toString()
