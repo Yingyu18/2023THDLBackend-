@@ -66,8 +66,17 @@ const uploadFile = async(data) => {
         }
         for(let i=0; i<table.length; i++){
             //console.log(table[i])
+            if (table[i].length != table[start-1].length) {
+                table[i] = table[i].concat(new Array(table[start-1].length - table[i].length).fill(''));
+                table[i][4] += '%$^&' + table[i+1][0] + '%$^&' + table[i+2][0];
+                table[i][5] = table[i+2][1];
+                table[i][6] = table[i+2][2];
+                table[i][7] = table[i+2][3];
+                table = table.slice(0, i+1).concat(table.slice(i+3));
+            }
             if (needShift == 1 && i >= start - 1) {table[i].shift();}
             table[i] = table[i].join(',');
+            
         }
         //console.log(table[table.length-1])
         table = table.join('\n')
