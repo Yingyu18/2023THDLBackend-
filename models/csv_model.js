@@ -64,6 +64,7 @@ class csvConverter {
                 }
 
                 for (let j = 0; j < table[i].length; j++) {
+                    if (table[i][j] != null) {table[i][j] = table[i][j].replaceAll('%$^&', '\n');}
                     if (corres[j] < 0 || table[i][j] == null) {
                         if (corres[j] == 0) {results[lines][corres[j]] += 'Please Set Unique ID';}
                         continue;
