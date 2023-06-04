@@ -59,17 +59,18 @@ class cleaner {
                     continue;
                 }
                 let org = table[curRow][start];
-                org = org.replaceAll('/', '-');
+                let sorg = org.replaceAll('/', '-');
                 if (org.length == 23) {
-                    let temp = table[curRow][start].substring(13, 23);
+                    let temp = sorg.substring(13, 23);
                     temp = await this.timeFormat(temp);                       
-                    table[curRow][start] = await this.timeFormat(table[curRow][start].substring(0, 10)) + '&' + temp + '&' + org;
+                    table[curRow][start] = await this.timeFormat(sorg.substring(0, 10)) + '&' + temp + '&' + org;
                 } else if (org.length == 10) {                 
                     table[curRow][start] = '0000-00-00&0000-00-00&0000-00-00';
                 } else {
-                    let temp = org.split(' ');
+                    let temp = sorg.split(' ');
+                    console.log('teeeemp  = ' + temp);
                     let st = await this.timeFormat(temp[0]);      
-                    let ed = await this.timeFormat(temp[2]);                    
+                    let ed = await this.timeFormat(temp[2]);                     
                     table[curRow][start] = st + '&' + ed + '&' + org;
                 }
                 curRow++;
