@@ -103,6 +103,8 @@ class XMLConverter {
           let fid = await conn.query(sql, [corpus_name]);
           sql = "Insert Into sec_map  (fileID, map_ID , sec_map) values (?, ?, ?)";  
           result = await conn.query(sql, [pid, fid[0].fileID, '']);
+          sql = "UPDATE file_DB SET cores_xml_id = ? where fileID = ?";  
+          result = await conn.query(sql, [fid[0].fileID, pid]);
           return fid[0].fileID;
         }
         else {
