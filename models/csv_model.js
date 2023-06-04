@@ -64,7 +64,10 @@ class csvConverter {
                 }
 
                 for (let j = 0; j < table[i].length; j++) {
-                    if (corres[j] < 0 || table[i][j] == null) {continue;}
+                    if (corres[j] < 0 || table[i][j] == null) {
+                        if (corres[j] == 0) {results[lines][corres[j]] += 'Please Set Unique ID';}
+                        continue;
+                    }
                     else if (types[k] == 3 && corres[j] == 10) {
                         results[lines][8] = table[i][j].substring(22);
                         results[lines][10] = table[i][j].substring(0, 10);
@@ -75,7 +78,8 @@ class csvConverter {
                         results[lines][10] = table[i][j].substring(0, 10);
                         results[lines][11] = table[i][j].substring(11);
                     } else if (corres[j] == 0) {
-                        results[lines][corres[j]] += table[i][j];
+                        if (table[i][j] == '') {results[lines][corres[j]] += 'Please Set Unique ID';}
+                        else {results[lines][corres[j]] += table[i][j];}
                     } else if (results[lines][corres[j]] == null || results[lines][corres[j]] == '') {
                         results[lines][corres[j]] = table[i][j];
                     } else {
