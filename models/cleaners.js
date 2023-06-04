@@ -60,7 +60,7 @@ class cleaner {
                 }
                 let org = table[curRow][start];
                 org = org.replaceAll('/', '-');
-                if (org.length == 22) {
+                if (org.length == 23) {
                     let temp = table[curRow][start].substring(13, 23);
                     temp = await this.timeFormat(temp);                       
                     table[curRow][start] = await this.timeFormat(table[curRow][start].substring(0, 10)) + '&' + temp + '&' + org;
