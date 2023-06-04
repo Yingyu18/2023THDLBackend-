@@ -72,6 +72,7 @@ class cleaner {
                     let st = await this.timeFormat(temp[0]);      
                     let ed = await this.timeFormat(temp[2]);                     
                     table[curRow][start] = st + '&' + ed + '&' + org;
+                    console.log('tstres  = ' + table[curRow][start]);
                 }
                 curRow++;
             }
