@@ -192,7 +192,7 @@ const authRefresh = async (req, res) => {
         "record": {
             "id": req.user.userId.toString(),
             "username": req.user.name,
-            "verified": true,
+            "verified": "true",
             "email": req.user.email,
             "avatar": `${IMAGE_URL}/${req.user.userId}`,
             "country": user.COUNTRY,
