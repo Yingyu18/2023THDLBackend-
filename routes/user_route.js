@@ -38,7 +38,7 @@ router.post('/signupAuth', signupAuth)
 router.post('/authRefresh', authentication, authRefresh)
 router.post('/forgetPassword', forgetPassword)
 router.post('/updatePassword', updatePassword)
-router.post('/updateUserInfo', authentication, uploadAvatar.single('avatar') , updateUserInfo)
+router.post('/updateUserInfo:/id', authentication, uploadAvatar.single('avatar') , updateUserInfo)
 router.get('/getUserInfo', authentication, getUserInfo)
 
 
