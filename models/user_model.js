@@ -155,9 +155,11 @@ const updateUserInfo = async (req) => {
             const result = await pool.query(`UPDATE user_profile SET USER_NAME = '${username}' WHERE EMAIL = '${email}'`);
         }
         if (password){
-            let cryptPassword = bcrypt.hashSync(password, salt);
-            const result = await pool.query(`UPDATE user_profile SET PASSWORD = '${cryptPassword}' WHERE EMAIL = '${email}'`);
-            console.log("result: ", result)
+            let bcPassword = bcrypt.hashSync(password, salt);
+            let result = await pool.query(`UPDATE user_profile SET PASSWORD = '${bcPassword}' WHERE EMAIL = '${email}'`);
+            let queryStr = `UPDATE docusky.user_profile SET INIT_PASSWORD=?, INIT_PASSWORD_ENCODED=?, PASSWORD_ENCODED=? WHERE USERNAME=?`;
+            let values = [bcPassword, sha256(bcPassword), sha256(bcPassword), email];
+            result = await pool.query(queryStr, values);
         }
         if (country){
             const result = await pool.query(`UPDATE user_profile SET COUNTRY = '${country}' WHERE EMAIL = '${email}'`);

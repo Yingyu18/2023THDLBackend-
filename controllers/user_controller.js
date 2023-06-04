@@ -185,6 +185,7 @@ const authRefresh = async (req, res) => {
     let user = await User.getUserDetail(req.user.email)
     
     result = await loginDocuSky(user.EMAIL, user.PASSWORD)
+    console.log(result)
     res.status(200).send({
         token: accessToken,
         "record": {
