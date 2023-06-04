@@ -3,7 +3,6 @@ const bcrypt = require('bcrypt');
 var sha256 = require('js-sha256');
 const pool = require('./connection_db');
 const jwt = require('jsonwebtoken');
-const { lutimes } = require('fs');
 const salt = parseInt(process.env.BCRYPT_SALT);
 const {TOKEN_EXPIRE, TOKEN_SECRET} = process.env; // 30 days by seconds
 

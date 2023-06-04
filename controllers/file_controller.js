@@ -107,11 +107,22 @@ const getCsv = async (req, res) => {
 
 const updateFile = async (req, res) => {
     let {name} = req.body
+    let {id} = req.params
     let result = await File.updateFile(req)
     if(result.error){
         return res.status(500).send({message:"internal server error"})
     }
+    result = await File.getCsv(id)
     res.status(200).send({
+        "fileID": id,
+        "upload_time": result.upload_time,
+        "name": result.fileName,
+        "uploader": result.USER_NAME,
+        "type": "csv",
+        "size": result.size,
+        "lastModified": result.lastModified,
+        "source": result.source,
+        "url": result.url,
         message:`update file name to ${name} success`,
         updated: new Date().getTime().toString()
 })

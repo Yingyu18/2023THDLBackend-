@@ -5,6 +5,7 @@ const validator = require('validator');
 const User = require('../models/user_model');
 const bcrypt = require('bcrypt');
 const https = require('https');
+
 const {TOKEN_EXPIRE, TOKEN_SECRET} = process.env; 
 
 const signUp = async (req, res) => {
@@ -102,7 +103,7 @@ const forgetPassword = async (req, res) =>{
             email: email,
             //userId: user.id.toString()
         }, TOKEN_SECRET);
-        const ACTION_URL = `http://localhost:3000/auth/forget/${auth_token}`
+        const ACTION_URL = `http://localhost:3000/pwreset/${auth_token}`
         const mailOptions = {
             from: process.env.GMAIL_ACCOUNT,
             to: email,
@@ -269,10 +270,11 @@ const getUserInfo = async (req, res) => {
     })
 };
 const updateUserInfo = async (req, res) => {
-    if(!req.user.email){
-        res.status(400).send("Bad request")
-    }
     const user = await User.updateUserInfo(req)
+    //upload user profile image
+    if(req.avatar){
+
+    }
     if(!user){
         res.status(500).send("Internal server error")
     }else {
@@ -289,18 +291,30 @@ const updateUserInfo = async (req, res) => {
 };
 
 const updatePassword = async (req, res) => {
-    const {email, oldPassword, newPassword} = req.body
-    if(!email || !oldPassword || !newPassword){
+    const token = req.body.token
+    let email
+    //const email = req.body.email
+    jwt.verify(token, TOKEN_SECRET, function(err, decoded){
+        if(err){
+            res.status(400).send({
+                code: 400,
+                message: "invalid token"})
+        }
+        email = decoded.email
+    });
+    const {password} = req.body
+    if(!password || !email){
         res.status(400).send("Require user email and old password and new password")
     }
 
-    let user = await User.getUserDetail(email)
-    if(!bcrypt.compareSync(oldPassword, user.PASSWORD)){
-        res.status(400).send({
-        code: 400,
-        message: "Invalid Password"})
-    }
-    req.body.password = newPassword
+    // let user = await User.getUserDetail(email)
+    // if(!bcrypt.compareSync(oldPassword, user.PASSWORD)){
+    //     res.status(400).send({
+    //     code: 400,
+    //     message: "Invalid Password"})
+    // }
+    req.body.password = password
+    req.user = {email:email}
     const result = await User.updateUserInfo(req)
     if (!result) {
         res.status(500).send({

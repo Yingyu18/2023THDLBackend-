@@ -168,14 +168,15 @@ const deleteProject = async (req) => {
     const conn = await pool.getConnection()
     const projectId = req.params.id
     try{
-        const result = await conn.query(`DELETE FROM file_db WHERE fileID = ?`, [projectId])
+        let result = await conn.query(`DELETE FROM file_db WHERE fileID = ?`, [projectId])
         result = await conn.query(`DELETE FROM source_csvs WHERE project_id = ?`, [projectId])
+        return result
     }  catch (error){
         console.log({error:error})
+        return {error}
     } finally {
         await conn.release();
     }
-
 }
 
 module.exports = {

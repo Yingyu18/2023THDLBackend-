@@ -164,11 +164,11 @@ const updateProject = async (req, res) => {
     })
 }
 const deleteProject = async (req, res) => {
-    const result = await Project.deleteProject(req)        
+    const result = await Project.deleteProject(req)      
     if(result.error){
         return res.status(500).send({message:"internal server error"})
     }
-    res.status(200)
+    res.status(200).send({message:"delete successfully"})
 
 }
 

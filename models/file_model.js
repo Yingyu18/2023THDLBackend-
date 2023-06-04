@@ -144,7 +144,7 @@ const getCsv = async(id) => {
     try{
         let qryStr = `SELECT * FROM file_db WHERE fileID = ?`
         var results = await conn.query(qryStr, [id]);
-        return results[0] 
+        return results[0]
     } catch (error){
         console.log(error)
         return {error}

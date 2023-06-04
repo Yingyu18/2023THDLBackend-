@@ -15,12 +15,22 @@ const {
     deleteProject
   } = require('../controllers/project_controller');
 
+  const multer = require('multer');
+  const storage = multer.diskStorage({
+    destination: 'project_image/',
+    filename: (req, file, cb) => {
+      const uniqueFileName = req.user.userId;
+      cb(null, uniqueFileName);
+    },
+  });
+  const uploadImage = multer({storage});
 
-router.delete('/delete', authentication, deleteProject)
+
+router.delete('/delete/:id', authentication, deleteProject)
 router.post('/create', authentication, uploadFile)
 router.get('/getProjects', authentication, getProjects)
 router.get('/getProject/:id', authentication, getProject)
-router.patch('/updateProject/:id', authentication, updateProject)
+router.patch('/updateProject/:id', authentication, uploadImage.single('avatar'), updateProject)
 
 
 module.exports = router;
