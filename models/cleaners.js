@@ -59,9 +59,19 @@ class cleaner {
                     continue;
                 }
                 let org = table[curRow][start];
-                let temp = table[curRow][start].substring(13, 23);
-                temp = await this.timeFormat(temp);                       
-                table[curRow][start] = await this.timeFormat(table[curRow][start].substring(0, 10)) + '&' + temp + '&' + org;
+                org = org.replaceAll('/', '-');
+                if (org.length == 22) {
+                    let temp = table[curRow][start].substring(13, 23);
+                    temp = await this.timeFormat(temp);                       
+                    table[curRow][start] = await this.timeFormat(table[curRow][start].substring(0, 10)) + '&' + temp + '&' + org;
+                } else if (org.length == 10) {                 
+                    table[curRow][start] = '0000-00-00&0000-00-00&0000-00-00';
+                } else {
+                    let temp = org.split(' ');
+                    let st = await this.timeFormat(temp[0]);      
+                    let ed = await this.timeFormat(temp[2]);                    
+                    table[curRow][start] = st + '&' + ed + '&' + org;
+                }
                 curRow++;
             }
         }
