@@ -5,7 +5,7 @@ const validator = require('validator');
 const User = require('../models/user_model');
 const bcrypt = require('bcrypt');
 const https = require('https');
-const IMAGE_URL = "http://140.112.30.230:3002/images"
+const IMAGE_URL = "https://140.112.30.230:3002/images"
 
 const {TOKEN_EXPIRE, TOKEN_SECRET} = process.env; 
 
