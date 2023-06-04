@@ -18,7 +18,7 @@ class cleaner {
         if (time == '' || time == null) {return '0000-00-00';}
         if (time.lenght < 5) {time += '-00-00';}
         if (time[6] == '-') {time = time.substring(0, 5) + '0' + time.substring(5);}
-        if (time.lenght < 10 || time[9] == ' ') {time = time.substring(0, 8) + '0' + time.substring(8);}
+        if (time.length < 10 || time[9] == ' ') {time = time.substring(0, 8) + '0' + time.substring(8);}
         return time;
     }
 
