@@ -53,7 +53,7 @@ app.use('/api/docu', docuRouter);
 app.use('/images', express.static('avatar'));
 
 //app.use('/edit/convertTo', convertRouter);
-app.get('/healthcheck', (req, res)=>{
+app.get('/', (req, res)=>{
 	res.send('OK');	
 })
 //app.use('/dbtest', dbRouter);
@@ -81,6 +81,6 @@ app.use(function(req, res, next) {
 // Create an HTTP service.
 http.createServer(app).listen(4001);
 // Create an HTTPS service identical to the HTTP service.
-https.createServer(options, app).listen(3002);
+https.createServer(options, app).listen(3002, function() {console.log('3002 777')});
 //app.listen(3002,() => console.log('Server is running on port 3002'));
 module.exports = app;
