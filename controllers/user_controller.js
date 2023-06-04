@@ -291,7 +291,8 @@ const updateUserInfo = async (req, res) => {
             "institution": user.INSTITUTION,
             "title": user.TITLE,
             "researchTopics":user.RESEARCH_TOPIC,
-            "url":`http://140.112.30.230:3002/images/${req.user.userId}`
+            "avatar":`http://140.112.30.230:3002/images/${req.user.userId}`,
+            "verified":undefined
         })
     }
 };
