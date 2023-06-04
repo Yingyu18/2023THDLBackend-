@@ -101,6 +101,7 @@ const getProjects = async (req, res) => {
     for (let i = 0; i < projects.length; i++) {
         //console.log(projects[i])
         let { fileID, upload_time, fileName, lastModified, isMapped, isBuilt, description, sourceCsvs} = projects[i]
+        let xml_id = projects[i].cores_xml_id
         const owner = projects[i].USER_NAME
         const updated = lastModified
         const thumbnail = ''
@@ -114,7 +115,7 @@ const getProjects = async (req, res) => {
         }
         if(isMapped){isMapped=true}else{isMapped=false}
         if(isBuilt){isBuilt=true}else{isBuilt=false}
-        data.push({ fileID, upload_time, updated, description, sourceCsvs, fileName, isMapped, owner, thumbnail, isBuilt, description })
+        data.push({ fileID, upload_time, updated, description, sourceCsvs, fileName, isMapped, owner, thumbnail, isBuilt, description, xml_id })
     }
     let response = {"items": data}
     res.status(200).send(response)
