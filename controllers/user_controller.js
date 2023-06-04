@@ -5,6 +5,7 @@ const validator = require('validator');
 const User = require('../models/user_model');
 const bcrypt = require('bcrypt');
 const https = require('https');
+const IMAGE_URL = "http://140.112.30.230:3002/images"
 
 const {TOKEN_EXPIRE, TOKEN_SECRET} = process.env; 
 
@@ -166,7 +167,7 @@ const login = async (req, res) => {
                 username: user.USER_NAME,
                 email: user.EMAIL,
                 verified: true,
-                avatar: "",
+                avatar: `${IMAGE_URL}/${req.user.userId}`,
                 country: user.COUNTRY,
                 institution: user.INSTITUTION,
                 title: user.TITLE,
@@ -193,7 +194,7 @@ const authRefresh = async (req, res) => {
             "username": req.user.name,
             "verified": true,
             "email": req.user.email,
-            "avatar": "",
+            "avatar": `${IMAGE_URL}/${req.user.userId}`,
             "country": user.COUNTRY,
             "institution": user.INSTITUTION,
             "researchTopics": user.RESEARCH_TOPIC,
@@ -271,15 +272,12 @@ const getUserInfo = async (req, res) => {
             "institution": user.INSTITUTION,
             "title": user.TITLE,
             "researchTopics":user.RESEARCH_TOPIC
+            
         }
     })
 };
 const updateUserInfo = async (req, res) => {
     const user = await User.updateUserInfo(req)
-    //upload user profile image
-    if(req.avatar){
-
-    }
     if(!user){
         res.status(500).send("Internal server error")
     }else {
@@ -291,7 +289,7 @@ const updateUserInfo = async (req, res) => {
             "institution": user.INSTITUTION,
             "title": user.TITLE,
             "researchTopics":user.RESEARCH_TOPIC,
-            "avatar":`http://140.112.30.230:3002/images/${req.user.userId}`,
+            "avatar":`${IMAGE_URL}/${req.user.userId}`,
             "verified":undefined
         })
     }
