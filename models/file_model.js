@@ -66,7 +66,7 @@ const uploadFile = async(data) => {
         }
         for(let i=0; i<table.length; i++){
             //console.log(table[i])
-            if (table[i] != null && table[i].length != table[start-1].length) {
+            if (table[i] != null && table[i].length != table[start-1].length && i >= start) {
                 table[i] = table[i].concat(new Array(table[start-1].length - table[i].length).fill(''));
                 table[i][4] += '%$^&' + table[i+1][0] + '%$^&' + table[i+2][0];
                 table[i][5] = table[i+2][1];
