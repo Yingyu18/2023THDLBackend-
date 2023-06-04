@@ -167,7 +167,7 @@ const login = async (req, res) => {
                 username: user.USER_NAME,
                 email: user.EMAIL,
                 verified: true,
-                avatar: `${IMAGE_URL}/${req.user.userId}`,
+                avatar: `${IMAGE_URL}/${user.USER_ID}`,
                 country: user.COUNTRY,
                 institution: user.INSTITUTION,
                 title: user.TITLE,
@@ -290,7 +290,7 @@ const updateUserInfo = async (req, res) => {
             "title": user.TITLE,
             "researchTopics":user.RESEARCH_TOPIC,
             "avatar":`${IMAGE_URL}/${req.user.userId}`,
-            "verified":undefined
+            "verified": user.STATUS
         })
     }
 };
