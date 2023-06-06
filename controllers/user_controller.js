@@ -56,7 +56,7 @@ const signUp = async (req, res) => {
         });
         // 設置郵件選項
         const auth_token = user.access_token
-        const ACTION_URL = `http://localhost:3000/auth/${auth_token}`
+        const ACTION_URL = `https://twdh.vercel.app/auth/${auth_token}`
         const mailOptions = {
             from: process.env.GMAIL_ACCOUNT,
             to: email,
@@ -104,7 +104,7 @@ const forgetPassword = async (req, res) =>{
             email: email,
             //userId: user.id.toString()
         }, TOKEN_SECRET);
-        const ACTION_URL = `http://localhost:3000/pwreset/${auth_token}`
+        const ACTION_URL = `https://twdh.vercel.app/pwreset/${auth_token}`
         const mailOptions = {
             from: process.env.GMAIL_ACCOUNT,
             to: email,

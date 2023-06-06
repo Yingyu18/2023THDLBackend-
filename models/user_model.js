@@ -154,7 +154,8 @@ const updateUserInfo = async (req) => {
         console.log("body: ",req.file.filename)
         const {email} = req.user;
         if(req.file.fieldname==='avatar'){
-            const result = await pool.query(`UPDATE user_profile SET avatar = '${IMAGE_URL}/${req.file.filename}' WHERE EMAIL = '${email}'`);
+            //let result = await pool.query(`SELECT FROM user_profile SET avatar = '${IMAGE_URL}/${req.file.filename}' WHERE EMAIL = '${email}'`);
+             result = await pool.query(`UPDATE user_profile SET avatar = '${IMAGE_URL}/${req.file.filename}' WHERE EMAIL = '${email}'`);
         }
         if (username){
             const result = await pool.query(`UPDATE user_profile SET USER_NAME = '${username}' WHERE EMAIL = '${email}'`);
