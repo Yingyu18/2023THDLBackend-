@@ -75,7 +75,7 @@ const uploadFile = async(data) => {
         //console.log("after merge , : ",table)
         // insert Into database
         let qryStr = 'INSERT INTO file_db (fileName, USER_ID, USER_NAME, Start_Row, content, upload_time, size, source, lastModified, isMapped) VALUES (?,?,?,?,?,?,?,?,?,?)'
-        const result = await conn.query(qryStr, [filename, userId, uploader, start, table, new Date().getTime().toString(), size, sourceNo, lastModified, 0])
+        const result = await conn.query(qryStr, [filename, userId, uploader, start, table, new Date().getTime(), size, sourceNo, lastModified, 0])
         result.source = source
         return result
 
@@ -155,7 +155,7 @@ const insertSecMap = async(data) => {
     const {csvID, projectID, map} = data
     try{
         let qryStr = `INSERT INTO sec_map (fileID, map_ID, sec_map, create_time, isMapped) VALUES (?,?,?,?,?)`
-        var results = await conn.query(qryStr, [csvID, projectID, map, new Date(), 1])
+        var results = await conn.query(qryStr, [csvID, projectID, map, new Date().getTime().toString(), 1])
         return results
     } catch (error){
         console.log(error)
@@ -172,15 +172,15 @@ const updateFile = async(req) => {
     try{
         if(name!=undefined){
             let qryStr = `UPDATE file_db SET updated=?, fileName = ? WHERE fileID=? AND USER_ID=?`
-            var results = await conn.query(qryStr, [new Date().getTime().toString(), name, parseInt(id), userId]);
+            var results = await conn.query(qryStr, [new Date().getTime(), name, parseInt(id), userId]);
         }
         if(start != undefined){
             let qryStr = `UPDATE file_db SET updated=?, Start_Row = ? WHERE fileID=? AND USER_ID=?`
-            var results = await conn.query(qryStr, [new Date().getTime().toString(), start, parseInt(id), userId]);
+            var results = await conn.query(qryStr, [new Date().getTime(), start, parseInt(id), userId]);
         }
         if(req.url != undefined){
             let qryStr = `UPDATE file_db SET updated=?, url=? WHERE fileID=? AND USER_ID=?`
-            var results = await conn.query(qryStr, [new Date().getTime().toString(), `${FILE_URL}/${userId}/${id}`, parseInt(id), userId]);
+            var results = await conn.query(qryStr, [new Date().getTime(), `${FILE_URL}/${userId}/${id}`, parseInt(id), userId]);
         }
         return results
     } catch (error){

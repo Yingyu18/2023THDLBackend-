@@ -42,7 +42,7 @@ const uploadFile = async (req, res) =>{
     result  = await File.getCsv(result.insertId)
     res.status(200).json({ 
         id: result.fileID.toString(),
-        created: new Date(),
+        created: new Date().getTime(),
         filedata: name,
         name: name,
         uploader: uploader,
@@ -148,7 +148,7 @@ const updateFile = async (req, res) => {
         "source": source,
         "url": result.url,
         message:`update file name to ${name} success`,
-        updated: new Date().getTime().toString()
+        updated: new Date().getTime()
 })
 
 }
