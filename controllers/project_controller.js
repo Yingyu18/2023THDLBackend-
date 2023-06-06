@@ -101,6 +101,7 @@ const getProjects = async (req, res) => {
     for (let i = 0; i < projects.length; i++) {
         //console.log(projects[i])
         let { fileID, upload_time, fileName, updated, isMapped, isBuilt, description, sourceCsvs} = projects[i]
+        console.log(projects[i])
         upload_time = upload_time.toString()
         updated = updated.toSting()
         let xml_id = projects[i].cores_xml_id

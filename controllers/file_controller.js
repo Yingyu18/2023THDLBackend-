@@ -111,6 +111,7 @@ const getCsv = async (req, res) => {
     for (let i = 0; i < csvs.length; i++) {
         let { fileID, upload_time, fileName, type, size, lastModified, source, url} = csvs[i];
         upload_time = upload_time.toString()
+        lastModified = lastModified.toString()
         const uploader = csvs[i].USER_NAME;
         if(source === '0'){source = '國史館檔案史料文物'}
         else if(source === '1'){source = '地方議會議事錄總庫';}
