@@ -65,9 +65,8 @@ const uploadFile = async(data) => {
             needShift = 1;
         }
         for(let i=0; i<table.length; i++){
-            //console.log(table[i])
             if (needShift == 1 && i >= start - 1) {table[i].shift();}
-            table[i] = table[i].join(',');
+            table[i] = table[i].join(',');            
         }
         //console.log(table[table.length-1])
         table = table.join('\n')

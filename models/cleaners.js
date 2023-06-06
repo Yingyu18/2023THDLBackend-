@@ -18,7 +18,7 @@ class cleaner {
         if (time == '' || time == null) {return '0000-00-00';}
         if (time.lenght < 5) {time += '-00-00';}
         if (time[6] == '-') {time = time.substring(0, 5) + '0' + time.substring(5);}
-        if (time.lenght < 10 || time[9] == ' ') {time = time.substring(0, 8) + '0' + time.substring(8);}
+        if (time.length < 10 || time[9] == ' ') {time = time.substring(0, 8) + '0' + time.substring(8);}
         return time;
     }
 
@@ -59,18 +59,20 @@ class cleaner {
                     continue;
                 }
                 let org = table[curRow][start];
-                org = org.replaceAll('/', '-');
+                let sorg = org.replaceAll('/', '-');
                 if (org.length == 23) {
-                    let temp = table[curRow][start].substring(13, 23);
+                    let temp = sorg.substring(13, 23);
                     temp = await this.timeFormat(temp);                       
-                    table[curRow][start] = await this.timeFormat(table[curRow][start].substring(0, 10)) + '&' + temp + '&' + org;
+                    table[curRow][start] = await this.timeFormat(sorg.substring(0, 10)) + '&' + temp + '&' + org;
                 } else if (org.length == 10) {                 
                     table[curRow][start] = '0000-00-00&0000-00-00&0000-00-00';
                 } else {
-                    let temp = org.split(' ');
+                    let temp = sorg.split(' ');
+                    console.log('teeeemp  = ' + temp);
                     let st = await this.timeFormat(temp[0]);      
-                    let ed = await this.timeFormat(temp[2]);                    
+                    let ed = await this.timeFormat(temp[2]);                     
                     table[curRow][start] = st + '&' + ed + '&' + org;
+                    console.log('tstres  = ' + table[curRow][start]);
                 }
                 curRow++;
             }

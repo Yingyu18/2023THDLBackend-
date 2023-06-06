@@ -168,7 +168,11 @@ class tableFunc {
       for (let i = 0; i < table[idx-1].length; i++) {
         let container = [];
         for (let j = idx; j < table.length; j++) {
-          if (container.includes(table[j][i])) {break;}
+          if (table[j][i] == null || table[j][i] == '') {
+            if (j == table.length - 1) {result.push(table[idx-1][i]);}
+            continue;
+          }
+          else if (container.includes(table[j][i])) {break;}
           else {
             container.push(table[j][i]);
             if (j == table.length - 1) {result.push(table[idx-1][i]);}
