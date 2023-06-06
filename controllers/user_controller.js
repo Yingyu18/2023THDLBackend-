@@ -83,7 +83,7 @@ const signUp = async (req, res) => {
                 institution: user.institution,
                 title: user.title,
                 researchTopics: user.researchTopic,
-                sid: ""
+                sid: user.sid
         }
     );
 };
@@ -158,7 +158,14 @@ const login = async (req, res) => {
 
     //login Docusky 
     result = await loginDocuSky(user.EMAIL, user.PASSWORD)
-
+    req.body = {}
+    req.user = {
+        'userId':user.USER_ID,
+        'email': user.EMAIL 
+    } 
+    req.sid = result.DocuSky_SID
+    await User.updateUserInfo(req)
+    
     res.status(200).send({
             token: user.ACCESS_TOKEN,
             record: {
@@ -270,7 +277,8 @@ const getUserInfo = async (req, res) => {
             "country": user.COUNTRY,
             "institution": user.INSTITUTION,
             "title": user.TITLE,
-            "researchTopics":user.RESEARCH_TOPIC
+            "researchTopics":user.RESEARCH_TOPIC,
+            "sid": user.sid
         }
     })
 };
@@ -288,7 +296,8 @@ const updateUserInfo = async (req, res) => {
             "title": user.TITLE,
             "researchTopics":user.RESEARCH_TOPIC,
             "avatar": user.avatar,
-            "verified": user.STATUS
+            "verified": user.STATUS,
+            "sid":user.sid
         })
     }
 };

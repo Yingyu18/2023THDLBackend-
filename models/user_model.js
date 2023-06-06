@@ -93,7 +93,7 @@ const login = async (identity, password) => {
             return {error: 401};
         }
 
-        const loginAt = new Date();
+        const loginAt = new Date().getDate();
         const accessToken = jwt.sign({
             name: user.USER_NAME,
             email: user.EMAIL,
@@ -111,7 +111,7 @@ const login = async (identity, password) => {
         console.log("user: ", user)
         return {user};
     } catch (error) {
-        consolr.log(error)
+        console.log(error)
         await conn.query('ROLLBACK');
         return {error};
     } finally {
@@ -149,14 +149,15 @@ const getUserDetail = async (identity) => {
 
 const updateUserInfo = async (req) => {
     try {
-        const {username, password, country, institution, title, researchTopic, avatar} = req.body;
+        const {username, password, country, institution, title, researchTopics, avatar} = req.body;
         const {userId} =  req.user
-        console.log("body: ",req.file.filename)
+        const {sid} = req
         const {email} = req.user;
+        if(req.file){
         if(req.file.fieldname==='avatar'){
             //let result = await pool.query(`SELECT FROM user_profile SET avatar = '${IMAGE_URL}/${req.file.filename}' WHERE EMAIL = '${email}'`);
              result = await pool.query(`UPDATE user_profile SET avatar = '${IMAGE_URL}/${userId.toString()}/${req.file.filename}' WHERE EMAIL = '${email}'`);
-        }
+        }}
         if (username){
             const result = await pool.query(`UPDATE user_profile SET USER_NAME = '${username}' WHERE EMAIL = '${email}'`);
         }
@@ -178,8 +179,11 @@ const updateUserInfo = async (req) => {
         if (title){
             const result = await pool.query(`UPDATE user_profile SET TITLE = '${title}' WHERE EMAIL = '${email}'`);
         }
-        if (researchTopic){
-            const result = await pool.query(`UPDATE user_profile SET RESEARCH_TOPIC = '${researchTopic}' WHERE EMAIL = '${email}'`);
+        if (researchTopics){
+            const result = await pool.query(`UPDATE user_profile SET RESEARCH_TOPIC = '${researchTopics}' WHERE EMAIL = '${email}'`);
+        }
+        if(sid){
+            await pool.query(`UPDATE user_profile SET sid = ? WHERE EMAIL = ?`, [sid, email]);
         }
         const user = await pool.query(`SELECT * FROM user_profile WHERE EMAIL = '${email}'`);
         return user[0];
