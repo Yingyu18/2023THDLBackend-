@@ -150,11 +150,12 @@ const getUserDetail = async (identity) => {
 const updateUserInfo = async (req) => {
     try {
         const {username, password, country, institution, title, researchTopic, avatar} = req.body;
+        const {userId} =  req.user
         console.log("body: ",req.file.filename)
         const {email} = req.user;
         if(req.file.fieldname==='avatar'){
             //let result = await pool.query(`SELECT FROM user_profile SET avatar = '${IMAGE_URL}/${req.file.filename}' WHERE EMAIL = '${email}'`);
-             result = await pool.query(`UPDATE user_profile SET avatar = '${IMAGE_URL}/${req.file.filename}' WHERE EMAIL = '${email}'`);
+             result = await pool.query(`UPDATE user_profile SET avatar = '${IMAGE_URL}/${userId.toString()}/${req.file.filename}' WHERE EMAIL = '${email}'`);
         }
         if (username){
             const result = await pool.query(`UPDATE user_profile SET USER_NAME = '${username}' WHERE EMAIL = '${email}'`);

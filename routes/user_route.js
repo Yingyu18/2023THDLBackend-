@@ -25,7 +25,10 @@ const {
 
 const multer = require('multer');
 const storage = multer.diskStorage({
-  destination: `avatar/`,
+  destination: (req, file, cb) => {
+    const path = `avatar/${req.user.userId.toString()}`
+    cb(null, path);
+  },
     //cb(null, `avatar/${req.user.userId}`)
   filename: (req, file, cb) => {
     const uniqueFileName = Math.floor(Math.random() * 10000).toString();
