@@ -6,16 +6,11 @@ const uploadFile = async(req) => {
     try {
         const {sourceCsvs, name, is_mapped, owner, is_built, description} = req.body
         const {userId} = req.user
-        let qryStr = `INSERT INTO file_db (content, type, Start_Row, upload_time, updated, fileName, isMapped, USER_NAME, USER_ID, isBuilt, sourceCsvs, description)
-         VALUES (?,?,?,?,?,?,?,?,?,?,?,?)`
+        let qryStr = `INSERT INTO file_db (content, type, Start_Row, upload_time, updated, fileName, USER_NAME, USER_ID, sourceCsvs, description)
+         VALUES (?,?,?,?,?,?,?,?,?,?)`
          //console.log(`${sourceCsvs}`)
-        let result = await conn.query(qryStr, ["", "json", 1, new Date().getTime().toString(), new Date().getTime().toString(), name, is_mapped, owner, userId, is_built, `${sourceCsvs}`, description])
+        let result = await conn.query(qryStr, ["", "json", 1, new Date().getTime().toString(), new Date().getTime().toString(), name, owner, userId, `${sourceCsvs}`, description])
         const project_id = result.insertId;
-
-        //TODO: if all sourceCsvs have map, isMapped 設成 1
-        for(let i=0; i<sourceCsvs.length; i++){
-            result = await conn.query('SELECT * FROM file_db WHERE fileID=?', [parseInt(sourceCsvs[i])])
-        }
 
         // insert into sourceCsvs
         for(let i=0; i<sourceCsvs.length; i++){

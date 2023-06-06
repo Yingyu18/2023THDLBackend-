@@ -42,7 +42,9 @@ const uploadFile = async (req, res)=> {
                 return res.status(500).send({message:"internal server error"})
             }
         }
-        else(isMapped = 0)
+        else{
+            console.log("isMapped = 0")
+            isMapped = 0}
     }
     // update project isMapped to 1
     if(isMapped){
@@ -53,7 +55,7 @@ const uploadFile = async (req, res)=> {
             params:{
                 id:projectID
             }
-    }
+        }
         const result = await Project.updateProject(req)
         if(result.error){
             return res.status(500).send({message:"update isMapped fail"})
