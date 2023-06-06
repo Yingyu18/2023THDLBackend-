@@ -104,8 +104,8 @@ const getProjects = async (req, res) => {
         //console.log(projects[i])
         let { fileID, upload_time, fileName, updated, isMapped, isBuilt, description, sourceCsvs} = projects[i]
         console.log(projects[i])
-        upload_time = upload_time
-        updated = updated
+        upload_time = parseInt(upload_time)
+        updated = parseInt(updated)
         let xml_id = projects[i].cores_xml_id
         const owner = projects[i].USER_NAME
         const thumbnail = ''
@@ -130,8 +130,8 @@ const getProject = async (req, res) => {
     if(project.error){
         return res.status(500).send({message:"internal server error"})
     }
-    project.upload_time = project.upload_time.toString()
-    project.updated = project.updated.toString()
+    project.upload_time = parseInt(project.upload_time)
+    project.updated = parseInt(project.updated)
     console.log(project)
     res.status(200).send(project)
 }
@@ -164,8 +164,8 @@ const updateProject = async (req, res) => {
     }
     res.status(200).send({
             "fileID": result.fileID,
-            "uploaded_time": result.upload_time,
-            "updated": result.updated,
+            "uploaded_time": parseInt(result.upload_time),
+            "updated": parseInt(result.updated),
             "sourceCsvs": sourceCsvs,
             "name": result.fileName,
             "isMapped": Boolean(result.isMapped),
