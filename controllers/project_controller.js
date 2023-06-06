@@ -104,19 +104,19 @@ const getProjects = async (req, res) => {
         //console.log(projects[i])
         let { fileID, upload_time, fileName, updated, isMapped, isBuilt, description, sourceCsvs} = projects[i]
         console.log(projects[i])
-        upload_time = upload_time.toString()
-        updated = updated.toString()
+        upload_time = upload_time
+        updated = updated
         let xml_id = projects[i].cores_xml_id
         const owner = projects[i].USER_NAME
         const thumbnail = ''
-        const csvs = await Project.getSourceCsvs(fileID)
-        if(csvs.error){
-            return res.status(500).send({message:"internal server error"})
-        }
-        sourceCsvs = []
-        for(let i=0; i<csvs.length; i++){
-            sourceCsvs[i] = csvs[i].csv_name
-        }
+        // const csvs = await Project.getSourceCsvs(fileID)
+        // if(csvs.error){
+        //     return res.status(500).send({message:"internal server error"})
+        // }
+        // sourceCsvs = []
+        // for(let i=0; i<csvs.length; i++){
+        //     sourceCsvs[i] = csvs[i].csv_name
+        // }
         if(isMapped){isMapped=true}else{isMapped=false}
         if(isBuilt){isBuilt=true}else{isBuilt=false}
         data.push({ fileID, upload_time, updated, description, sourceCsvs, fileName, isMapped, owner, thumbnail, isBuilt, description, xml_id })
