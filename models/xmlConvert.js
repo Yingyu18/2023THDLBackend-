@@ -66,7 +66,6 @@ class XMLConverter {
             } else if (js["xmlTags"][i]==="doc_content") {
               for (let j = 1; j <= len; j++) {
                 if (js["file" + j][i] == null) {continue;}
-                js["file" + j][i] = await this.cleanXmlStr(js["file" + j][i]);
                 docuconts[j-1] += "        " + js["file" + j][i];
               }
             } else if (js["xmlTags"][i]==="timeseq_not_before" || js["xmlTags"][i]==="timeseq_not_after") {
