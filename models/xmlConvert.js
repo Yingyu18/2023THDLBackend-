@@ -24,7 +24,7 @@ class XMLConverter {
       return str;
     }
 
-    toXML (js, corpus_name) {
+    async toXML (js, corpus_name) {
         var len = Object.keys(js).length - 2;
         var cnt = 1;
         var xml = "<?xml version=\"1.0\"?><ThdlPrototypeExport>\n \
@@ -48,38 +48,38 @@ class XMLConverter {
               xml +="      <"+ dataname + " show_spotlight=\"Y\">" + js["columns"][i] + "</" + dataname + ">\n";
               for (let j = 1; j <= len; j++) {
                 if (js["file" + j][i] == null) {continue;}
-                js["file" + j][i] = this.cleanXmlStr(js["file" + j][i]);
+                js["file" + j][i] = await this.cleanXmlStr(js["file" + j][i]);
                 docuudef[j-1] += "        <" + dataname + ">" + js["file" + j][i] + "</" + dataname + ">\n" ;
               }
             } else if (js["xmlTags"][i]==="filename"){ 
               for (let j = 1; j <= len; j++) {
                 if (js["file" + j][i] == null) {continue;}
-                js["file" + j][i] = this.cleanXmlStr(js["file" + j][i]);
+                js["file" + j][i] = await this.cleanXmlStr(js["file" + j][i]);
                 docuheads[j-1] += "    <document filename=\"" + js["file" + j][i] + "\">\n      <corpus>" + corpus_name + "</corpus>\n";
               }
             } else if (js["xmlTags"][i]==="title") {
               for (let j = 1; j <= len; j++) {
                 if (js["file" + j][i] == null) {continue;}
-                js["file" + j][i] = this.cleanXmlStr(js["file" + j][i]);
+                js["file" + j][i] = await this.cleanXmlStr(js["file" + j][i]);
                 docuheads[j-1] += "      <title>" + js["file" + j][i] + "</title>\n";
               }
             } else if (js["xmlTags"][i]==="doc_content") {
               for (let j = 1; j <= len; j++) {
                 if (js["file" + j][i] == null) {continue;}
-                js["file" + j][i] = this.cleanXmlStr(js["file" + j][i]);
+                js["file" + j][i] = await this.cleanXmlStr(js["file" + j][i]);
                 docuconts[j-1] += "        " + js["file" + j][i];
               }
             } else if (js["xmlTags"][i]==="timeseq_not_before" || js["xmlTags"][i]==="timeseq_not_after") {
               for (let j = 1; j <= len; j++) {
                 if (js["file" + j][i] == null) {continue;}
-                js["file" + j][i] = this.cleanXmlStr(js["file" + j][i]);
+                js["file" + j][i] = await this.cleanXmlStr(js["file" + j][i]);
                 docubodys[j-1] += "      <" + js["xmlTags"][i] + ">" + js["file" + j][i].replaceAll("-", "") + "</" + js["xmlTags"][i] + ">\n";
               }
             } else {
               xml +="      <"+js["xmlTags"][i] + " show_spotlight=\"Y\">" + js["columns"][i] + "</" + js["xmlTags"][i] + ">\n";
               for (let j = 1; j <= len; j++) {
                 if (js["file" + j][i] == null) {continue;}
-                js["file" + j][i] = this.cleanXmlStr(js["file" + j][i]);
+                js["file" + j][i] = await this.cleanXmlStr(js["file" + j][i]);
                 docubodys[j-1] += "      <" + js["xmlTags"][i] + ">" + js["file" + j][i] + "</" + js["xmlTags"][i] + ">\n";
               }
             }
@@ -93,10 +93,9 @@ class XMLConverter {
             cnt++;
             for (let j = 1; j <= len; j++) {
               if (js["file" + j][i] == null) {continue;}
-              js["file" + j][i] = this.cleanXmlStr(js["file" + j][i]);
               let alltags = js[String("file" + j)][i].split(";");
               for (let k = 0; k < alltags.length; k++) {
-                docutags[j-1] += "        <Udef_" + tagName + ">" + alltags[k] + "</Udef_" + tagName + ">\n" ;
+                docutags[j-1] += "        <Udef_" + tagName + ">" + await this.cleanXmlStr(alltags[k]) + "</Udef_" + tagName + ">\n" ;
               }
             }
           }
