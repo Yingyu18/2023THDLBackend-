@@ -6,7 +6,7 @@ const uploadFile = async(req) => {
     try {
         const {sourceCsvs, name, is_mapped, owner, is_built, description} = req.body
         const {userId} = req.user
-        let qryStr = `INSERT INTO file_db (content, type, Start_Row, upload_time, lastModified, fileName, isMapped, USER_NAME, USER_ID, isBuilt, sourceCsvs, description)
+        let qryStr = `INSERT INTO file_db (content, type, Start_Row, upload_time, updated, fileName, isMapped, USER_NAME, USER_ID, isBuilt, sourceCsvs, description)
          VALUES (?,?,?,?,?,?,?,?,?,?,?,?)`
          //console.log(`${sourceCsvs}`)
         let result = await conn.query(qryStr, ["", "json", 1, new Date().getTime(), new Date().getTime(), name, is_mapped, owner, userId, is_built, `${sourceCsvs}`, description])
