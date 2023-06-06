@@ -128,6 +128,9 @@ const getProject = async (req, res) => {
     if(project.error){
         return res.status(500).send({message:"internal server error"})
     }
+    project.upload_time = project.upload_time.toString()
+    project.updated = project.updated.toString()
+    console.log(project)
     res.status(200).send(project)
 }
 
