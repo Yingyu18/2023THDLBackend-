@@ -24,7 +24,7 @@ class XMLConverter {
       return str;
     }
 
-    async toXML (js, corpus_name) {
+    async toXML (js, corpus_name, tagsArr) {
         var len = Object.keys(js).length - 2;
         var cnt = 1;
         var xml = "<?xml version=\"1.0\"?><ThdlPrototypeExport>\n \
@@ -35,6 +35,13 @@ class XMLConverter {
       <metadata_field_settings>\n\ ";
         var featAnal = "    <feature_analysis>\n";    
         var tags =  "";
+        if (tagsArr != '') {
+          for (let i = 0; i < tagsArr.length; i++) {
+            featAnal += "      <spotlight category=\""+ tagsArr[i] + "\"  sub_category=\"-\" display_order=\"" + cnt + "\" title=\"" + tagsArr[i] + "/-\"/>\n";
+            tags += "      <tag type=\"contentTagging\" name=\""+ tagsArr[i] + "\" default_category=\"" + tagsArr[i] + "\" default_sub_category=\"-\"/>\n";
+            cnt++
+          }
+        }
         var docuheads = new Array(len).fill("");
         var docubodys = new Array(len).fill("");  
         var docuudef = new Array(len).fill("      <xml_metadata>\n");

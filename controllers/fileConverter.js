@@ -16,7 +16,10 @@ module.exports = class handler {
     }
 
     async buildXml(js, corpus_name, pid, uid, email, uname) {
-        var xml = await XMLConvert.toXML(js, corpus_name);
+        var tags = await jsonConvert.getTg(pid);
+        if (tags.error) {tags = '';}
+        else {tags = tags.split(',');}
+        var xml = await XMLConvert.toXML(js, corpus_name, tags);
         let res = await XMLConvert.saveXML(xml, pid, uid, corpus_name, uname); 
         var bres = await docuskyBuilder(email, corpus_name, xml)
         if (bres) {let temp = await tableFunc.setBuilt(pid);}
