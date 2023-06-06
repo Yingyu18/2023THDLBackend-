@@ -158,7 +158,7 @@ const updateProject = async (req, res) => {
     res.status(200).send({
             "fileID": result.fileID,
             "uploaded_time": result.upload_time,
-            "updated": result.lastModified,
+            "updated": result.updated,
             "sourceCsvs": sourceCsvs,
             "name": result.fileName,
             "isMapped": Boolean(result.isMapped),
