@@ -1,4 +1,4 @@
-    require('dotenv').config();
+require('dotenv').config();
 const File = require('../models/file_model');
 var fs = require('fs');
 const {FILE_URL} = process.env;
@@ -33,20 +33,20 @@ const uploadFile = async (req, res) =>{
       // Create the directory if it doesn't exist
       fs.mkdirSync(directory, { recursive: true });
     }
-    fs.appendFile(`./temp_files/${userId.toString()}/${result.insertId.toString()}`, content, function (err) {
+    fs.appendFile(`./temp_files/${userId.toString()}/${name}`, content, function (err) {
         if(err){console.log("build file fail")}
         console.log('Saved into file system');
     });
     if(result.error){
         return res.status(500).send({message: "internal server error"})
     }
-    req.url = 1
-    req.body = {}
-    req.params = {id:result.insertId}
-    let cons = await File.updateFile(req)
-    if(cons.error){
-        return res.status(500).send({message: "internal server error"})
-    }
+    // req.url = 1
+    // req.body = {}
+    // req.params = {id:result.insertId}
+    // let cons = await File.updateFile(req)
+    // if(cons.error){
+    //     return res.status(500).send({message: "internal server error"})
+    // }
     result  = await File.getCsv(result.insertId)
     res.status(200).json({ 
         id: result.fileID.toString(),

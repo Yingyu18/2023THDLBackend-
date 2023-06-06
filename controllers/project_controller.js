@@ -69,7 +69,7 @@ const uploadFile = async (req, res)=> {
         "updated": new Date().getTime().toString(),
         "sourceCsvs":req.body.sourceCsvs,
         "name": req.body.name,
-        "isMapped": false,
+        "isMapped": isMapped,
         "owner": req.body.owner,
         "thumbnail": "",
         "description": req.body.description,
