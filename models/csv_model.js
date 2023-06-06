@@ -23,7 +23,7 @@ class csvConverter {
         let types = temp[1];
         let results = type == 1 ? [['唯一編碼', '來源系統', '來源系統縮寫', '文件原系統頁面URL', '題名', '檔案類型',
         '書卷名', '(類目階層)', '原始時間記錄', '西元年', '起始時間', '結束時間', '相關人員', '相關地點', 
-        '相關組織', '關鍵詞', '摘要/全文'], ['filename', 'doc_source', 'metadata/doc_source', 'metadata/doc_source.href', 'title', 'doctype',
+        '相關組織', '關鍵詞', '摘要/全文'], ['filename', 'doc_source', 'metadata/doc_sources', 'metadata/doc_source.href', 'title', 'doctype',
         'compilation_name', 'metatags/categoryABC', 'time_orig_str', 'year_for_grouping', 'timeseq_not_before', 'timeseq_not_after', 'metatags/PersonName',
          'metatags/PlaceName', 'metatags/Organization', 'metatags/Keywords', 'doc_content']] : await tableFunc.getJsonHead(jid, 2);      
         let extra = results[0].length;
