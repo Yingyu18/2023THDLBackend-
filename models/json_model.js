@@ -78,7 +78,31 @@ class jsonConverter {
           console.log(error);
         } 
       }
-         
+
+    async getTg(pid) {
+      try {
+        let conn = await pool.getConnection();
+        var sql = "SELECT map from file_DB where fileID = ?";
+        let result = await conn.query(sql, [pid]);  
+        conn.release();       
+        if (result[0] == null || result[0].map == '') {console.log('nul!'); return {"error" : 'no saved tags!'};}
+        else {console.log('not nul!'); return result[0].map;}   
+      } catch (error) {
+        console.log(error);
+      } 
+    }
+     
+    async saveTg(pid, tag) {
+      try {
+        let conn = await pool.getConnection(); 
+        var sql = "UPDATE file_DB SET map = ?, lastModified = ? where fileID = ?"      
+        let result = await conn.query(sql, [tag, new Date().getTime().toString(), pid]);
+        conn.release();
+        return 'done';   
+      } catch (error) {
+        console.log(error);
+      } 
+     }  
 }
 
 
