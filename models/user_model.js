@@ -111,7 +111,7 @@ const login = async (identity, password) => {
         console.log("user: ", user)
         return {user};
     } catch (error) {
-        consolr.log(error)
+        console.log(error)
         await conn.query('ROLLBACK');
         return {error};
     } finally {
