@@ -26,8 +26,15 @@ const uploadFile = async (req, res) =>{
     //stroe contents into database
     let result = await File.uploadFile(data);
     console.log(result)
+
+    const directory = `./temp_files/${userId.toString()}`;
+    // Check if the directory exists
+    if (!fs.existsSync(directory)) {
+      // Create the directory if it doesn't exist
+      fs.mkdirSync(directory, { recursive: true });
+    }
     fs.appendFile(`./temp_files/${userId.toString()}/${result.insertId.toString()}`, content, function (err) {
-        if (err) throw err;
+        if(err){console.log("build file fail")}
         console.log('Saved into file system');
     });
     if(result.error){
@@ -76,32 +83,32 @@ const deleteFile = async (req, res) => {
 }
 
 
-//TODO: complete it
-const downloadFile = async (req, res) => {
-    // get content from database
-    const {id} = req.params
-    const {userId} = req.user
-    let text = await File.getContent(id);
-    const directoryPath = `./temp_files/${req.user.userId.toString()}`;
-    fs.mkdir(directoryPath, { recursive: true }, (err) => {
-  if (err) {
-    console.error('Error creating directory:', err);
-  } else {
-    console.log('Directory created successfully');
-  }
-});
-   //create file
-    fs.appendFile(`./temp_files/${userId.toString()}/${id.toString()}`, text, function (err) {
-        if (err) throw err;
-        console.log('Saved!');
-    });
+// //TODO: complete it
+// const downloadFile = async (req, res) => {
+//     // get content from database
+//     const {id} = req.params
+//     const {userId} = req.user
+//     let text = await File.getContent(id);
+//     const directoryPath = `./temp_files/${req.user.userId.toString()}`;
+//     fs.mkdir(directoryPath, { recursive: true }, (err) => {
+//   if (err) {
+//     console.error('Error creating directory:', err);
+//   } else {
+//     console.log('Directory created successfully');
+//   }
+// });
+//    //create file
+//     fs.appendFile(`./temp_files/${userId.toString()}/${id.toString()}`, text, function (err) {
+//         if (err) throw err;
+//         console.log('Saved!');
+//     });
 
-    // fs.unlink('./temp_files/mynewfile1.csv', function (err) {
-    //     if (err) throw err;
-    //     console.log('File deleted!');
-    // });
-    return res.status(200).send({url:`${FILE_URL}/${userId.toString()}/${id.toString()}`})
-}
+//     // fs.unlink('./temp_files/mynewfile1.csv', function (err) {
+//     //     if (err) throw err;
+//     //     console.log('File deleted!');
+//     // });
+//     return res.status(200).send({url:`${FILE_URL}/${userId.toString()}/${id.toString()}`})
+// }
 
 const getCsv = async (req, res) => {
     let csvs = await File.getCsvs(req); console.log('123456 = ' + csvs);
@@ -159,7 +166,6 @@ const updateFile = async (req, res) => {
 module.exports = {
     uploadFile,
     deleteFile,
-    downloadFile,
     getCsv,
     updateFile
 };
