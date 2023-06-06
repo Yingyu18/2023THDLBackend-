@@ -177,6 +177,8 @@ const updateFile = async(req) => {
         if(name!=undefined){
             let qryStr = `UPDATE file_db SET updated=?, fileName = ? WHERE fileID=? AND USER_ID=?`
             var results = await conn.query(qryStr, [new Date().getTime().toString(), name, parseInt(id), userId]);
+            qryStr = `UPDATE file_db SET updated=?, url=? WHERE fileID=? AND USER_ID=?`
+            await conn.query(qryStr, [new Date().getTime().toString(), `${FILE_URL}/${userId}/${name}`, parseInt(id), userId]);
         }
         if(start != undefined){
             let qryStr = `UPDATE file_db SET updated=?, Start_Row = ? WHERE fileID=? AND USER_ID=?`
