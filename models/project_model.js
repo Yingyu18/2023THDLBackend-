@@ -9,7 +9,7 @@ const uploadFile = async(req) => {
         let qryStr = `INSERT INTO file_db (content, type, Start_Row, upload_time, updated, fileName, isMapped, USER_NAME, USER_ID, isBuilt, sourceCsvs, description)
          VALUES (?,?,?,?,?,?,?,?,?,?,?,?)`
          //console.log(`${sourceCsvs}`)
-        let result = await conn.query(qryStr, ["", "json", 1, new Date().getTime(), new Date().getTime(), name, is_mapped, owner, userId, is_built, `${sourceCsvs}`, description])
+        let result = await conn.query(qryStr, ["", "json", 1, new Date().getTime().toString(), new Date().getTime().toString(), name, is_mapped, owner, userId, is_built, `${sourceCsvs}`, description])
         const project_id = result.insertId;
 
         //TODO: if all sourceCsvs have map, isMapped 設成 1
@@ -136,7 +136,7 @@ const updateProject = async(req) => {
         if(description != undefined){
             let result = await conn.query('UPDATE file_db SET description=? WHERE fileID=?',[description, projectId])
         }
-        await conn.query('UPDATE file_db SET updated=? WHERE fileID=?',[new Date().getTime(), projectId])
+        await conn.query('UPDATE file_db SET updated=? WHERE fileID=?',[new Date().getTime().toString(), projectId])
         
 
         const results = await conn.query(`SELECT * FROM file_db WHERE fileID = ?`, [projectId]);

@@ -65,8 +65,8 @@ const uploadFile = async (req, res)=> {
 
     res.status(200).send({
         "fileID": result.toString(),
-        "upload_time": new Date().getTime(),
-        "updated": new Date().getTime(),
+        "upload_time": new Date().getTime().toString(),
+        "updated": new Date().getTime().toString(),
         "sourceCsvs":req.body.sourceCsvs,
         "name": req.body.name,
         "isMapped": false,

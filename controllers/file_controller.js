@@ -151,7 +151,7 @@ const updateFile = async (req, res) => {
         "source": source,
         "url": result.url,
         message:`update file name to ${name} success`,
-        updated: new Date().getTime()
+        updated: new Date().getTime().toString()
 })
 
 }
