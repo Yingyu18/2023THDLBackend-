@@ -38,4 +38,14 @@ module.exports = class handler {
        res = await jsonConvert.resetMapStatus(pid);
        return {'message': 'insert done.'}
     }
+
+    async getTags(pid) {
+        let results = await jsonConvert.getTg(pid);       
+        return results;
+     }
+     
+     async saveTags(pid, tag) {
+        let results = await jsonConvert.saveTg(pid, tag);       
+        return results;
+     }
 }

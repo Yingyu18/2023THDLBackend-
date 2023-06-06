@@ -28,6 +28,33 @@ router.post('/goToEdit', bodyParser.json(), authentication, async function(req, 
     }
 });
 
+router.post('/getTags', bodyParser.json(), authentication, async function(req, res) {
+    var pid = req.body.project_id;
+    var content = await handler.getTags(pid);
+    if (content.error) {
+        res.status(400).send(content.error);
+        return ;
+    }
+    else {
+        res.status(200).send(content);
+        return ;
+    }
+});
+
+router.post('/saveTags', bodyParser.json(), authentication, async function(req, res) {
+    var pid = req.body.project_id;
+    var tag = req.body.tag;
+    var content = await handler.saveTags(pid, tag);
+    if (content.error) {
+        res.status(400).send(content.error);
+        return ;
+    }
+    else {
+        res.status(200).send('tag save success!');
+        return ;
+    }
+});
+
 
 router.post('/appendNew',bodyParser.json(), authentication, async function(req, res) {
     var fid = req.body.file_id;
