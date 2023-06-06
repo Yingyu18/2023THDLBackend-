@@ -31,6 +31,7 @@ router.post('/goToEdit', bodyParser.json(), authentication, async function(req, 
 router.post('/getTags', bodyParser.json(), authentication, async function(req, res) {
     var pid = req.body.project_id;
     var content = await handler.getTags(pid);
+    console.log('ttttttttlog' + content);
     if (content.error) {
         res.status(400).send(content.error);
         return ;
