@@ -43,7 +43,8 @@ module.exports = class handler {
     }
 
     async getTags(pid) {
-        let results = await jsonConvert.getTg(pid);       
+        let results = await jsonConvert.getTg(pid); 
+        console.log("tg res = " + results);      
         return results;
      }
      
