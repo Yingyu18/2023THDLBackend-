@@ -103,7 +103,7 @@ const getProjects = async (req, res) => {
         let { fileID, upload_time, fileName, updated, isMapped, isBuilt, description, sourceCsvs} = projects[i]
         console.log(projects[i])
         upload_time = upload_time.toString()
-        updated = updated.toSting()
+        updated = updated.toString()
         let xml_id = projects[i].cores_xml_id
         const owner = projects[i].USER_NAME
         const thumbnail = ''

@@ -25,6 +25,7 @@ const uploadFile = async (req, res) =>{
     }
     //stroe contents into database
     let result = await File.uploadFile(data);
+    console.log(result)
     fs.appendFile(`./temp_files/${userId.toString()}/${result.insertId.toString()}`, content, function (err) {
         if (err) throw err;
         console.log('Saved into file system');
