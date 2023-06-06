@@ -26,6 +26,12 @@ const {
 const multer = require('multer');
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
+    const directory = `./avatar/${req.user.userId.toString()}`;
+    // Check if the directory exists
+    if (!fs.existsSync(directory)) {
+      // Create the directory if it doesn't exist
+      fs.mkdirSync(directory, { recursive: true });
+    }
     const path = `avatar/${req.user.userId.toString()}`
     cb(null, path);
   },
@@ -36,6 +42,7 @@ const storage = multer.diskStorage({
   },
 });
 const uploadAvatar = multer({storage});
+
 
 router.post('/signup', signUp)
 router.post('/login', login)

@@ -5,6 +5,7 @@ const validator = require('validator');
 const User = require('../models/user_model');
 const bcrypt = require('bcrypt');
 const https = require('https');
+const fs = require('fs')
 
 const {TOKEN_EXPIRE, TOKEN_SECRET, IMAGE_URL } = process.env; 
 
@@ -72,6 +73,20 @@ const signUp = async (req, res) => {
             res.send('發送成功')
         }
         });
+        //create folder for user
+        let id = user.id.toString()
+        let directoryPath = `./temp_files/${id}`
+        fs.mkdir(directoryPath, { recursive: true }, (err) => {
+            if (err) {
+                console.error('Error creating directory:', err);
+            } 
+        })
+        directoryPath = `./avatar/${id}`
+        fs.mkdir(directoryPath, { recursive: true }, (err) => {
+            if (err) {
+                console.error('Error creating directory:', err);
+            } 
+        })
 
     res.status(200).send({
                 id: user.id.toString(),

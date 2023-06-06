@@ -31,8 +31,8 @@ router.patch('/updateCsv/:id', authentication, updateFile)
 //delete file
 router.delete('/delete/:id', authentication, deleteFile)
 
-//download file
-router.get('/download/:id', authentication, downloadFile)
+// //download file
+// router.get('/download/:id', authentication, downloadFile)
 
 //get file information
 router.get('/getCsvs', authentication, getCsv)
