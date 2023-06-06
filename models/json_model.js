@@ -95,7 +95,7 @@ class jsonConverter {
     async saveTg(pid, tag) {
       try {
         let conn = await pool.getConnection(); 
-        var sql = "UPDATE file_DB SET (map, lastModified) VALUES (?, ?) where fileID = ?"      
+        var sql = "UPDATE file_DB SET map = ?, lastModified = ? where fileID = ?"      
         let result = await conn.query(sql, [tag, new Date().getTime().toString(), pid]);
         conn.release();
         return 'done';   
