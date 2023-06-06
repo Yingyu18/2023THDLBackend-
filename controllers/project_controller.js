@@ -10,12 +10,10 @@ const uploadFile = async (req, res)=> {
     if (!req.body.sourceCsvs || !req.body.name || !req.body.owner) {
         return res.status(400).send({message:"Bad request"})
     }
-
     const result = await Project.uploadFile(req)
     if(result.error){
         return res.status(500).send({message:result.error})
     }
-
     const projectID = result
     //update sec_map table
     const {sourceCsvs} = req.body
@@ -44,7 +42,8 @@ const uploadFile = async (req, res)=> {
         }
         else{
             console.log("isMapped = 0")
-            isMapped = 0}
+            isMapped = 0
+        }
     }
     // update project isMapped to 1
     if(isMapped){
@@ -109,14 +108,14 @@ const getProjects = async (req, res) => {
         let xml_id = projects[i].cores_xml_id
         const owner = projects[i].USER_NAME
         const thumbnail = ''
-        // const csvs = await Project.getSourceCsvs(fileID)
-        // if(csvs.error){
-        //     return res.status(500).send({message:"internal server error"})
-        // }
-        // sourceCsvs = []
-        // for(let i=0; i<csvs.length; i++){
-        //     sourceCsvs[i] = csvs[i].csv_name
-        // }
+        const csvs = await Project.getSourceCsvs(fileID)
+        if(csvs.error){
+            return res.status(500).send({message:"internal server error"})
+        }
+        sourceCsvs = []
+        for(let i=0; i<csvs.length; i++){
+            sourceCsvs[i] = csvs[i].csv_id
+        }
         if(isMapped){isMapped=true}else{isMapped=false}
         if(isBuilt){isBuilt=true}else{isBuilt=false}
         data.push({ fileID, upload_time, updated, description, sourceCsvs, fileName, isMapped, owner, thumbnail, isBuilt, description, xml_id })
@@ -160,7 +159,7 @@ const updateProject = async (req, res) => {
     }
     let sourceCsvs = []
     for(let i=0; i<csvs.length; i++){
-        sourceCsvs[i] = csvs[i].csv_name;
+        sourceCsvs[i] = csvs[i].csv_id;
     }
     res.status(200).send({
             "fileID": result.fileID,
