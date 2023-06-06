@@ -4,8 +4,7 @@ var sha256 = require('js-sha256');
 const pool = require('./connection_db');
 const jwt = require('jsonwebtoken');
 const salt = parseInt(process.env.BCRYPT_SALT);
-const {TOKEN_EXPIRE, TOKEN_SECRET} = process.env; // 30 days by seconds
-const IMAGE_URL = "https://140.112.30.230:3002/images"
+const {TOKEN_EXPIRE, TOKEN_SECRET, IMAGE_URL} = process.env; // 30 days by seconds
 
 const signUp = async (data) => {
     let {username, email, password, country, institution, title, researchTopic} = data;

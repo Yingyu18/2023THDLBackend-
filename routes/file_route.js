@@ -32,7 +32,7 @@ router.patch('/updateCsv/:id', authentication, updateFile)
 router.delete('/delete/:id', authentication, deleteFile)
 
 //download file
-router.post('/download/:format(csv|json|xml)', authentication, downloadFile)
+router.get('/download/:id', authentication, downloadFile)
 
 //get file information
 router.get('/getCsvs', authentication, getCsv)

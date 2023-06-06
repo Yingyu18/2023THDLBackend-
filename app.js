@@ -50,7 +50,8 @@ app.use('/api/projects', projectRouter);
 app.use('/api/edit', editRouter);
 app.use('/api/map', mapRouter);
 app.use('/api/docu', docuRouter);
-app.use('/images', express.static('avatar'));
+app.use('/system/avatar', express.static('avatar'));
+app.use('/system/file', express.static('temp_files'));
 
 //app.use('/edit/convertTo', convertRouter);
 app.get('/', (req, res)=>{

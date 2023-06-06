@@ -5,9 +5,8 @@ const validator = require('validator');
 const User = require('../models/user_model');
 const bcrypt = require('bcrypt');
 const https = require('https');
-const IMAGE_URL = "https://140.112.30.230:3002/images"
 
-const {TOKEN_EXPIRE, TOKEN_SECRET} = process.env; 
+const {TOKEN_EXPIRE, TOKEN_SECRET, IMAGE_URL } = process.env; 
 
 const signUp = async (req, res) => {
     let {username, email, password, country, institution, title, researchTopics} = req.body;

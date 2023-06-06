@@ -1,5 +1,7 @@
+require('dotenv').config();
 const File = require('../models/file_model');
 var fs = require('fs');
+const {FILE_URL} = process.env;
 
 const uploadFile = async (req, res) =>{
     console.log("test")
@@ -67,10 +69,19 @@ const deleteFile = async (req, res) => {
 //TODO: complete it
 const downloadFile = async (req, res) => {
     // get content from database
-    const filesId = req.body
-    let text = await File.getContent(filesId);
+    const {id} = req.params
+    const {userId} = req.user
+    let text = await File.getContent(id);
+    const directoryPath = `./temp_files/${req.user.userId.toString()}`;
+    fs.mkdir(directoryPath, { recursive: true }, (err) => {
+  if (err) {
+    console.error('Error creating directory:', err);
+  } else {
+    console.log('Directory created successfully');
+  }
+});
    //create file
-    fs.appendFile('./temp_files/mynewfile1.csv', text, function (err) {
+    fs.appendFile(`./temp_files/${userId.toString()}/${id.toString()}`, text, function (err) {
         if (err) throw err;
         console.log('Saved!');
     });
@@ -79,9 +90,9 @@ const downloadFile = async (req, res) => {
     //     if (err) throw err;
     //     console.log('File deleted!');
     // });
-    const blob = new Blob([text], { type: 'text/csv' });
-    const url = URL.createObjectURL(blob);
-    return res.status(200).send({url})
+    // const blob = new Blob([text], { type: 'text/csv' });
+    // const url = URL.createObjectURL(blob);
+    return res.status(200).send({url:`${FILE_URL}/${userId.toString()}/${id.toString()}`})
 }
 
 const getCsv = async (req, res) => {

@@ -109,7 +109,7 @@ const getContent = async(fileId) => {
     try{
         let qryStr = `SELECT content FROM file_db WHERE fileID = ?`
         var result = await conn.query(qryStr, [fileId])
-        //console.log(result)
+        console.log(result)
         return result[0].content
     } catch (error){
         console.log(error)
