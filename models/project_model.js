@@ -8,13 +8,13 @@ const uploadFile = async(req) => {
         const {userId} = req.user
         let qryStr = `INSERT INTO file_db (content, type, Start_Row, upload_time, updated, fileName, USER_NAME, USER_ID, sourceCsvs, description)
          VALUES (?,?,?,?,?,?,?,?,?,?)`
-         //console.log(`${sourceCsvs}`)
+        //console.log(`${sourceCsvs}`)
         let result = await conn.query(qryStr, ["", "json", 1, new Date().getTime().toString(), new Date().getTime().toString(), name, owner, userId, `${sourceCsvs}`, description])
         const project_id = result.insertId;
 
         // insert into sourceCsvs
         for(let i=0; i<sourceCsvs.length; i++){
-            qryStr = `INSERT INTO source_csvs (project_id, csv_name) VALUES (?,?)`
+            qryStr = `INSERT INTO source_csvs (project_id, csv_id) VALUES (?,?)`
             result = await conn.query(qryStr, [project_id, sourceCsvs[i]])
         }
         return project_id
@@ -26,6 +26,7 @@ const uploadFile = async(req) => {
     }
 }
 
+//get projects
 const getFile = async(req) => {
     let userId = req.user.userId;
     console.log(req.query)
@@ -151,7 +152,7 @@ const updateCsvs = async (req) => {
         const {sourceCsvs} = req.body
         const result = await conn.query(`DELETE FROM source_csvs WHERE project_id = ?`, [projectId])
         for(let i=0; i<sourceCsvs.length; i++){
-            const result = await conn.query(`INSERT INTO source_csvs (project_id, csv_name) VALUES (?,?)`, [projectId, sourceCsvs[i]])
+            const result = await conn.query(`INSERT INTO source_csvs (project_id, csv_id) VALUES (?,?)`, [projectId, sourceCsvs[i]])
         }
         // TODO : return data 
         return 1
