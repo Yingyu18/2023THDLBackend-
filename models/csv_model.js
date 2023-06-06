@@ -32,14 +32,14 @@ class csvConverter {
             let table = await cleaner.rawTable(contents[k]);
             table = await cleaner.arrangeFormat(types[k], table, sidx[k]);             
             let corres = new Array (table[sidx[k]-1].length);
-            
+            let resLen = results[0].length;
             for (let i = 0; i < maps[k].length; i++) {
                 if (maps[k][i] == 'no') {corres[i] = -1;}
                 else if (maps[k][i] == '' || results[0].indexOf(maps[k][i]) == -1) {
                     corres[i] = extra;
                     if (maps[k][i] == '') {results[0].push(table[sidx[k]-1][i]);}
                     else {results[0].push(maps[k][i]);}
-                    results[1].push('metadata/customColumn' + String(extra - results[0].length));
+                    results[1].push('metadata/customColumn' + String(extra - resLen));
                     extra++;
                 } else {corres[i] = results[0].indexOf(maps[k][i]);}
             }  
