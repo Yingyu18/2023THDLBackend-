@@ -1,6 +1,8 @@
+require('dotenv').config();
 const pool = require("./connection_db")
 const Cleaner = require("./cleaners");
 const cleaner = new Cleaner();
+const {FILE_URL} = process.env;
 
 const uploadFile = async(data) => {
     const conn = await pool.getConnection()
@@ -175,6 +177,10 @@ const updateFile = async(req) => {
         if(start != undefined){
             let qryStr = `UPDATE file_db SET updated=?, Start_Row = ? WHERE fileID=? AND USER_ID=?`
             var results = await conn.query(qryStr, [new Date().getTime().toString(), start, parseInt(id), userId]);
+        }
+        if(req.url != undefined){
+            let qryStr = `UPDATE file_db SET updated=?, url=? WHERE fileID=? AND USER_ID=?`
+            var results = await conn.query(qryStr, [new Date().getTime().toString(), `${FILE_URL}/${userId}/${id}`, parseInt(id), userId]);
         }
         return results
     } catch (error){

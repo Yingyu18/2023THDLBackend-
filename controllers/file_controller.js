@@ -1,4 +1,4 @@
-require('dotenv').config();
+    require('dotenv').config();
 const File = require('../models/file_model');
 var fs = require('fs');
 const {FILE_URL} = process.env;
@@ -25,11 +25,20 @@ const uploadFile = async (req, res) =>{
     }
     //stroe contents into database
     let result = await File.uploadFile(data);
+    fs.appendFile(`./temp_files/${userId.toString()}/${result.insertId.toString()}`, content, function (err) {
+        if (err) throw err;
+        console.log('Saved into file system');
+    });
     if(result.error){
         return res.status(500).send({message: "internal server error"})
     }
-    console.log(result)
-    console.log("insert file ID: ", result.insertId)
+    req.url = 1
+    req.body = {}
+    req.params = {id:result.insertId}
+    let cons = await File.updateFile(req)
+    if(cons.error){
+        return res.status(500).send({message: "internal server error"})
+    }
     result  = await File.getCsv(result.insertId)
     res.status(200).json({ 
         id: result.fileID.toString(),
@@ -46,11 +55,11 @@ const uploadFile = async (req, res) =>{
 }
 
 const deleteFile = async (req, res) => {
-
-    //console.log(req)
     const filesId = req.params.id
-    //console.log(req.body)
-    ///console.log(filesId[0])
+    fs.unlink(`./temp_files/${req.user.userId.toString()}/${filesId}`, function (err) {
+        if (err) throw err;
+        console.log('File deleted!');
+    });
     // update database
     const result = await File.deleteFile(filesId);
     if(result.error){
@@ -90,8 +99,6 @@ const downloadFile = async (req, res) => {
     //     if (err) throw err;
     //     console.log('File deleted!');
     // });
-    // const blob = new Blob([text], { type: 'text/csv' });
-    // const url = URL.createObjectURL(blob);
     return res.status(200).send({url:`${FILE_URL}/${userId.toString()}/${id.toString()}`})
 }
 
