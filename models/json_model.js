@@ -85,8 +85,8 @@ class jsonConverter {
         var sql = "SELECT map from file_DB where fileID = ?";
         let result = await conn.query(sql, [pid]);  
         conn.release();       
-        if (result[0] == null || result[0].map == '') {return {"error" : 'no saved tags!'};}
-        else {return result[0].map;}   
+        if (result[0] == null || result[0].map == '') {console.log('nul!'); return {"error" : 'no saved tags!'};}
+        else {console.log('not nul!'); return result[0].map;}   
       } catch (error) {
         console.log(error);
       } 
