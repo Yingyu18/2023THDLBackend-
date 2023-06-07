@@ -103,7 +103,7 @@ const getProjects = async (req, res) => {
         //console.log(projects[i])
         let { fileID, upload_time, fileName, updated, isMapped, isBuilt, description, sourceCsvs} = projects[i]
         console.log(isMapped)
-        if (isMapped == 0) { isMapped = await mapModel.checkProjectMappedOtherPlace(fileID)}
+        if (isMapped == 0) { isMapped = await mapModel.checkProjectMappedOtherPlace(fileID); console.log('hy funct res = ' + isMapped);}
         // if(isMapped === true){
         //     isMapped=1
         // }else{
