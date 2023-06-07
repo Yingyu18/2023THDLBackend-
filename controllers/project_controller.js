@@ -108,7 +108,6 @@ const getProjects = async (req, res) => {
         else{isMapped=1}
         //return true if isMapped is still 0
         // else if (isMapped is changed to 1)
-
         upload_time = parseInt(upload_time)
         updated = parseInt(updated)
         let xml_id = projects[i].cores_xml_id
