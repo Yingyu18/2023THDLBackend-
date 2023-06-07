@@ -180,15 +180,16 @@ const updateFile = async(req) => {
             qryStr = `UPDATE file_db SET updated=?, url=? WHERE fileID=? AND USER_ID=?`
             result = await conn.query(qryStr, [new Date().getTime().toString(), `${FILE_URL}/${userId}/${name}`, parseInt(id), userId]);
             console.log(result)
+            console.log(`${FILE_URL}/${userId}/${name}`)
         }
         if(start != undefined){
             let qryStr = `UPDATE file_db SET updated=?, Start_Row = ? WHERE fileID=? AND USER_ID=?`
             var results = await conn.query(qryStr, [new Date().getTime().toString(), start, parseInt(id), userId]);
         }
-        if(req.url != undefined){
-            let qryStr = `UPDATE file_db SET updated=?, url=? WHERE fileID=? AND USER_ID=?`
-            var results = await conn.query(qryStr, [new Date().getTime().toString(), `${FILE_URL}/${userId}/${id}`, parseInt(id), userId]);
-        }
+        // if(req.url != undefined){
+        //     let qryStr = `UPDATE file_db SET updated=?, url=? WHERE fileID=? AND USER_ID=?`
+        //     var results = await conn.query(qryStr, [new Date().getTime().toString(), `${FILE_URL}/${userId}/${id}`, parseInt(id), userId]);
+        // }
         return results
     } catch (error){
         console.log(error)
