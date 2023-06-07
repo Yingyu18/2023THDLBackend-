@@ -76,7 +76,7 @@ class csvConverter {
                         results[lines][9] = table[i][j].substring(0, 4);
                     } else if (corres[j] == 10) {
                         results[lines][8] = table[i][j];
-                    } else if (corres[j] == 11) {
+                    } else if (types[k] != 3 && corres[j] == 11) {
                         results[lines][10] = table[i][j].substring(0, 10);
                         results[lines][11] = table[i][j].substring(11);
                         results[lines][9] = table[i][j].substring(0, 4);
