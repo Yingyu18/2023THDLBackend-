@@ -103,7 +103,7 @@ const getProjects = async (req, res) => {
         //console.log(projects[i])
         let { fileID, upload_time, fileName, updated, isMapped, isBuilt, description, sourceCsvs} = projects[i]
         console.log(projects[i])
-        if (isMapped == 0) { isMapped = mapModel.checkProjectMappedOtherPlace(project_ID)}
+        if (isMapped == 0) { isMapped = mapModel.checkProjectMappedOtherPlace(fileID)}
         if(isMapped == true){isMapped=0}      
         else{isMapped=1}
         //return true if isMapped is still 0
