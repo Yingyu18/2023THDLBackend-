@@ -35,10 +35,13 @@ class XMLConverter {
       <metadata_field_settings>\n\ ";
         var featAnal = "    <feature_analysis>\n";    
         var tags =  "";
+        let tagPre = '';
         if (tagsArr != '') {
           for (let i = 0; i < tagsArr.length; i++) {
-            featAnal += "      <spotlight category=\""+ tagsArr[i] + "\"  sub_category=\"-\" display_order=\"" + cnt + "\" title=\"" + tagsArr[i] + "/-\"/>\n";
-            tags += "      <tag type=\"contentTagging\" name=\""+ tagsArr[i] + "\" default_category=\"" + tagsArr[i] + "\" default_sub_category=\"-\"/>\n";
+            if (tagsArr[i] == 'PersonName' || tagsArr[i] == 'LocName' || tagsArr[i] == 'Date' || tagsArr[i] == 'Office') {tagPre = '';}
+            else {tagPre = 'Udef_';}
+            featAnal += "      <spotlight category=\""+ tagPre + tagsArr[i] + "\"  sub_category=\"-\" display_order=\"" + cnt + "\" title=\"" + tagPre + tagsArr[i] + "/-\"/>\n";
+            tags += "      <tag type=\"contentTagging\" name=\""+ tagPre + tagsArr[i] + "\" default_category=\"" + tagPre + tagsArr[i] + "\" default_sub_category=\"-\"/>\n";
             cnt++
           }
         }
