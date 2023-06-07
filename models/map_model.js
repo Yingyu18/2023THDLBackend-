@@ -212,9 +212,9 @@ class mapModel {
                 break;
             }
         }        
-        if (temp == 0) {
+        if (temp == 1) {
             conn.release();
-            return true;
+            return 0;
         } else {            
             let idx =  await tbfunc.getRowId(arr);
             let maps = new Array();
@@ -227,7 +227,8 @@ class mapModel {
             tmp = await jModel.toJson(tmp);
             sql = "UPDATE file_DB SET content = ?, isMapped = ?, lastModified = ? WHERE fileID = ?";
             rs = await conn.query(sql, [tmp, 1, new Date().getTime().toString(), jid]);
-            return false;
+            conn.release();
+            return 1;
         }
     } catch (error) {
        console.log(error);
