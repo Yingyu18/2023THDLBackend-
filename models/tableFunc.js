@@ -288,7 +288,7 @@ class tableFunc {
         sql = "Select fileID from file_DB where lastModified = ? and USER_ID = ?";
         row = await conn.query(sql, [time, uid]);
         let nfid = row[0].fileID
-        let qryStr = `INSERT INTO source_csvs (project_id, csv_name) VALUES (?,?)`
+        let qryStr = `INSERT INTO source_csvs (project_id, csv_id) VALUES (?,?)`
         let insIdx = orgIdx.split(',');
         for (let i = 0; i < insIdx.length; i++) {
           let qryRes = await conn.query(qryStr, [nfid, insIdx[i]]);
