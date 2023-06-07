@@ -104,7 +104,7 @@ const getProjects = async (req, res) => {
         let { fileID, upload_time, fileName, updated, isMapped, isBuilt, description, sourceCsvs} = projects[i]
         console.log(projects[i])
         /* if (isMapped == 0) {mapModel.checkProjectMappedOtherPlace(project_ID)}
-          return false if isMapped is still 0
+          return true if isMapped is still 0
           else if isMapped is changed to 1
         */
         upload_time = parseInt(upload_time)
