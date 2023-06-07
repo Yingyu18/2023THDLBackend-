@@ -193,5 +193,45 @@ class mapModel {
         console.log(error);
      }
   }
+
+  async checkProjectMappedOtherPlace(pid) {
+    try {
+        let conn = await pool.getConnection();
+        var sql = "SELECT sourceCsvs FROM file_DB WHERE fileID = ?";
+        let arr = await conn.query(sql, [pid]);
+        arr = arr[0].sourceCsvs.split(',');
+        let temp = 0;
+        sql = "SELECT isMapped FROM file_DB WHERE fileID = ?";
+        let sql2 = "SELECT isMapped FROM sec_map WHERE fileID = ? and map_ID = ?";
+        for (let i = 0; i < arr.length; i++) {
+            let row1 = await conn.query(sql, [arr[i]]);
+            let row2 = await conn.query(sql2, [arr[i], pid]);
+            if (row1[0] && row2[0] && row1[0].isMapped && row2[0].isMapped && row1[0].isMapped == 1 && row2[0].isMapped == 1) {continue;}
+            else {
+                temp = 1;
+                break;
+            }
+        }        
+        if (temp == 0) {
+            conn.release();
+            return true;
+        } else {            
+            let idx =  await tbfunc.getRowId(arr);
+            let maps = new Array();
+            let tpmap;
+            for (let i = 0; i < arr.length; i++) {
+                tpmap = await tbfunc.getMap(arr[i]);
+                maps.push(String(tpmap).split(','));
+            }
+            let tmp = await cModel.to2dArray(pid, idx, 1, maps);
+            tmp = await jModel.toJson(tmp);
+            sql = "UPDATE file_DB SET content = ?, isMapped = ?, lastModified = ? WHERE fileID = ?";
+            rs = await conn.query(sql, [tmp, 1, new Date().getTime().toString(), jid]);
+            return false;
+        }
+    } catch (error) {
+       console.log(error);
+    }
+  }
 }
 module.exports = mapModel;
