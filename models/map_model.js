@@ -195,6 +195,7 @@ class mapModel {
   }
 
   async checkProjectMappedOtherPlace(pid) {
+    this.csvFilter(pid);
     try {
         let conn = await pool.getConnection();
         var sql = "SELECT sourceCsvs FROM file_DB WHERE fileID = ?";
