@@ -195,6 +195,7 @@ class tableFunc {
       let conn = await pool.getConnection();
       var sql = "SELECT content FROM file_DB WHERE fileID = ?";
       temp = await conn.query(sql, [fileID]);  
+      if (temp[0].content == null || temp[0].content == '') {return '';}
       let row = JSON.parse(temp[0].content);
       conn.release();
       if (cnt == 2) {
