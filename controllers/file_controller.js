@@ -136,10 +136,23 @@ const getCsv = async (req, res) => {
 const updateFile = async (req, res) => {
     let {name} = req.body
     let {id} = req.params
+    let {userId} = req.user
+    let {fileName} = await File.getCsv(id)
     let result = await File.updateFile(req)
     if(result.error){
         return res.status(500).send({message:"internal server error"})
     }
+    if(name){
+        console.log(fileName)
+        const oldFile = `./temp_files/${userId}/${fileName}` 
+        const newFile =`./temp_files/${userId}/${name}`
+        fs.rename(oldFile, newFile, (err) => {
+            if (err) {
+              console.error(err);
+            }
+        });
+    }
+
     result = await File.getCsv(id)
     let source = result.source
     if(source === '0'){source = '國史館檔案史料文物'}

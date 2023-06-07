@@ -175,22 +175,20 @@ const updateFile = async(req) => {
     const {name,start} = req.body
     try{
         if(name!=undefined){
-            let qryStr = `UPDATE file_db SET updated=?, fileName = ? WHERE fileID=? AND USER_ID=?`
-            var results = await conn.query(qryStr, [new Date().getTime().toString(), name, parseInt(id), userId]);
-            qryStr = `UPDATE file_db SET updated=?, url=? WHERE fileID=? AND USER_ID=?`
-            result = await conn.query(qryStr, [new Date().getTime().toString(), `${FILE_URL}/${userId}/${name}`, parseInt(id), userId]);
-            console.log(result)
-            console.log(`${FILE_URL}/${userId}/${name}`)
+            var qryStr = `UPDATE file_db SET updated=?, fileName = ? WHERE fileID=? AND USER_ID=?`
+            await conn.query(qryStr, [new Date().getTime().toString(), name, parseInt(id), userId]);
+            var qryStr = `UPDATE file_db SET updated=?, url=? WHERE fileID=? AND USER_ID=?`
+            await conn.query(qryStr, [new Date().getTime().toString(), `${FILE_URL}/${userId}/${name}`, parseInt(id), userId]);
         }
         if(start != undefined){
-            let qryStr = `UPDATE file_db SET updated=?, Start_Row = ? WHERE fileID=? AND USER_ID=?`
-            var results = await conn.query(qryStr, [new Date().getTime().toString(), start, parseInt(id), userId]);
+            var qryStr = `UPDATE file_db SET updated=?, Start_Row = ? WHERE fileID=? AND USER_ID=?`
+            await conn.query(qryStr, [new Date().getTime().toString(), start, parseInt(id), userId]);
         }
         // if(req.url != undefined){
         //     let qryStr = `UPDATE file_db SET updated=?, url=? WHERE fileID=? AND USER_ID=?`
         //     var results = await conn.query(qryStr, [new Date().getTime().toString(), `${FILE_URL}/${userId}/${id}`, parseInt(id), userId]);
         // }
-        return results
+        return 0
     } catch (error){
         console.log(error)
         return {error}
