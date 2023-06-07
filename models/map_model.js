@@ -227,7 +227,7 @@ class mapModel {
             let tmp = await cModel.to2dArray(pid, idx, 1, maps);
             tmp = await jModel.toJson(tmp);
             sql = "UPDATE file_DB SET content = ?, isMapped = ?, lastModified = ? WHERE fileID = ?";
-            rs = await conn.query(sql, [tmp, 1, new Date().getTime().toString(), jid]);
+            rs = await conn.query(sql, [tmp, 1, new Date().getTime().toString(), pid]);
             conn.release();
             return 1;
         }
