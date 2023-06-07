@@ -78,6 +78,7 @@ class csvConverter {
                     } else if (corres[j] == 11) {
                         results[lines][10] = table[i][j].substring(0, 10);
                         results[lines][11] = table[i][j].substring(11);
+                        results[lines][9] = results[lines][10].substring(0, 4);
                     } else if (corres[j] == 0) {
                         if (table[i][j] == '') {results[lines][corres[j]] += 'Please Set Unique ID';}
                         else {results[lines][corres[j]] += table[i][j];}
