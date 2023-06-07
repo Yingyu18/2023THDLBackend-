@@ -73,6 +73,7 @@ class csvConverter {
                         results[lines][8] = table[i][j].substring(22);
                         results[lines][10] = table[i][j].substring(0, 10);
                         results[lines][11] = table[i][j].substring(11, 21);
+                        results[lines][9] = table[i][j].substring(0, 4);
                     } else if (corres[j] == 10) {
                         results[lines][8] = table[i][j];
                     } else if (corres[j] == 11) {
