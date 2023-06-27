@@ -4,6 +4,13 @@ const Cleaner = require("./cleaners");
 const cleaner = new Cleaner();
 const {FILE_URL} = process.env;
 
+const defaultMap =  {
+    "入藏登錄號" : "來源系統", "卷名" : "書卷名", "檔案系列" : "(類目階層)", "題名摘要" : "題名", "卷件開始日期" : "起始時間", "卷件結束日期" : "結束時間", "數位典藏號" : "唯一編碼",
+    "data_type" : "檔案類型", "title" : "題名", "date_from" : "起始時間", "date_stop" : "結束時間",
+    "資料集" : "檔案類型", "瀏覽階層" : "(類目階層)", "內容摘要" : "題名", "日期描述" : "起始時間", "典藏號" : "唯一編碼",
+    "資料類型" : "檔案類型", "書目名稱" : "書卷名", "類別階層" : "(類目階層)", "日期起" : "起始時間", "日期迄" : "結束時間", "典藏序號" : "唯一編碼"
+}
+
 const uploadFile = async(data) => {
     const conn = await pool.getConnection()
     try{
@@ -70,16 +77,23 @@ const uploadFile = async(data) => {
         if (table[start-1][0] == 'no' || table[start-1][0] == 'o' || table[start-1][0] == '') {
             needShift = 1;
         }
+        let mapCont = '';
         for(let i=0; i<table.length; i++){
             if (needShift == 1 && i >= start - 1) {table[i].shift();}
+            if (i == start-1) {
+                for (let j = 0; j < table[start-1].length; j++) {
+                    if (defaultMap[table[start-1][j]]) {mapCont += mapCont.length > 0 ? ',' + defaultMap[table[start-1][j]] : defaultMap[table[start-1][j]];}
+                    else {mapCont += ',';}
+                }
+            }
             table[i] = table[i].join(',');            
         }
         //console.log(table[table.length-1])
         table = table.join('\n')
         //console.log("after merge , : ",table)
         // insert Into database
-        let qryStr = 'INSERT INTO file_db (fileName, USER_ID, USER_NAME, Start_Row, content, upload_time, size, source, lastModified, isMapped, url) VALUES (?,?,?,?,?,?,?,?,?,?,?)'
-        const result = await conn.query(qryStr, [filename, userId, uploader, start, table, new Date().getTime().toString(), size, sourceNo, lastModified, 0, `${FILE_URL}/${userId}/${filename}`])
+        let qryStr = 'INSERT INTO file_db (fileName, USER_ID, USER_NAME, Start_Row, content, map, upload_time, size, source, lastModified, isMapped, url) VALUES (?,?,?,?,?,?,?,?,?,?,?)'
+        const result = await conn.query(qryStr, [filename, userId, uploader, start, table, mapCont, new Date().getTime().toString(), size, sourceNo, lastModified, 0, `${FILE_URL}/${userId}/${filename}`])
         result.source = source
         return result
 

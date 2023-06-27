@@ -151,6 +151,34 @@ class tableFunc {
       console.log(error);
     }
   }
+  async getPreview(fileID) {
+    const pool = require("./connection_db");
+    var idx = await this.getRowId([fileID]);
+    idx = idx[0];
+    try {
+      let conn = await pool.getConnection();
+      var sql = "SELECT content FROM file_DB WHERE fileID = ?";
+      let row = await conn.query(sql, [fileID]);
+      conn.release();
+      row = row[0].content.split('\n');
+      let result = new Array(row[idx-1].length).fill('');
+      let len = row.length-idx < 2 ? row.length-idx : 3;
+      for (let i = 0 ; i < len; i++) {
+        for (let j = 0; j < row[idx-1].length; j++) {
+          if (row[idx-1+i][j]) {
+            if (result[j].length > 0) {result[j] += '#';}
+            if (row[idx-1+i][j].length > 10) {result[j] += row[idx-1+i][j].substring(0, 10) + '...';}
+            else {result[j] += row[idx-1+i][j].substring(0, 10) + '...';}
+          } 
+          else {result[j] += '#';}
+        }
+      }      
+      return result.join('#');      
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
   async getUniqueHead(fileID) {
     const pool = require("./connection_db");
     var idx = await this.getRowId([fileID]);
