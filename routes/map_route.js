@@ -10,9 +10,11 @@ const {
 
 const {
     projectMapping,
-    fileMapping,
+    selectMapping,
     savemap,
     getmap,
+    savePreSet,
+    delPreSet,
     retrieveMapped,
     changeRow
   } = require('../controllers/map_controller');
@@ -22,8 +24,10 @@ router.get('/', function(req, res, next) {
 });
 
 router.post('/projectMapping', bodyParser.json(), authentication, projectMapping);
-router.post('/fileMapping', bodyParser.json(), authentication, fileMapping);
+router.post('/selectMapping', bodyParser.json(), authentication, selectMapping);
 router.post('/savemap', bodyParser.json(), authentication, savemap);
+router.post('/savePreSet', bodyParser.json(), authentication, savePreSet);
+router.post('/deletePreSet', bodyParser.json(), authentication, delPreSet);
 router.post('/getmap', bodyParser.json(), authentication, getmap);
 router.post('/retrieveMapped', bodyParser.json(), authentication, retrieveMapped);
 router.post('/changeRow', bodyParser.json(), authentication, changeRow);

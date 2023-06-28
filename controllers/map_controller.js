@@ -19,53 +19,57 @@ const projectMapping = async (req, res) =>{
     return ; 
 }
 
-const fileMapping = async (req, res) => {
+const selectMapping = async (req, res) => {
     var fid = req.body.file_id;
-    var pid = req.body.project_id;
-    var type = req.body.type;
-    var m_head;
-    let ck;
-    if (type == 1) {
-        ck = await cModel.firstMapCheck(fid);
-        if (ck){
-            res.status(400).send({"error": 'mapping were already completed.'});
-            return ;
-        }
-        else {m_head = ['唯一編碼', '來源系統', '來源系統縮寫', '文件原系統頁面URL', '題名', '檔案類型',
-        '書卷名', '(類目階層)', '原始時間記錄', '西元年', '起始時間', '結束時間', '相關人員', '相關地點', 
-        '相關組織', '關鍵詞', '摘要/全文'];}
-    }
-    else {
-        ck = await cModel.secondMapCheck(fid);
-        if (ck){
-            res.status(400).send({"error": 'mapping were already completed.'});
-            return ;
-        }
-        else {m_head = await tableFunc.getJsonHead(pid, 1);}
-    }
-    var fhead = await tableFunc.getHead(fid);
-   res.status(200).send({
-        "file_id": fid,
-        "file_head": fhead,
-        "map_head": m_head,
-    }); 
+    var uid = req.user.userId; console.log('uid = ' + uid);
+    var PreSet = await model.getPreSet(uid, fid);
+    res.status(200).send({"preset_heads" : PreSet}); 
     return ;
 }
 
 const savemap = async (req, res) => {
-    var uid = req.user.userID;  
+    var uid = req.user.userId;  
     var fid = req.body.file_id;
     var pid = req.body.json_id;
     var type = req.body.type;
     var result = req.body.map_res;
-    var fin = req.body.finish;
-    var arr = await model.saveMap(fid, pid, type, fin, result);    
+    var arr = await model.saveMap(fid, pid, type, result);    
     res.status(200).send('save success');
     return ;
     
 }
+
+const savePreSet = async (req, res) => {
+    var uid = req.user.userId;  
+    var fid = req.body.file_id;
+    var pid = req.body.json_id;
+    var type = req.body.type;
+    var result = req.body.map_res;
+    var pname = req.body.PreSetName;
+    if (pname == '系統預設') {res.status(400).send('不合法的名稱');} 
+    var arr = await model.savePreSet(uid, fid, pid, type, result, pname);
+    if (arr == 'dupe') {res.status(400).send('duplicate.');}  
+    else {res.status(200).send('save success');}
+    return ;
+    
+}
+
+const delPreSet = async (req, res) => {
+    var uid = req.user.userId;  
+    var fid = req.body.file_id;
+    var pname = req.body.PreSetName;
+    if (pname == '系統預設') {
+        res.status(400).send('禁止刪除系統預設設定');
+        return ;
+    }
+    var arr = await model.delPreSet(uid, fid, pname);     
+    res.status(200).send('delete success');
+    return ;
+    
+}
+
 const getmap = async (req, res) => {    
-    var uid = req.user.userID;
+    var uid = req.user.userId;
     var fid = req.body.file_id;
     var type = req.body.type;
     var pid = req.body.json_id;
@@ -88,9 +92,11 @@ const changeRow = async(req, res) => {
 }
 module.exports = {
     projectMapping,
-    fileMapping,
+    selectMapping,
     savemap,
     getmap,
+    savePreSet,
+    delPreSet,
     retrieveMapped,
     changeRow
 };

@@ -98,10 +98,11 @@ class tableFunc {
     try {
       let conn = await pool.getConnection();
       let row;
-      var sql = "SELECT type FROM file_DB WHERE fileID = ?";
+      var sql = "SELECT source FROM file_DB WHERE fileID = ?";
       for (let i = 0; i < fileIDs.length; i++) {
+        console.log('get src of id ' + fileIDs[i]);
         row = await conn.query(sql, [fileIDs[i]]);
-        array[i] = row[0].Type;
+        array[i] = row[0].source;
       }
       conn.release();
       return array;
@@ -151,6 +152,40 @@ class tableFunc {
       console.log(error);
     }
   }
+  async getPreview(fileID) {
+    const pool = require("./connection_db");
+    var idx = await this.getRowId([fileID]);
+    idx = idx[0];
+    try {
+      let conn = await pool.getConnection();
+      var sql = "SELECT content FROM file_DB WHERE fileID = ?";
+      let row = await conn.query(sql, [fileID]);
+      conn.release();
+      row = row[0].content.split('\n');
+      let result = new Array(row[idx-1].length).fill('');
+      let len = row.length-idx < 3 ? row.length-idx : 3;
+      let clen = row[idx-1].length;
+      for (let i = 0 ; i < len; i++) {
+        if (idx+i >= row.length) {
+          for (let j = 0; j < clen; j++) {result[j] += 'a$z#c&';}
+          continue;
+        }
+        let tmprow = row[idx+i].split(',');
+        for (let j = 0; j < clen; j++) {
+          if (tmprow[j]) {
+            if (result[j].length > 0) {result[j] += 'a$z#c&';}
+            if (tmprow[j].length > 24) {result[j] += tmprow[j].substring(0, 24) + '...';}
+            else {result[j] += tmprow[j];}
+          } 
+          else {result[j] += 'a$z#c&';}
+        }
+      }      
+      return result.join('a$z#c&');      
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
   async getUniqueHead(fileID) {
     const pool = require("./connection_db");
     var idx = await this.getRowId([fileID]);
@@ -195,6 +230,7 @@ class tableFunc {
       let conn = await pool.getConnection();
       var sql = "SELECT content FROM file_DB WHERE fileID = ?";
       temp = await conn.query(sql, [fileID]);  
+      if (temp[0].content == null || temp[0].content == '') {return '';}
       let row = JSON.parse(temp[0].content);
       conn.release();
       if (cnt == 2) {
