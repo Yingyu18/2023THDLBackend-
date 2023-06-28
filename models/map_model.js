@@ -166,7 +166,7 @@ class mapModel {
         result.push(tmparr);
         sql = "select * From PreSetDB WHERE UID = ? and type = ?";
         rs = await conn.query(sql, [uid, ftp]);
-        for (let j = 0; j < res.length; j++) {
+        for (let j = 0; j < rs.length; j++) {
             if (rs[j] != null) {
                 tmparr = new Array();
                 tmparr.push(rs[j].setName);
