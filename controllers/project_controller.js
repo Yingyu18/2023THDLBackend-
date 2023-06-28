@@ -102,13 +102,16 @@ const getProjects = async (req, res) => {
     for (let i = 0; i < projects.length; i++) {
         //console.log(projects[i])
         let { fileID, upload_time, fileName, updated, isMapped, isBuilt, description, sourceCsvs} = projects[i]
-        console.log(isMapped)
-        if (isMapped == 0) { isMapped = await mapModel.checkProjectMappedOtherPlace(fileID)}
-        // if(isMapped === true){
-        //     isMapped=1
-        // }else{
-        //     isMapped=0
-        // }
+        if (isMapped !== 1) { 
+            isMapped = await mapModel.checkProjectMappedOtherPlace(fileID)
+            // console.log("isMapped: ",isMapped)
+            // if(isMapped == 0){
+            //     isMapped=1
+            // }else{
+            //     isMapped=0
+            // }
+        }
+
         //return true if isMapped is still 0
         // else if (isMapped is changed to 1)
         upload_time = parseInt(upload_time)

@@ -12,11 +12,12 @@ const signUp = async (data) => {
     try {
         await conn.query('START TRANSACTION');
     // insert data into docusky user_profile
-        const docuskyUser = await conn.query('SELECT * FROM docusky.user_profile WHERE USERNAME = ? FOR UPDATE', [data.email]);
+        let docuskyUser = await conn.query('SELECT * FROM docusky.user_profile WHERE USERNAME = ? FOR UPDATE', [data.email]);
         if (docuskyUser.length > 0){
             await conn.query('COMMIT');
             return {error: 'Email Already Exists'};
         }
+
         
         console.log(sha256(password))
         password = bcrypt.hashSync(password, salt)
@@ -28,11 +29,17 @@ const signUp = async (data) => {
         let id = result.insertId;
         
     //inser data into thdlbacktest
-        const emails = await conn.query('SELECT EMAIL FROM user_profile WHERE EMAIL = ? FOR UPDATE', [email]);
+        let emails = await conn.query('SELECT EMAIL FROM user_profile WHERE EMAIL = ? FOR UPDATE', [email]);
         if (emails.length > 0){
             await conn.query('COMMIT');
             return {error: 'Email Already Exists'};
         }
+        emails = await conn.query('SELECT * FROM user_profile WHERE USER_NAME = ? FOR UPDATE', [username]);
+        if (emails.length > 0){
+            await conn.query('COMMIT');
+            return {error: 'Username Already Exists'};
+        }
+           
         let user = {
             username: username,
             password: password,
