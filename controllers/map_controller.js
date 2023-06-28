@@ -57,6 +57,10 @@ const delPreSet = async (req, res) => {
     var uid = req.user.userID;  
     var fid = req.body.file_id;
     var pname = req.body.PreSetName;
+    if (pname == '系統預設') {
+        res.status(400).send('禁止刪除系統預設設定');
+        return ;
+    }
     var arr = await model.delPreSet(fid, pname);     
     res.status(200).send('delete success');
     return ;

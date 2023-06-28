@@ -166,14 +166,14 @@ class tableFunc {
       for (let i = 0 ; i < len; i++) {
         for (let j = 0; j < row[idx-1].length; j++) {
           if (row[idx-1+i][j]) {
-            if (result[j].length > 0) {result[j] += '#';}
+            if (result[j].length > 0) {result[j] += 'a$z#c&';}
             if (row[idx-1+i][j].length > 10) {result[j] += row[idx-1+i][j].substring(0, 10) + '...';}
             else {result[j] += row[idx-1+i][j].substring(0, 10) + '...';}
           } 
-          else {result[j] += '#';}
+          else {result[j] += 'a$z#c&';}
         }
       }      
-      return result.join('#');      
+      return result.join('a$z#c&');      
     } catch (error) {
       console.log(error);
     }

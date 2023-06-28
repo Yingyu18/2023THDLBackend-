@@ -98,8 +98,8 @@ class mapModel {
         let conn = await pool.getConnection();
         let sql;
         let rs;
-        sql = "select * from PreSetDB WHERE type = ? and setName = ?";
-        rs = await conn.query(sql, [ftp, pname]);
+        sql = "select * from PreSetDB WHERE type = ? and setName = ? and UID = ?";
+        rs = await conn.query(sql, [ftp, pname, uid]);
         if (rs[0] != null) {return 'dupe';}
         if (type == 1) { 
             sql = "UPDATE file_DB SET map = ?, lastModified = ? WHERE fileID = ?";
@@ -129,7 +129,7 @@ class mapModel {
    }
  }
 
- savePreSet = async (uid, fid, pname) => {        
+ delPreSet = async (uid, fid, pname) => {        
     var result = 'delete success';
     let ftp = await tbfunc.getType([fid]);
     ftp = ftp[0];
@@ -137,8 +137,8 @@ class mapModel {
         let conn = await pool.getConnection();
         let sql;
         let rs;
-        sql = "delete from PreSetDB WHERE type = ? and setName = ?";
-        rs = await conn.query(sql, [ftp, pname]);
+        sql = "delete from PreSetDB WHERE type = ? and setName = ? and UID = ?";
+        rs = await conn.query(sql, [ftp, pname, uid]);
     conn.release();
     return result;
    } catch (error) {
