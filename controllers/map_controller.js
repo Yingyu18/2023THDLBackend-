@@ -21,7 +21,7 @@ const projectMapping = async (req, res) =>{
 
 const selectMapping = async (req, res) => {
     var fid = req.body.file_id;
-    var uid = req.user.userID;
+    var uid = req.user.userID; console,log('uid = ' + uid);
     var PreSet = await model.getPreSet(uid, fid);
     res.status(200).send({"preset_heads" : PreSet}); 
     return ;
