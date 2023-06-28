@@ -162,13 +162,14 @@ class tableFunc {
       conn.release();
       row = row[0].content.split('\n');
       let result = new Array(row[idx-1].length).fill('');
-      let len = row.length-idx < 2 ? row.length-idx : 3;
+      let len = row.length-idx < 2 ? 3 : row.length-idx;
       for (let i = 0 ; i < len; i++) {
-        for (let j = 0; j < row[idx-1].length; j++) {
-          if (row[idx-1+i][j]) {
+        let tmprow = row[idx-1+i].split(',')
+        for (let j = 0; j < tmprow.length; j++) {
+          if (tmprow[j]) {
             if (result[j].length > 0) {result[j] += 'a$z#c&';}
-            if (row[idx-1+i][j].length > 10) {result[j] += row[idx-1+i][j].substring(0, 10) + '...';}
-            else {result[j] += row[idx-1+i][j];}
+            if (tmprow[j].length > 10) {result[j] += tmprow[j].substring(0, 10) + '...';}
+            else {result[j] += tmprow[j];}
           } 
           else {result[j] += 'a$z#c&';}
         }
