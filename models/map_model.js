@@ -248,7 +248,7 @@ class mapModel {
             "saved_heads": shead,
             "map_head": [],
             "unique_heads": uhead,
-            "preivew_contents": previews,
+            "preview_contents": previews,
             "type" : type
           }
         result["map_head"] = type == 1 ? ['唯一編碼', '來源系統', '來源系統縮寫', '文件原系統頁面URL', '題名', '檔案類型',
