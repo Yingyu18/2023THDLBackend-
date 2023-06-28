@@ -46,7 +46,7 @@ const savePreSet = async (req, res) => {
     var type = req.body.type;
     var result = req.body.map_res;
     var pname = req.body.PreSetName;
-    var arr = await model.savePreSet(fid, pid, type, result, pname);
+    var arr = await model.savePreSet(uid, fid, pid, type, result, pname);
     if (arr == 'dupe') {res.status(400).send('duplicate.');}  
     else {res.status(200).send('save success');}
     return ;
