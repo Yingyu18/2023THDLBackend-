@@ -61,7 +61,7 @@ const uploadFile = async (req, res)=> {
         }
         const fid = sourceCsvs[sourceCsvs.length-1]
         const jid = projectID
-        mapModel.saveMap(fid, jid, 1, 1, lastMap)
+        mapModel.saveMap(fid, jid, 1, lastMap)
     }
 
     res.status(200).send({
