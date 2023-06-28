@@ -230,6 +230,7 @@ class mapModel {
                 }
                 else if (sec_row[0].isMapped == null || sec_row[0].isMapped == 0) {
                     let tmp = await tbfunc.getSecMap(arr[i], pid);
+                    if (tmp == null || tmp == '請進行二次對應' || tmp == '') {tmp = await tbfunc.getMap(arr[i]);}
                     type = 2;
                     fid.push(arr[i]);
                     temp = await tbfunc.getHead(arr[i]);
@@ -277,8 +278,26 @@ class mapModel {
     sql = "UPDATE file_DB SET Start_Row = ?, lastModified = ? WHERE fileID = ?";
     var result = {
         "file_head": "zzz",
-        "unique_head": "ccc"
+        "unique_head": "ccc",
+        "preview_content": "aaa"
     }
+    let container = new Array(tb[srow-1].length).fill('');
+    for (let i = 0 ; i < 3; i++) {
+        if (srow+i >= tb.length) {
+          for (let j = 0; j < tb[srow-1].length; j++) {container[j] += 'a$z#c&';}
+          continue;
+        }
+        let tmprow = tb[srow+i].split(',');
+        for (let j = 0; j < tb[srow-1].length; j++) {
+          if (tmprow[j]) {
+            if (container[j].length > 0) {container[j] += 'a$z#c&';}
+            if (tmprow[j].length > 24) {container[j] += tmprow[j].substring(0, 24) + '...';}
+            else {container[j] += tmprow[j];}
+          } 
+          else {container[j] += 'a$z#c&';}
+        }
+      }      
+      result.preview_content = container.join('a$z#c&');
     try {
         let temp = await conn.query(sql, [srow, new Date().getTime().toString(), fid]);
         result.file_head = await tbfunc.getHead(fid);
