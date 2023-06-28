@@ -174,7 +174,7 @@ class tableFunc {
         for (let j = 0; j < clen; j++) {
           if (tmprow[j]) {
             if (result[j].length > 0) {result[j] += 'a$z#c&';}
-            if (tmprow[j].length > 10) {result[j] += tmprow[j].substring(0, 10) + '...';}
+            if (tmprow[j].length > 24) {result[j] += tmprow[j].substring(0, 24) + '...';}
             else {result[j] += tmprow[j];}
           } 
           else {result[j] += 'a$z#c&';}
