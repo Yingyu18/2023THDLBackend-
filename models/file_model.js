@@ -92,7 +92,7 @@ const uploadFile = async(data) => {
         table = table.join('\n')
         //console.log("after merge , : ",table)
         // insert Into database
-        let qryStr = 'INSERT INTO file_db (fileName, USER_ID, USER_NAME, Start_Row, content, map, upload_time, size, source, lastModified, isMapped, url) VALUES (?,?,?,?,?,?,?,?,?,?,?)'
+        let qryStr = 'INSERT INTO file_db (fileName, USER_ID, USER_NAME, Start_Row, content, map, upload_time, size, source, lastModified, isMapped, url) VALUES (?,?,?,?,?,?,?,?,?,?,?,?)'
         const result = await conn.query(qryStr, [filename, userId, uploader, start, table, mapCont, new Date().getTime().toString(), size, sourceNo, lastModified, 0, `${FILE_URL}/${userId}/${filename}`])
         result.source = source
         return result
