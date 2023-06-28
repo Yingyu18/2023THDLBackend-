@@ -168,7 +168,7 @@ class tableFunc {
           if (row[idx-1+i][j]) {
             if (result[j].length > 0) {result[j] += 'a$z#c&';}
             if (row[idx-1+i][j].length > 10) {result[j] += row[idx-1+i][j].substring(0, 10) + '...';}
-            else {result[j] += row[idx-1+i][j].substring(0, 10) + '...';}
+            else {result[j] += row[idx-1+i][j];}
           } 
           else {result[j] += 'a$z#c&';}
         }
