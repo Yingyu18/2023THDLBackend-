@@ -98,10 +98,10 @@ class tableFunc {
     try {
       let conn = await pool.getConnection();
       let row;
-      var sql = "SELECT type FROM file_DB WHERE fileID = ?";
+      var sql = "SELECT source FROM file_DB WHERE fileID = ?";
       for (let i = 0; i < fileIDs.length; i++) {
         row = await conn.query(sql, [fileIDs[i]]);
-        array[i] = row[0].type;
+        array[i] = row[0].source;
       }
       conn.release();
       return array;
