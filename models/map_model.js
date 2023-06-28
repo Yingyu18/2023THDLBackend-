@@ -66,6 +66,7 @@ class mapModel {
                 rs = await conn.query(sql, [jid]);
                 rs = rs[0].sourceCsvs.split(',');
                 if (await cModel.allMappedCheck(rs, 2, jid) == true) {
+                    console.log('second mergereeeeeeeeeeeeeeeeeeeeeeeeeeee');
                     idx =  await tbfunc.getRowId(rs);
                     let maps = new Array();
                     let tpmap;
