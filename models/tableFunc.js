@@ -101,7 +101,7 @@ class tableFunc {
       var sql = "SELECT type FROM file_DB WHERE fileID = ?";
       for (let i = 0; i < fileIDs.length; i++) {
         row = await conn.query(sql, [fileIDs[i]]);
-        array[i] = row[0].Type;
+        array[i] = row[0].type;
       }
       conn.release();
       return array;
