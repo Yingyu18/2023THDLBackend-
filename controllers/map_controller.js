@@ -61,7 +61,7 @@ const delPreSet = async (req, res) => {
         res.status(400).send('禁止刪除系統預設設定');
         return ;
     }
-    var arr = await model.delPreSet(fid, pname);     
+    var arr = await model.delPreSet(uid, fid, pname);     
     res.status(200).send('delete success');
     return ;
     
