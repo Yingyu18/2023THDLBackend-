@@ -93,6 +93,7 @@ class mapModel {
     let head = await tbfunc.getHead(fid);
     let ftp = await tbfunc.getType([fid]);
     ftp = ftp[0];
+    head = head.split(',');
     let pres = res.split(',');
     try {
         let conn = await pool.getConnection();
