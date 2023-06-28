@@ -82,9 +82,8 @@ const uploadFile = async(data) => {
             if (needShift == 1 && i >= start - 1) {table[i].shift();}
             if (i == start-1) {
                 for (let j = 0; j < table[start-1].length; j++) {
-                    console.log('mcont == ' + table[start-1][j] + 'and mpcont == ;;' + mapCont + ';;');
-                    if (defaultMap[table[start-1][j]]) {mapCont += mapCont.length > 0 ? ',' + defaultMap[table[start-1][j]] : defaultMap[table[start-1][j]];}
-                    else {mapCont += ',';}
+                    if (defaultMap[table[start-1][j]]) {mapCont += j > 0 ? ',' + defaultMap[table[start-1][j]] : defaultMap[table[start-1][j]];}
+                    else if (j > 0) {mapCont += ',';}
                 }
             }
             table[i] = table[i].join(',');            
