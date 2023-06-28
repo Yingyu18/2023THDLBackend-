@@ -100,6 +100,7 @@ class tableFunc {
       let row;
       var sql = "SELECT source FROM file_DB WHERE fileID = ?";
       for (let i = 0; i < fileIDs.length; i++) {
+        console.log('get src of id ' + fileIDs[i]);
         row = await conn.query(sql, [fileIDs[i]]);
         array[i] = row[0].source;
       }
@@ -162,14 +163,14 @@ class tableFunc {
       conn.release();
       row = row[0].content.split('\n');
       let result = new Array(row[idx-1].length).fill('');
-      let len = row.length-idx < 2 ? row.length-idx : 3;
+      let len = row.length-idx < 3 ? row.length-idx : 3;
       let clen = row[idx-1].length;
       for (let i = 0 ; i < len; i++) {
-        if (idx-1+i >= row.length) {
+        if (idx+i >= row.length) {
           for (let j = 0; j < clen; j++) {result[j] += 'a$z#c&';}
           continue;
         }
-        let tmprow = row[idx-1+i].split(',');
+        let tmprow = row[idx+i].split(',');
         for (let j = 0; j < clen; j++) {
           if (tmprow[j]) {
             if (result[j].length > 0) {result[j] += 'a$z#c&';}
